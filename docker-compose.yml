@@ -22,7 +22,6 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - management-db:/var/lib/postgresql/data
 
-
 volumes:
   management-db:
     driver: local
