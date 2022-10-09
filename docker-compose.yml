@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+
+  management-db:
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: management-db
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=hua
+      - POSTGRES_PASSWORD=zepp
+      - POSTGRES_DB=hua
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hua"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - management-db:/var/lib/postgresql/data
+
+
+volumes:
+  management-db:
+    driver: local
