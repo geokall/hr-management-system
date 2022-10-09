@@ -1,4 +1,4 @@
-package controller;
+package resource;
 
 import entity.HuaUser;
 import repository.HuaUserRepository;
