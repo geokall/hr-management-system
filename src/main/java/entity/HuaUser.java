@@ -136,6 +136,14 @@ public class HuaUser implements Serializable {
         this.lastModificationDate = lastModificationDate;
     }
 
+    public Set<HuaRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<HuaRole> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
