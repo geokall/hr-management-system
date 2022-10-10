@@ -2,6 +2,10 @@ package resource;
 
 import dto.LoginDTO;
 import entity.HuaUser;
+import io.smallrye.jwt.auth.principal.DefaultJWTCallerPrincipal;
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.Claims;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import repository.HuaUserRepository;
 import security.TokenService;
 
@@ -13,6 +17,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import java.security.Principal;
+
 import static utils.HuaRoles.READER_ROLE;
 
 @Path("/users")
@@ -23,14 +29,11 @@ public class AuthResource {
     @Inject
     TokenService service;
 
-    @Context
-    SecurityContext securityContext;
+    @Inject
+    JsonWebToken jwt;
 
-    private final HuaUserRepository huaUserRepository;
-
-    public AuthResource(HuaUserRepository huaUserRepository) {
-        this.huaUserRepository = huaUserRepository;
-    }
+    @Inject
+    HuaUserRepository huaUserRepository;
 
 //    @POST
 //    @Path("/register")
@@ -44,23 +47,23 @@ public class AuthResource {
     @Path("/login")
     public String login(LoginDTO dto) {
 
-        HuaUser huaUser = huaUserRepository.findById(1L).orElse(null);
+        HuaUser huaUser = huaUserRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword())
+                .orElseThrow(() -> {
+                    throw new WebApplicationException(Response.status(404)
+                            .entity("User not found")
+                            .build());
+                });
 
-        if (huaUser == null) {
-            throw new WebApplicationException(Response.status(404)
-                    .entity("No user found or password is incorrect")
-                    .build());
-
-        }
-
-        return service.generateReaderToken(huaUser.getEmail(), dto.getPassword());
+        return service.generateReaderToken(huaUser.getUsername(), huaUser.getBirthDate());
     }
 
     @GET
     @Path("/reader")
     @RolesAllowed(READER_ROLE)
     public String readerTest() {
-        String name = securityContext.getUserPrincipal().getName();
-        return name;
+        String claim = jwt.getClaim(Claims.birthdate.toString());
+        String name1 = jwt.getName();
+
+        return name1 + claim;
     }
 }
