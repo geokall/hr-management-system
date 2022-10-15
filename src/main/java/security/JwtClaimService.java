@@ -34,14 +34,14 @@ public class JwtClaimService {
     private String generateToken(String username, String role) {
         try {
             JwtClaims jwtClaims = new JwtClaims();
-            jwtClaims.setIssuer(jwtIssuer); // from properties
+            jwtClaims.setIssuer(jwtIssuer);
             jwtClaims.setJwtId(UUID.randomUUID().toString());
             jwtClaims.setClaim(Claims.upn.name(), username);
-            jwtClaims.setClaim(Claims.preferred_username.name(), username); //add more
+            jwtClaims.setClaim(Claims.preferred_username.name(), username);
             jwtClaims.setClaim(Claims.groups.name(), Collections.singletonList(role));
             jwtClaims.setAudience("using-jwt");
 
-            jwtClaims.setExpirationTimeMinutesInTheFuture(10); // TODO specify how long do you need
+            jwtClaims.setExpirationTimeMinutesInTheFuture(10); //keeping small for dev reasons
 
             String token = tokenGenerationService.generateTokenString(jwtClaims);
             LOGGER.info("JWT generated: " + token);

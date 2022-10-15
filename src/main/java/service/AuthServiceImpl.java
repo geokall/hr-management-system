@@ -15,9 +15,9 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 public class AuthServiceImpl implements AuthService {
 
-    private JwtClaimService jwtClaimService;
-    private HuaUserRepository huaUserRepository;
-    private HuaRoleRepository huaRoleRepository;
+    private final JwtClaimService jwtClaimService;
+    private final HuaUserRepository huaUserRepository;
+    private final HuaRoleRepository huaRoleRepository;
 
     @Inject
     public AuthServiceImpl(JwtClaimService jwtClaimService,

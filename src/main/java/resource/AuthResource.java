@@ -11,9 +11,11 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import java.util.Set;
 
+import static javax.ws.rs.core.Response.Status.OK;
 import static utils.HuaRoles.READER_ROLE;
 
 @Path("/users")
@@ -21,11 +23,14 @@ import static utils.HuaRoles.READER_ROLE;
 @Produces(MediaType.APPLICATION_JSON)
 public class AuthResource {
 
-    @Inject
-    JsonWebToken jwt;
+    private final JsonWebToken jsonWebToken;
+    private final AuthService authService;
 
     @Inject
-    AuthService authService;
+    public AuthResource(JsonWebToken jsonWebToken, AuthService authService) {
+        this.jsonWebToken = jsonWebToken;
+        this.authService = authService;
+    }
 
 //    @POST
 //    @Path("/register")
@@ -37,19 +42,21 @@ public class AuthResource {
 
     @POST
     @Path("/login")
-    public JwtResponseDTO login(LoginDTO dto) {
+    public Response login(LoginDTO dto) {
         JwtResponseDTO response = authService.login(dto);
 
-        return response;
+        return Response.ok(response)
+                .status(OK)
+                .build();
     }
 
     @GET
     @Path("/reader")
     @RolesAllowed(READER_ROLE)
     public UserDTO readerTest() {
-        Set<String> role = jwt.getClaim(Claims.groups);
+        Set<String> role = jsonWebToken.getClaim(Claims.groups);
         String oneRole = role.stream().findFirst().orElse(null);
-        String name = jwt.getName();
+        String name = jsonWebToken.getName();
 
         UserDTO test = new UserDTO();
         test.setName(name);

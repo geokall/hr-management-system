@@ -22,12 +22,13 @@ public class TokenGenerationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtClaimService.class);
 
-    private TokenGenerationService() {
-    }
-
     public String generateTokenString(JwtClaims claims) throws Exception {
         // Use the private key associated with the public key for a valid signature
         PrivateKey pk = readPrivateKey("/privateKey.pem");
+
+        if (pk == null) {
+            LOGGER.info("Could not read private key");
+        }
 
         return generateTokenString(pk, "/privateKey.pem", claims);
     }
@@ -39,10 +40,6 @@ public class TokenGenerationService {
 
         claims.setIssuedAt(NumericDate.fromSeconds(currentTimeInSecs));
         claims.setClaim(Claims.auth_time.name(), NumericDate.fromSeconds(currentTimeInSecs));
-
-        for (Map.Entry<String, Object> entry : claims.getClaimsMap().entrySet()) {
-            LOGGER.info("\tAdded claim: {}, value: {}\n", entry.getKey(), entry.getValue());
-        }
 
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
@@ -83,7 +80,7 @@ public class TokenGenerationService {
         return Base64.getDecoder().decode(normalizedPem);
     }
 
-    private static String removeBeginEnd(String pem) {
+    private String removeBeginEnd(String pem) {
         pem = pem.replaceAll("-----BEGIN (.*)-----", "");
         pem = pem.replaceAll("-----END (.*)----", "");
         pem = pem.replaceAll("\r\n", "");
