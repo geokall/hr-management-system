@@ -56,12 +56,12 @@ public class HuaUser implements Serializable {
 
     public void addRole(HuaRole role) {
         roles.add(role);
-        role.getRoles().add(this);
+        role.getUsers().add(this);
     }
 
     public void removeRole(HuaRole role) {
         roles.remove(role);
-        role.getRoles().remove(this);
+        role.getUsers().remove(this);
     }
 
     public Long getId() {

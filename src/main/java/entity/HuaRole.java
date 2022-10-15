@@ -18,7 +18,7 @@ public class HuaRole implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<HuaUser> roles = new HashSet<>();
+    private Set<HuaUser> users = new HashSet<>();
 
     public HuaRole() {
     }
@@ -39,12 +39,12 @@ public class HuaRole implements Serializable {
         this.name = name;
     }
 
-    public Set<HuaUser> getRoles() {
-        return roles;
+    public Set<HuaUser> getUsers() {
+        return users;
     }
 
-    public void setRoles(Set<HuaUser> roles) {
-        this.roles = roles;
+    public void setUsers(Set<HuaUser> users) {
+        this.users = users;
     }
 
     @Override

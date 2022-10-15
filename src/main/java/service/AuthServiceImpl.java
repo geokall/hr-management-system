@@ -1,7 +1,6 @@
 package service;
 
 import dto.LoginDTO;
-import entity.HuaRole;
 import entity.HuaUser;
 import repository.HuaUserRepository;
 import repository.HuaRoleRepository;
@@ -16,14 +15,18 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 public class AuthServiceImpl implements AuthService {
 
-    @Inject
-    JwtClaimService service;
+    private JwtClaimService jwtClaimService;
+    private HuaUserRepository huaUserRepository;
+    private HuaRoleRepository huaRoleRepository;
 
     @Inject
-    HuaUserRepository huaUserRepository;
-
-    @Inject
-    HuaRoleRepository huaRoleRepository;
+    public AuthServiceImpl(JwtClaimService jwtClaimService,
+                           HuaUserRepository huaUserRepository,
+                           HuaRoleRepository huaRoleRepository) {
+        this.jwtClaimService = jwtClaimService;
+        this.huaUserRepository = huaUserRepository;
+        this.huaRoleRepository = huaRoleRepository;
+    }
 
     @Override
     public JwtResponseDTO login(LoginDTO dto) {
@@ -34,20 +37,19 @@ public class AuthServiceImpl implements AuthService {
                             .build());
                 });
 
-        String jwt = service.generateReaderToken(huaUser.getUsername(), "test");
+        String userRole = huaRoleRepository.findUserRole(huaUser.getId())
+                .stream()
+                .findAny()
+                .orElse(null);
+
+        String jwt = jwtClaimService.generateUserToken(huaUser.getUsername(), userRole);
 
         JwtResponseDTO jwtResponseDTO = new JwtResponseDTO();
         jwtResponseDTO.setId(huaUser.getId());
         jwtResponseDTO.setEmail(huaUser.getEmail());
         jwtResponseDTO.setUsername(huaUser.getUsername());
         jwtResponseDTO.setToken(jwt);
-
-//        String role = huaRoleRepository.findByRoles_Id(huaUser.getId())
-//                .stream()
-//                .map(HuaRole::getName)
-//                .findAny().orElse(null);
-//
-//        jwtResponseDTO.setRole(role);
+        jwtResponseDTO.setRole(userRole);
 
         return jwtResponseDTO;
     }

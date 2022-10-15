@@ -8,9 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.UUID;
 
 @RequestScoped
@@ -21,10 +19,14 @@ public class JwtClaimService {
     @ConfigProperty(name = "mp.jwt.verify.issuer")
     String jwtIssuer;
 
-    @Inject
-    TokenGenerationService tokenGenerationService;
+    private final TokenGenerationService tokenGenerationService;
 
-    public String generateReaderToken(String username, String role) {
+    @Inject
+    public JwtClaimService(TokenGenerationService tokenGenerationService) {
+        this.tokenGenerationService = tokenGenerationService;
+    }
+
+    public String generateUserToken(String username, String role) {
         return generateToken(username, role);
     }
 
@@ -34,7 +36,6 @@ public class JwtClaimService {
             JwtClaims jwtClaims = new JwtClaims();
             jwtClaims.setIssuer(jwtIssuer); // from properties
             jwtClaims.setJwtId(UUID.randomUUID().toString());
-            jwtClaims.setSubject(username);
             jwtClaims.setClaim(Claims.upn.name(), username);
             jwtClaims.setClaim(Claims.preferred_username.name(), username); //add more
             jwtClaims.setClaim(Claims.groups.name(), Collections.singletonList(role));

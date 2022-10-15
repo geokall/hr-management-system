@@ -1,6 +1,7 @@
 package resource;
 
 import dto.LoginDTO;
+import dto.UserDTO;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import security.JwtResponseDTO;
@@ -10,6 +11,8 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
+import java.util.Set;
 
 import static utils.HuaRoles.READER_ROLE;
 
@@ -43,10 +46,15 @@ public class AuthResource {
     @GET
     @Path("/reader")
     @RolesAllowed(READER_ROLE)
-    public String readerTest() {
-        String claim = jwt.getClaim(Claims.birthdate.toString());
-        String name1 = jwt.getName();
+    public UserDTO readerTest() {
+        Set<String> role = jwt.getClaim(Claims.groups);
+        String oneRole = role.stream().findFirst().orElse(null);
+        String name = jwt.getName();
 
-        return name1 + claim;
+        UserDTO test = new UserDTO();
+        test.setName(name);
+        test.setRole(oneRole);
+
+        return test;
     }
 }
