@@ -1,8 +1,12 @@
 package security;
 
-import lombok.Data;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Builder
+@Getter
+@JsonDeserialize(builder = JwtResponseDTO.JwtResponseDTOBuilder.class)
 public class JwtResponseDTO {
 
     private Long id;

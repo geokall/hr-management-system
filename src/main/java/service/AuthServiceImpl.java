@@ -44,13 +44,12 @@ public class AuthServiceImpl implements AuthService {
 
         String jwt = jwtClaimService.generateUserToken(huaUser.getUsername(), userRole);
 
-        JwtResponseDTO jwtResponseDTO = new JwtResponseDTO();
-        jwtResponseDTO.setId(huaUser.getId());
-        jwtResponseDTO.setEmail(huaUser.getEmail());
-        jwtResponseDTO.setUsername(huaUser.getUsername());
-        jwtResponseDTO.setToken(jwt);
-        jwtResponseDTO.setRole(userRole);
-
-        return jwtResponseDTO;
+        return JwtResponseDTO.builder()
+                .id(huaUser.getId())
+                .email(huaUser.getEmail())
+                .username(huaUser.getUsername())
+                .token(jwt)
+                .role(userRole)
+                .build();
     }
 }
