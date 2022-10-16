@@ -12,7 +12,7 @@ public class CustomRepositoryImpl implements CustomRepository {
     //Offending method is 'findByRoles_Id' of repository 'repository.HuaRoleRepository'.
 
     @PersistenceContext
-    private EntityManager entityManager;
+    EntityManager entityManager;
 
     @Override
     public List<String> findUserRole(Long id) {
