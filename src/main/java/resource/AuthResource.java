@@ -10,6 +10,7 @@ import service.AuthService;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -44,12 +45,10 @@ public class AuthResource {
     @POST
     @Path("/login")
     @PermitAll
-    public Response login(LoginDTO dto) {
+    public Response login(@Valid LoginDTO dto) {
         JwtResponseDTO response = authService.login(dto);
 
-        return Response.ok(response)
-                .status(OK)
-                .build();
+        return Response.ok(response).status(OK).build();
     }
 
     @GET

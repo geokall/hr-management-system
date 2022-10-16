@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface HuaUserRepository extends JpaRepository<HuaUser, Long> {
 
     Optional<HuaUser> findByUsernameAndPassword(String username, String password);
+
+    Optional<HuaUser> findByUsername(String username);
 }

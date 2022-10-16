@@ -2,6 +2,7 @@ package service;
 
 import dto.LoginDTO;
 import entity.HuaUser;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import repository.HuaUserRepository;
 import repository.HuaRoleRepository;
 import security.JwtClaimService;
@@ -30,17 +31,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtResponseDTO login(LoginDTO dto) {
-        HuaUser huaUser = huaUserRepository.findByUsernameAndPassword(dto.getUsername(), dto.getPassword())
-                .orElseThrow(() -> {
-                    throw new WebApplicationException(Response.status(404)
-                            .entity("User not found")
-                            .build());
-                });
+        HuaUser huaUser = fetchUserBy(dto.getUsername());
 
-        String userRole = huaRoleRepository.findUserRole(huaUser.getId())
-                .stream()
-                .findAny()
-                .orElse(null);
+        checkHashedPassword(huaUser, dto);
+
+        String userRole = fetchUserRoleBy(huaUser);
 
         String jwt = jwtClaimService.generateUserToken(huaUser.getUsername(), userRole);
 
@@ -51,5 +46,35 @@ public class AuthServiceImpl implements AuthService {
                 .token(jwt)
                 .role(userRole)
                 .build();
+    }
+
+
+    private void checkHashedPassword(HuaUser huaUser, LoginDTO dto) {
+        String hashedPassword = huaUser.getPassword();
+        String password = dto.getPassword();
+
+        boolean matches = BcryptUtil.matches(password, hashedPassword);
+
+        if (!matches) {
+            throw new WebApplicationException(Response.status(404)
+                    .entity("Invalid credentials")
+                    .build());
+        }
+    }
+
+    private String fetchUserRoleBy(HuaUser huaUser) {
+        return huaRoleRepository.findUserRole(huaUser.getId())
+                .stream()
+                .findAny()
+                .orElse(null);
+    }
+
+    private HuaUser fetchUserBy(String username) {
+        return huaUserRepository.findByUsername(username)
+                .orElseThrow(() -> {
+                    throw new WebApplicationException(Response.status(404)
+                            .entity("Invalid credentials")
+                            .build());
+                });
     }
 }
