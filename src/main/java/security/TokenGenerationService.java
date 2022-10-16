@@ -1,10 +1,8 @@
 package security;
 
-import org.eclipse.microprofile.jwt.Claims;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.NumericDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +13,6 @@ import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
-import java.util.Map;
 
 @RequestScoped
 public class TokenGenerationService {
@@ -35,12 +32,6 @@ public class TokenGenerationService {
 
 
     private String generateTokenString(PrivateKey privateKey, String kid, JwtClaims claims) throws Exception {
-
-        long currentTimeInSecs = currentTimeInSecs();
-
-        claims.setIssuedAt(NumericDate.fromSeconds(currentTimeInSecs));
-        claims.setClaim(Claims.auth_time.name(), NumericDate.fromSeconds(currentTimeInSecs));
-
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
         jws.setKey(privateKey);
@@ -87,11 +78,5 @@ public class TokenGenerationService {
         pem = pem.replaceAll("\n", "");
 
         return pem.trim();
-    }
-
-    private int currentTimeInSecs() {
-        long currentTimeMS = System.currentTimeMillis();
-
-        return (int) (currentTimeMS / 1000);
     }
 }

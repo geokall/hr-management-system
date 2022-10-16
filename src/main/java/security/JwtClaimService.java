@@ -3,6 +3,7 @@ package security;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.Claims;
 import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.NumericDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,11 @@ public class JwtClaimService {
             jwtClaims.setClaim(Claims.groups.name(), Collections.singletonList(role));
             jwtClaims.setAudience("using-jwt");
 
+            long currentTimeInSeconds = fetchCurrentTimeInSeconds();
+
+            jwtClaims.setIssuedAt(NumericDate.fromSeconds(currentTimeInSeconds));
+            jwtClaims.setClaim(Claims.auth_time.name(), NumericDate.fromSeconds(currentTimeInSeconds));
+
             jwtClaims.setExpirationTimeMinutesInTheFuture(10); //keeping small for dev reasons
 
             String token = tokenGenerationService.generateTokenString(jwtClaims);
@@ -51,5 +57,11 @@ public class JwtClaimService {
             LOGGER.info(e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+    private int fetchCurrentTimeInSeconds() {
+        long currentTimeMS = System.currentTimeMillis();
+
+        return (int) (currentTimeMS / 1000);
     }
 }

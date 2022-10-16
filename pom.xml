@@ -53,7 +53,8 @@
 
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-flyway</artifactId>
+            <artifactId>quarkus-liquibase</artifactId>
+            <version>2.13.2.Final</version>
         </dependency>
 
         <dependency>
@@ -75,11 +76,6 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-jackson</artifactId>
         </dependency>
-
-        <!--        <dependency>-->
-        <!--            <groupId>io.quarkus</groupId>-->
-        <!--            <artifactId>quarkus-resteasy-jsonb</artifactId>-->
-        <!--        </dependency>-->
 
         <dependency>
             <groupId>io.quarkus</groupId>
