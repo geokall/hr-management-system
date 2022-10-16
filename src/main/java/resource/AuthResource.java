@@ -7,6 +7,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import security.JwtResponseDTO;
 import service.AuthService;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -16,9 +17,9 @@ import javax.ws.rs.core.Response;
 import java.util.Set;
 
 import static javax.ws.rs.core.Response.Status.OK;
-import static utils.HuaRoles.READER_ROLE;
+import static utils.StaticRole.READER_ROLE;
 
-@Path("/users")
+@Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class AuthResource {
@@ -42,6 +43,7 @@ public class AuthResource {
 
     @POST
     @Path("/login")
+    @PermitAll
     public Response login(LoginDTO dto) {
         JwtResponseDTO response = authService.login(dto);
 

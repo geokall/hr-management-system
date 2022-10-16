@@ -1,10 +1,10 @@
 package utils;
 
-public class HuaRoles {
+public class StaticRole {
 
     public static final String READER_ROLE = "READER";
     public static final String ADMIN_ROLE = "ADMIN";
 
-    private HuaRoles() {
+    private StaticRole() {
     }
 }
