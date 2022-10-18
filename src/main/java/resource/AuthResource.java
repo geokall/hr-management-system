@@ -1,6 +1,7 @@
 package resource;
 
 import dto.LoginDTO;
+import dto.RegisterDTO;
 import dto.UserDTO;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Response;
 import java.util.Set;
 
 import static javax.ws.rs.core.Response.Status.OK;
+import static utils.StaticRole.ADMIN_ROLE;
 import static utils.StaticRole.READER_ROLE;
 
 @Path("/auth")
@@ -34,13 +36,14 @@ public class AuthResource {
         this.authService = authService;
     }
 
-//    @POST
-//    @Path("/register")
-//    @Transactional
-//    public User register(User user) {
-//        user.persist(); //super simplified registration, no checks of uniqueness
-//        return user;
-//    }
+    @POST
+    @Path("/register")
+    @RolesAllowed(ADMIN_ROLE)
+    public Response register(@Valid RegisterDTO dto) {
+        Long response = authService.register(dto);
+
+        return Response.ok(response).status(OK).build();
+    }
 
     @POST
     @Path("/login")
