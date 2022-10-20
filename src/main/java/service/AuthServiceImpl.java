@@ -2,6 +2,7 @@ package service;
 
 import dto.LoginDTO;
 import dto.RegisterDTO;
+import entity.HuaRole;
 import entity.HuaUser;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import lombok.Data;
@@ -13,13 +14,19 @@ import security.JwtResponseDTO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @ApplicationScoped
 public class AuthServiceImpl implements AuthService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final JwtClaimService jwtClaimService;
     private final HuaUserRepository huaUserRepository;
@@ -59,20 +66,22 @@ public class AuthServiceImpl implements AuthService {
         handleDuplicates(dto);
 
         HuaUser huaUser = new HuaUser();
-        huaUser.setName(dto.getName());
-        huaUser.setBirthDate(dto.getBirthDate());
-        huaUser.setEmail(dto.getEmail());
-        huaUser.setDateCreated(LocalDateTime.now());
-        huaUser.setSurname(dto.getSurname());
         huaUser.setUsername(dto.getUsername());
-        BcryptUtil.bcryptHash(dto.getPassword());
+        String hashedPassword = BcryptUtil.bcryptHash(dto.getPassword());
+        huaUser.setPassword(hashedPassword);
+        huaUser.setEmail(dto.getEmail());
+        huaUser.setName(dto.getName());
+        huaUser.setSurname(dto.getSurname());
+        huaUser.setBirthDate(dto.getBirthDate());
+        huaUser.setDateCreated(LocalDateTime.now());
 
         huaRoleRepository.findByName(dto.getRoleName())
                 .ifPresent(huaUser::addRole);
 
-        HuaUser savedUser = huaUserRepository.save(huaUser);
+        entityManager.persist(huaUser);
+//        HuaUser savedUser = huaUserRepository.save(huaUser);
 
-        return savedUser.getId();
+        return huaUser.getId();
     }
 
 

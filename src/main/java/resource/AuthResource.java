@@ -68,4 +68,10 @@ public class AuthResource {
 
         return test;
     }
+
+    @GET
+    @Path("/test")
+    public String e() {
+        return "ee";
+    }
 }
