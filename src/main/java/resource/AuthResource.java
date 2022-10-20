@@ -31,7 +31,8 @@ public class AuthResource {
     private final AuthService authService;
 
     @Inject
-    public AuthResource(JsonWebToken jsonWebToken, AuthService authService) {
+    public AuthResource(JsonWebToken jsonWebToken,
+                        AuthService authService) {
         this.jsonWebToken = jsonWebToken;
         this.authService = authService;
     }
@@ -67,11 +68,5 @@ public class AuthResource {
         test.setRole(oneRole);
 
         return test;
-    }
-
-    @GET
-    @Path("/test")
-    public String e() {
-        return "ee";
     }
 }

@@ -78,10 +78,9 @@ public class AuthServiceImpl implements AuthService {
         huaRoleRepository.findByName(dto.getRoleName())
                 .ifPresent(huaUser::addRole);
 
-        entityManager.persist(huaUser);
-//        HuaUser savedUser = huaUserRepository.save(huaUser);
+        HuaUser savedUser = huaUserRepository.save(huaUser);
 
-        return huaUser.getId();
+        return savedUser.getId();
     }
 
 
