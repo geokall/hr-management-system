@@ -25,6 +25,7 @@ public class TokenGenerationService {
 
         if (pk == null) {
             LOGGER.info("Could not read private key");
+            throw new RuntimeException();
         }
 
         return generateTokenString(pk, "/privateKey.pem", claims);

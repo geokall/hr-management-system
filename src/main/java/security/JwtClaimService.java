@@ -47,7 +47,7 @@ public class JwtClaimService {
             jwtClaims.setIssuedAt(NumericDate.fromSeconds(currentTimeInSeconds));
             jwtClaims.setClaim(Claims.auth_time.name(), NumericDate.fromSeconds(currentTimeInSeconds));
 
-            jwtClaims.setExpirationTimeMinutesInTheFuture(10); //keeping small for dev reasons
+            jwtClaims.setExpirationTimeMinutesInTheFuture(30);
 
             String token = tokenGenerationService.generateTokenString(jwtClaims);
             LOGGER.info("JWT generated: " + token);
