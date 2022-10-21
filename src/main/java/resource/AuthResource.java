@@ -20,7 +20,6 @@ import java.util.Set;
 
 import static javax.ws.rs.core.Response.Status.OK;
 import static utils.StaticRole.ADMIN_ROLE;
-import static utils.StaticRole.READER_ROLE;
 
 @Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -57,7 +56,7 @@ public class AuthResource {
 
     @GET
     @Path("/reader")
-    @RolesAllowed(READER_ROLE)
+    @RolesAllowed(ADMIN_ROLE)
     public UserDTO readerTest() {
         Set<String> role = jsonWebToken.getClaim(Claims.groups);
         String oneRole = role.stream().findFirst().orElse(null);
