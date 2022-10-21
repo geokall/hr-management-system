@@ -2,10 +2,10 @@ package service;
 
 import dto.LoginDTO;
 import dto.RegisterDTO;
-import entity.HuaRole;
 import entity.HuaUser;
+import exception.HuaConflictException;
+import exception.HuaNotFoundException;
 import io.quarkus.elytron.security.common.BcryptUtil;
-import lombok.Data;
 import org.springframework.util.ObjectUtils;
 import repository.HuaUserRepository;
 import repository.HuaRoleRepository;
@@ -14,19 +14,10 @@ import security.JwtResponseDTO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @ApplicationScoped
 public class AuthServiceImpl implements AuthService {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private final JwtClaimService jwtClaimService;
     private final HuaUserRepository huaUserRepository;
@@ -91,9 +82,7 @@ public class AuthServiceImpl implements AuthService {
         boolean matches = BcryptUtil.matches(password, hashedPassword);
 
         if (!matches) {
-            throw new WebApplicationException(Response.status(404)
-                    .entity("Invalid credentials")
-                    .build());
+            throw new HuaNotFoundException("Invalid credentials");
         }
     }
 
@@ -107,9 +96,7 @@ public class AuthServiceImpl implements AuthService {
     private HuaUser fetchUserBy(String username) {
         return huaUserRepository.findByUsername(username)
                 .orElseThrow(() -> {
-                    throw new WebApplicationException(Response.status(404)
-                            .entity("Invalid credentials")
-                            .build());
+                    throw new HuaNotFoundException("Invalid credentials");
                 });
     }
 
@@ -117,18 +104,14 @@ public class AuthServiceImpl implements AuthService {
         if (!ObjectUtils.isEmpty(dto.getEmail())) {
             huaUserRepository.findByEmail(dto.getEmail())
                     .ifPresent(user -> {
-                        throw new WebApplicationException(Response.status(404)
-                                .entity("Email already exists")
-                                .build());
+                        throw new HuaConflictException("Email already exist");
                     });
         }
 
         if (!ObjectUtils.isEmpty(dto.getUsername())) {
             huaUserRepository.findByUsername(dto.getUsername())
                     .ifPresent(user -> {
-                        throw new WebApplicationException(Response.status(404)
-                                .entity("Username already exists")
-                                .build());
+                        throw new HuaConflictException("Username already exists");
                     });
         }
     }
