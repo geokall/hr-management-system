@@ -38,7 +38,7 @@ public class AuthResource {
 
     @POST
     @Path("/register")
-    @RolesAllowed(ADMIN_ROLE)
+    @PermitAll
     public Response register(@Valid RegisterDTO dto) {
         Long response = authService.register(dto);
 

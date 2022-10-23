@@ -11,10 +11,13 @@ import repository.HuaUserRepository;
 import repository.HuaRoleRepository;
 import security.JwtClaimService;
 import security.JwtResponseDTO;
+import utils.HuaUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
+
+import static utils.HuaUtil.HUA_EMAIL;
 
 @ApplicationScoped
 public class AuthServiceImpl implements AuthService {
@@ -57,13 +60,18 @@ public class AuthServiceImpl implements AuthService {
         handleDuplicates(dto);
 
         HuaUser huaUser = new HuaUser();
-        huaUser.setUsername(dto.getUsername());
+        huaUser.setSurname(dto.getSurname());
+        huaUser.setName(dto.getName());
+
+        String username = dto.getUsername();
+        String email = HuaUtil.generateEmail(username);
+
+        huaUser.setUsername(username);
+        huaUser.setEmail(email);
+
         String hashedPassword = BcryptUtil.bcryptHash(dto.getPassword());
         huaUser.setPassword(hashedPassword);
-        huaUser.setEmail(dto.getEmail());
-        huaUser.setName(dto.getName());
-        huaUser.setSurname(dto.getSurname());
-        huaUser.setBirthDate(dto.getBirthDate());
+
         huaUser.setDateCreated(LocalDateTime.now());
 
         huaRoleRepository.findByName(dto.getRoleName())

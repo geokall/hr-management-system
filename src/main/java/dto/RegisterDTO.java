@@ -11,21 +11,20 @@ public class RegisterDTO {
 
     private Long id;
 
+    private String surname;
+
+    private String name;
+
     @NotBlank
     private String username;
 
     @NotBlank
+    private String password;
+
     private String email;
 
     @NotBlank
-    private String password;
-
-    @NotBlank
     private String roleName;
-
-    private String name;
-
-    private String surname;
 
     private Date birthDate;
 
