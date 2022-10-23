@@ -8,6 +8,6 @@ public interface AuthService {
 
     JwtResponseDTO login(LoginDTO dto);
 
-    Long register(RegisterDTO dto);
+    Long register(String role, RegisterDTO dto);
 
 }

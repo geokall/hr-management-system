@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public Long register(RegisterDTO dto) {
+    public Long register(String role, RegisterDTO dto) {
 
         handleDuplicates(dto);
 
@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
 
         huaUser.setDateCreated(LocalDateTime.now());
 
-        huaRoleRepository.findByName(dto.getRoleName())
+        huaRoleRepository.findByName(role)
                 .ifPresent(huaUser::addRole);
 
         HuaUser savedUser = huaUserRepository.save(huaUser);

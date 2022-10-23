@@ -39,8 +39,9 @@ public class AuthResource {
     @POST
     @Path("/register")
     @PermitAll
-    public Response register(@Valid RegisterDTO dto) {
-        Long response = authService.register(dto);
+    public Response register(@QueryParam("role") String role,
+                             @Valid RegisterDTO dto) {
+        Long response = authService.register(role, dto);
 
         return Response.ok(response).status(OK).build();
     }

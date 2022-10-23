@@ -23,9 +23,6 @@ public class RegisterDTO {
 
     private String email;
 
-    @NotBlank
-    private String roleName;
-
     private Date birthDate;
 
     private LocalDateTime dateCreated;
