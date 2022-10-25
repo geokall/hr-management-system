@@ -17,8 +17,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 
-import static utils.HuaUtil.HUA_EMAIL;
-
 @ApplicationScoped
 public class AuthServiceImpl implements AuthService {
 
