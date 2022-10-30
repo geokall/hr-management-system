@@ -10,8 +10,8 @@ import utils.HuaUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Set;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
@@ -25,30 +25,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findUserInfo(Long id) {
-        HuaUser user = huaUserRepository.findById(id)
-                .orElseThrow(() -> new HuaNotFoundException("User not found"));
+        HuaUser user = findUserBy(id);
 
         return toUserDTO(user);
     }
 
     @Override
     public void updateUserInfo(Long id, UserDTO dto) {
-        HuaUser user = huaUserRepository.findById(id)
-                .orElseThrow(() -> new HuaNotFoundException("User not found"));
+        HuaUser user = findUserBy(id);
 
-        user.setSurname(dto.getSurname());
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setUsername(dto.getUsername());
-        user.setMobileNumber(dto.getMobileNumber());
-        user.setVatNumber(dto.getVatNumber());
-
-        String birthDate = dto.getBirthDate();
-
-        if (!ObjectUtils.isEmpty(birthDate)) {
-            Date birthDateFormatted = HuaUtil.formatStringToDate(birthDate);
-            user.setBirthDate(birthDateFormatted);
-        }
+        updateUserInfoBy(dto, user);
 
         huaUserRepository.save(user);
     }
@@ -78,5 +64,28 @@ public class UserServiceImpl implements UserService {
         dto.setRole(role);
 
         return dto;
+    }
+
+    private void updateUserInfoBy(UserDTO dto, HuaUser user) {
+        user.setSurname(dto.getSurname());
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setUsername(dto.getUsername());
+        user.setMobileNumber(dto.getMobileNumber());
+        user.setVatNumber(dto.getVatNumber());
+
+        String birthDate = dto.getBirthDate();
+
+        if (!ObjectUtils.isEmpty(birthDate)) {
+            Date birthDateFormatted = HuaUtil.formatStringToDate(birthDate);
+            user.setBirthDate(birthDateFormatted);
+        }
+
+        user.setLastModificationDate(LocalDateTime.now());
+    }
+
+    private HuaUser findUserBy(Long id) {
+        return huaUserRepository.findById(id)
+                .orElseThrow(() -> new HuaNotFoundException("Ο χρήστης δεν βρέθηκε."));
     }
 }

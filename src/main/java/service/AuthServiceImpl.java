@@ -88,7 +88,7 @@ public class AuthServiceImpl implements AuthService {
         boolean matches = BcryptUtil.matches(password, hashedPassword);
 
         if (!matches) {
-            throw new HuaNotFoundException("Invalid credentials");
+            throw new HuaNotFoundException("Λάθος στοιχεία.");
         }
     }
 
@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
     private HuaUser fetchUserBy(String username) {
         return huaUserRepository.findByUsername(username)
                 .orElseThrow(() -> {
-                    throw new HuaNotFoundException("Invalid credentials");
+                    throw new HuaNotFoundException("Λάθος στοιχεία.");
                 });
     }
 
@@ -110,14 +110,14 @@ public class AuthServiceImpl implements AuthService {
         if (!ObjectUtils.isEmpty(dto.getEmail())) {
             huaUserRepository.findByEmail(dto.getEmail())
                     .ifPresent(user -> {
-                        throw new HuaConflictException("Email already exist");
+                        throw new HuaConflictException("To email χρησιμοποιείται ήδη.");
                     });
         }
 
         if (!ObjectUtils.isEmpty(dto.getUsername())) {
             huaUserRepository.findByUsername(dto.getUsername())
                     .ifPresent(user -> {
-                        throw new HuaConflictException("Username already exists");
+                        throw new HuaConflictException("To username χρησιμοποιείται ήδη.");
                     });
         }
     }
