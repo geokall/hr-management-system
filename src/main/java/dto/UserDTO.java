@@ -18,7 +18,11 @@ public class UserDTO {
 
     private String username;
 
-    private Date birthDate;
+    private String birthDate;
+
+    private String mobileNumber;
+
+    private String vatNumber;
 
     private LocalDateTime createdDate;
 

@@ -31,6 +31,12 @@ public class HuaUser implements Serializable {
     @Column(name = "surname", length = 20)
     private String surname;
 
+    @Column(name = "mobile_number", length = 20)
+    private String mobileNumber;
+
+    @Column(name = "vat_number", length = 20)
+    private String vatNumber;
+
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
@@ -111,6 +117,22 @@ private Set<HuaRole> roles = new HashSet<>();
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getVatNumber() {
+        return vatNumber;
+    }
+
+    public void setVatNumber(String vatNumber) {
+        this.vatNumber = vatNumber;
     }
 
     public Date getBirthDate() {

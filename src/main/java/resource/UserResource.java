@@ -10,8 +10,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Optional;
-import java.util.Set;
 
 import static javax.ws.rs.core.Response.Status.OK;
 import static utils.StaticRole.ADMIN_ROLE;
@@ -38,5 +36,15 @@ public class UserResource {
         UserDTO response = userService.findUserInfo(id);
 
         return Response.ok(response).status(OK).build();
+    }
+
+    @PUT
+    @Path("/update-info/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response updateUserInfo(@PathParam("id") Long id,
+                                   UserDTO dto) {
+        userService.updateUserInfo(id, dto);
+
+        return Response.ok().status(OK).build();
     }
 }
