@@ -1,5 +1,14 @@
 package entity;
 
+import enums.EmployeeStatusEnum;
+import enums.GenderEnum;
+import enums.JobStatusEnum;
+import enums.MaritalStatusEnum;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -10,6 +19,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "HUA_USER")
+@Getter
+@Setter
+@NoArgsConstructor
 public class HuaUser implements Serializable {
 
     @Id
@@ -37,15 +49,29 @@ public class HuaUser implements Serializable {
     @Column(name = "vat_number", length = 20)
     private String vatNumber;
 
-    @Column(name = "gender", length = 20)
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private GenderEnum gender;
 
-    @Column(name = "marital_status", length = 20)
-    private String maritalStatus;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "marital_status")
+    private MaritalStatusEnum maritalStatus;
 
-    @Column(name = "birth_date")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "job_status")
+    private JobStatusEnum jobStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "employee_status")
+    private EmployeeStatusEnum employeeStatus;
+
     @Temporal(TemporalType.DATE)
+    @Column(name = "birth_date")
     private Date birthDate;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "hire_date")
+    private Date hireDate;
 
     @Column(name = "created_date", nullable = false)
     private LocalDateTime dateCreated;
@@ -60,8 +86,6 @@ public class HuaUser implements Serializable {
     )
     private Set<HuaRole> roles = new HashSet<>();
 
-    public HuaUser() {
-    }
 
     public void addRole(HuaRole role) {
         roles.add(role);
@@ -71,118 +95,6 @@ public class HuaUser implements Serializable {
     public void removeRole(HuaRole role) {
         roles.remove(role);
         role.getUsers().remove(this);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getMaritalStatus() {
-        return maritalStatus;
-    }
-
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
-
-    public String getVatNumber() {
-        return vatNumber;
-    }
-
-    public void setVatNumber(String vatNumber) {
-        this.vatNumber = vatNumber;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public LocalDateTime getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(LocalDateTime dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public LocalDateTime getLastModificationDate() {
-        return lastModificationDate;
-    }
-
-    public void setLastModificationDate(LocalDateTime lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
-    }
-
-    public Set<HuaRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<HuaRole> roles) {
-        this.roles = roles;
     }
 
     @Override

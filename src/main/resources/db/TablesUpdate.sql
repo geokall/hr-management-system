@@ -13,3 +13,13 @@ alter table management.hua_user
 
 alter table management.hua_user
     add marital_status varchar(20);
+
+--changeset update-user-enums-date:3
+alter table management.hua_user
+    add job_status varchar(20);
+
+alter table management.hua_user
+    add employee_status varchar(20);
+
+alter table management.hua_user
+    add hire_date date;
