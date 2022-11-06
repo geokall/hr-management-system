@@ -1,5 +1,6 @@
 package utils;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +15,18 @@ public class HuaUtil {
 
     public static final String HUA_EMAIL = "@hua.gr";
     public static final String DAY_MONTH_YEAR_PATTERN = "dd/MM/yyyy";
+    public static final String AT_SIGN = "@";
+    public static final String HUA_PREFIX = "hua";
+    public static final String HYPHEN = "-";
 
-    public static String generateEmail(String username) {
+    public static String generateEmailBy(String username) {
         return username.concat(HUA_EMAIL);
+    }
+
+    public static String generateUsernameBy(String email) {
+        String[] split = email.split(AT_SIGN);
+
+        return split[0];
     }
 
     public static String formatDateToString(Date date) {
@@ -36,6 +46,12 @@ public class HuaUtil {
         }
 
         return yearMonthDay;
+    }
+
+    public static String generateRandomPasswordBy() {
+        String randomString = RandomStringUtils.randomAlphabetic(10);
+
+        return HUA_PREFIX.concat(HYPHEN).concat(randomString);
     }
 
 }

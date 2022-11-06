@@ -37,6 +37,12 @@ public class HuaUser implements Serializable {
     @Column(name = "vat_number", length = 20)
     private String vatNumber;
 
+    @Column(name = "gender", length = 20)
+    private String gender;
+
+    @Column(name = "marital_status", length = 20)
+    private String maritalStatus;
+
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
@@ -47,16 +53,12 @@ public class HuaUser implements Serializable {
     @Column(name = "last_modification_date")
     private LocalDateTime lastModificationDate;
 
-//    @ManyToMany(cascade = {
-//            CascadeType.PERSIST,
-//            CascadeType.MERGE
-//    })
-@ManyToMany
-@JoinTable(name = "user_role",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-)
-private Set<HuaRole> roles = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<HuaRole> roles = new HashSet<>();
 
     public HuaUser() {
     }
@@ -117,6 +119,22 @@ private Set<HuaRole> roles = new HashSet<>();
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public String getMobileNumber() {

@@ -116,6 +116,11 @@
             <version>2.13.2.Final</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-mailer</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

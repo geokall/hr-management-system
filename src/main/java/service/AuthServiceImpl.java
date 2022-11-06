@@ -54,7 +54,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Long register(String role, RegisterDTO dto) {
-
         handleDuplicates(dto);
 
         HuaUser huaUser = new HuaUser();
@@ -62,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
         huaUser.setName(dto.getName());
 
         String username = dto.getUsername();
-        String email = HuaUtil.generateEmail(username);
+        String email = HuaUtil.generateEmailBy(username);
 
         huaUser.setUsername(username);
         huaUser.setEmail(email);

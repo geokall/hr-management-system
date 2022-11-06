@@ -1,12 +1,12 @@
 package resource;
 
 import dto.UserDTO;
-import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import service.UserService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.constraints.Email;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -24,7 +24,8 @@ public class UserResource {
     private final UserService userService;
 
     @Inject
-    public UserResource(JsonWebToken jsonWebToken, UserService userService) {
+    public UserResource(JsonWebToken jsonWebToken,
+                        UserService userService) {
         this.jsonWebToken = jsonWebToken;
         this.userService = userService;
     }
@@ -44,6 +45,15 @@ public class UserResource {
     public Response updateUserInfo(@PathParam("id") Long id,
                                    UserDTO dto) {
         userService.updateUserInfo(id, dto);
+
+        return Response.ok().status(OK).build();
+    }
+
+    @PUT
+    @Path("/invite/{email}")
+    @RolesAllowed(ADMIN_ROLE)
+    public Response inviteUser(@PathParam("email") @Email String email) {
+        userService.inviteUser(email);
 
         return Response.ok().status(OK).build();
     }
