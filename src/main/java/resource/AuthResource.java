@@ -1,5 +1,6 @@
 package resource;
 
+import dto.BasicInformationDTO;
 import dto.LoginDTO;
 import dto.RegisterDTO;
 import dto.UserDTO;
@@ -64,8 +65,12 @@ public class AuthResource {
         String name = jsonWebToken.getName();
 
         UserDTO test = new UserDTO();
-        test.setName(name);
-        test.setRole(oneRole);
+
+        BasicInformationDTO basicInformationDTO = new BasicInformationDTO();
+        basicInformationDTO.setName(name);
+        basicInformationDTO.setRole(oneRole);
+
+        test.setBasicInformation(basicInformationDTO);
 
         return test;
     }

@@ -1,5 +1,6 @@
 package service;
 
+import dto.BasicInformationDTO;
 import dto.UserDTO;
 import entity.HuaRole;
 import entity.HuaUser;
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
     public void updateUserInfo(Long id, UserDTO dto) {
         HuaUser user = findUserBy(id);
 
-        updateUserInfoBy(dto, user);
+        updateUserInfoBy(user);
 
         huaUserRepository.save(user);
     }
@@ -80,7 +81,26 @@ public class UserServiceImpl implements UserService {
 
     private UserDTO toUserDTO(HuaUser user) {
         UserDTO dto = new UserDTO();
+
+        BasicInformationDTO basicInformationDTO = setBasicInformation(user);
+
+        dto.setBasicInformation(basicInformationDTO);
+
+        return dto;
+    }
+
+    private BasicInformationDTO setBasicInformation(HuaUser user) {
+        BasicInformationDTO dto = new BasicInformationDTO();
+
         dto.setId(user.getId());
+
+        String role = user.getRoles().stream()
+                .findFirst()
+                .map(HuaRole::getName)
+                .orElse(null);
+
+        dto.setRole(role);
+
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
         dto.setSurname(user.getSurname());
@@ -94,17 +114,22 @@ public class UserServiceImpl implements UserService {
             dto.setBirthDate(birthDateFormatted);
         }
 
-        String role = user.getRoles().stream()
-                .findFirst()
-                .map(HuaRole::getName)
-                .orElse(null);
+        if (user.getHireDate() != null) {
+            String hireDateFormatted = HuaUtil.formatDateToString(user.getHireDate());
+            dto.setHireDate(hireDateFormatted);
+        }
 
-        dto.setRole(role);
+        dto.setGender(user.getGender() != null ? user.getGender().getLabel() : null);
+        dto.setEmployeeStatus(user.getEmployeeStatus() != null ? user.getEmployeeStatus().getLabel() : null);
+        dto.setJobStatus(user.getJobStatus() != null ? user.getJobStatus().getLabel() : null);
+        dto.setMaritalStatus(user.getMaritalStatus() != null ? user.getMaritalStatus().getLabel() : null);
 
         return dto;
     }
 
-    private void updateUserInfoBy(UserDTO dto, HuaUser user) {
+    private void updateUserInfoBy(HuaUser user) {
+        BasicInformationDTO dto = new BasicInformationDTO();
+
         user.setSurname(dto.getSurname());
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
@@ -135,11 +160,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private void sendInvitation(String email, HuaUser huaUser, String tempPassword) {
-        mailer.send(
-                Mail.withText(email,
+        mailer.send(Mail.withText(email,
                         "Invitation for HUA Management System",
                         "Username: " + huaUser.getUsername() +
-                                "\n" + "Password: " + tempPassword
+                                "\n" +
+                                "Password: " + tempPassword
                 )
         );
     }

@@ -15,7 +15,7 @@ public enum GenderEnum {
         return label;
     }
 
-    public static GenderEnum gerGenderEnum(String type) {
+    public static GenderEnum getGenderEnum(String type) {
 
         for (GenderEnum gender : GenderEnum.values()) {
             if (gender.getLabel().equals(type)) {
