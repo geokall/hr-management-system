@@ -119,10 +119,10 @@ public class UserServiceImpl implements UserService {
             dto.setHireDate(hireDateFormatted);
         }
 
-        dto.setGender(user.getGender() != null ? user.getGender().getLabel() : null);
-        dto.setEmployeeStatus(user.getEmployeeStatus() != null ? user.getEmployeeStatus().getLabel() : null);
-        dto.setJobStatus(user.getJobStatus() != null ? user.getJobStatus().getLabel() : null);
-        dto.setMaritalStatus(user.getMaritalStatus() != null ? user.getMaritalStatus().getLabel() : null);
+        dto.setGender(user.getGender() != null ? user.getGender().name() : null);
+        dto.setEmployeeStatus(user.getEmployeeStatus() != null ? user.getEmployeeStatus().name() : null);
+        dto.setJobStatus(user.getJobStatus() != null ? user.getJobStatus().name() : null);
+        dto.setMaritalStatus(user.getMaritalStatus() != null ? user.getMaritalStatus().name() : null);
 
         return dto;
     }
