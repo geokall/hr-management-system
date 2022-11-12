@@ -1,5 +1,9 @@
 package entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -8,6 +12,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "HUA_ROLE")
+@Getter
+@Setter
+@NoArgsConstructor
 public class HuaRole implements Serializable {
 
     @Id
@@ -19,33 +26,6 @@ public class HuaRole implements Serializable {
 
     @ManyToMany(mappedBy = "roles")
     private Set<HuaUser> users = new HashSet<>();
-
-    public HuaRole() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<HuaUser> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<HuaUser> users) {
-        this.users = users;
-    }
 
     @Override
     public boolean equals(Object o) {

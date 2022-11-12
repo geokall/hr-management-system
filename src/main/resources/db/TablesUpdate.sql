@@ -53,3 +53,33 @@ create table management.HUA_LOCATION
 );
 alter table if exists management.HUA_USER add column location_id int8;
 alter table if exists management.HUA_USER add constraint FKt24r5ps8o4e5jnevnq9tvm4qq foreign key (location_id) references management.HUA_LOCATION;
+
+--changeset update-user-manager-direct:7
+create table management.HUA_DIRECT_REPORT
+(
+    user_id int8 not null,
+    primary key (user_id)
+);
+create table management.HUA_MANAGER
+(
+    user_id int8 not null,
+    primary key (user_id)
+);
+create table management.user_direct_reports
+(
+    user_id          int8 not null,
+    direct_report_id int8 not null,
+    primary key (user_id, direct_report_id)
+);
+create table management.user_managers
+(
+    user_id    int8 not null,
+    manager_id int8 not null,
+    primary key (user_id, manager_id)
+);
+alter table if exists management.HUA_DIRECT_REPORT add constraint FK6rkjd1lvrqnhlpqonc8dn1uws foreign key (user_id) references management.HUA_USER;
+alter table if exists management.HUA_MANAGER add constraint FKe7weq3urx1vj9uf85gokh21n4 foreign key (user_id) references management.HUA_USER;
+alter table if exists management.user_direct_reports add constraint FKf1qncy5qr961592hi0v21s2ql foreign key (direct_report_id) references management.HUA_DIRECT_REPORT;
+alter table if exists management.user_direct_reports add constraint FK2ddxiobfl9a2cxwn50epaa8ew foreign key (user_id) references management.HUA_USER;
+alter table if exists management.user_managers add constraint FKae56ptx2xxdhsdgnbk381xc1a foreign key (manager_id) references management.HUA_MANAGER;
+alter table if exists management.user_managers add constraint FK2icf4k95scrhjam83th2r9v1u foreign key (user_id) references management.HUA_USER;
