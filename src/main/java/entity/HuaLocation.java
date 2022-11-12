@@ -8,11 +8,11 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "HUA_DIVISION")
+@Table(name = "HUA_LOCATION")
 @Getter
 @Setter
 @NoArgsConstructor
-public class HuaDivision implements Serializable {
+public class HuaLocation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,6 @@ public class HuaDivision implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(mappedBy = "division")
+    @OneToOne(mappedBy = "location")
     private HuaUser user;
-
 }

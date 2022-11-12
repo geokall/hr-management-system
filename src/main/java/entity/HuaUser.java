@@ -91,6 +91,10 @@ public class HuaUser implements Serializable {
     @JoinColumn(name = "division_id", referencedColumnName = "id")
     private HuaDivision division;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    private HuaLocation location;
+
     @ManyToMany
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
