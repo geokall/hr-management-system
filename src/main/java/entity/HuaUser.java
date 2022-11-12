@@ -7,7 +7,6 @@ import enums.MaritalStatusEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -46,6 +45,15 @@ public class HuaUser implements Serializable {
     @Column(name = "mobile_number", length = 20)
     private String mobileNumber;
 
+    @Column(name = "work_number", length = 20)
+    private String workNumber;
+
+    @Column(name = "home_number", length = 20)
+    private String homeNumber;
+
+    @Column(name = "employee_number", length = 20)
+    private Long employeeNumber;
+
     @Column(name = "vat_number", length = 20)
     private String vatNumber;
 
@@ -78,6 +86,10 @@ public class HuaUser implements Serializable {
 
     @Column(name = "last_modification_date")
     private LocalDateTime lastModificationDate;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "division_id", referencedColumnName = "id")
+    private HuaDivision division;
 
     @ManyToMany
     @JoinTable(name = "user_role",
