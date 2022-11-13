@@ -84,7 +84,6 @@ alter table if exists management.user_direct_reports add constraint FK2ddxiobfl9
 alter table if exists management.user_managers add constraint FKae56ptx2xxdhsdgnbk381xc1a foreign key (manager_id) references management.HUA_MANAGER;
 alter table if exists management.user_managers add constraint FK2icf4k95scrhjam83th2r9v1u foreign key (user_id) references management.HUA_USER;
 
-
 --changeset update-user-education-and-personal:8
 create table management.HUA_EDUCATION
 (
@@ -114,3 +113,7 @@ alter table if exists management.HUA_USER drop constraint if exists UK_m712w6mk6
 alter table if exists management.HUA_USER add constraint UK_m712w6mk621bjebxx0qo8a946 unique (personal_email);
 alter table if exists management.HUA_EDUCATION add constraint FKcl08qq2ugplmblf0kvdcm4967 foreign key (user_id) references management.HUA_USER;
 
+--changeset update-user-numbers:9
+alter table if exists management.HUA_USER add column mobile_number varchar (20);
+alter table if exists management.HUA_USER add column work_number varchar (20);
+alter table if exists management.HUA_USER add column home_number varchar (20);

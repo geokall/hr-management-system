@@ -117,7 +117,7 @@ public class HuaUser implements Serializable {
     @Column(name = "twitter_url")
     private String twitterUrl;
 
-    @Column(name = "facebook")
+    @Column(name = "facebook_url")
     private String facebook;
     //social links---
 
