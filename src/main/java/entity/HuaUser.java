@@ -11,10 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -31,9 +28,6 @@ public class HuaUser implements Serializable {
     @Column(name = "username", nullable = false, length = 25, unique = true)
     private String username;
 
-    @Column(name = "email", nullable = false, length = 25, unique = true)
-    private String email;
-
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
@@ -42,15 +36,6 @@ public class HuaUser implements Serializable {
 
     @Column(name = "surname", length = 20)
     private String surname;
-
-    @Column(name = "mobile_number", length = 20)
-    private String mobileNumber;
-
-    @Column(name = "work_number", length = 20)
-    private String workNumber;
-
-    @Column(name = "home_number", length = 20)
-    private String homeNumber;
 
     @Column(name = "employee_number", length = 20)
     private Long employeeNumber;
@@ -95,6 +80,21 @@ public class HuaUser implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private HuaLocation location;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private HuaAddress address;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contact_id", referencedColumnName = "id")
+    private HuaContact contact;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "social_link_id", referencedColumnName = "id")
+    private HuaSocialLinks socialLinks;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HuaEducation> educations = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "user_role",
