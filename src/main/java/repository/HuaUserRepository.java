@@ -11,5 +11,5 @@ public interface HuaUserRepository extends JpaRepository<HuaUser, Long> {
 
     Optional<HuaUser> findByUsername(String username);
 
-    Optional<HuaUser> findByEmail(String email);
+    Optional<HuaUser> findByBusinessEmail(String email);
 }

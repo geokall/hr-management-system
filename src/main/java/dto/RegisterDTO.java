@@ -21,7 +21,7 @@ public class RegisterDTO {
     @NotBlank
     private String password;
 
-    private String email;
+    private String businessEmail;
 
     private Date birthDate;
 

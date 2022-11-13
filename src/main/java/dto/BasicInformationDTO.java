@@ -15,7 +15,9 @@ public class BasicInformationDTO {
 
     private String surname;
 
-    private String email;
+    private String businessEmail;
+
+    private String personalEmail;
 
     private String username;
 

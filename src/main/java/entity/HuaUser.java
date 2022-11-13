@@ -73,6 +73,54 @@ public class HuaUser implements Serializable {
     @Column(name = "last_modification_date")
     private LocalDateTime lastModificationDate;
 
+    //---address
+    @Column(name = "street1")
+    private String street1;
+
+    @Column(name = "street2")
+    private String street2;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "province")
+    private String province;
+
+    @Column(name = "postalCode")
+    private String postalCode;
+
+    @Column(name = "country")
+    private String country;
+    //address---
+
+    //---contact
+    @Column(name = "mobile_number", length = 20)
+    private String mobileNumber;
+
+    @Column(name = "work_number", length = 20)
+    private String workNumber;
+
+    @Column(name = "home_number", length = 20)
+    private String homeNumber;
+
+    @Column(name = "business_email", nullable = false, length = 35, unique = true)
+    private String businessEmail;
+
+    @Column(name = "personal_email", length = 35, unique = true)
+    private String personalEmail;
+    //contact---
+
+    //---social links
+    @Column(name = "linkedin_url")
+    private String linkedinUrl;
+
+    @Column(name = "twitter_url")
+    private String twitterUrl;
+
+    @Column(name = "facebook")
+    private String facebook;
+    //social links---
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "division_id", referencedColumnName = "id")
     private HuaDivision division;
@@ -80,18 +128,6 @@ public class HuaUser implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private HuaLocation location;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private HuaAddress address;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact_id", referencedColumnName = "id")
-    private HuaContact contact;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "social_link_id", referencedColumnName = "id")
-    private HuaSocialLinks socialLinks;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HuaEducation> educations = new ArrayList<>();

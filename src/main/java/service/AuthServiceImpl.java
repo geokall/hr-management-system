@@ -7,8 +7,8 @@ import exception.HuaConflictException;
 import exception.HuaNotFoundException;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import org.springframework.util.ObjectUtils;
-import repository.HuaUserRepository;
 import repository.HuaRoleRepository;
+import repository.HuaUserRepository;
 import security.JwtClaimService;
 import security.JwtResponseDTO;
 import utils.HuaUtil;
@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
         return JwtResponseDTO.builder()
                 .id(huaUser.getId())
-                .email(huaUser.getEmail())
+                .email(huaUser.getBusinessEmail())
                 .username(huaUser.getUsername())
                 .token(jwt)
                 .role(userRole)
@@ -64,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
         String email = HuaUtil.generateEmailBy(username);
 
         huaUser.setUsername(username);
-        huaUser.setEmail(email);
+        huaUser.setBusinessEmail(email);
 
         String hashedPassword = BcryptUtil.bcryptHash(dto.getPassword());
         huaUser.setPassword(hashedPassword);
@@ -106,8 +106,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void handleDuplicates(RegisterDTO dto) {
-        if (!ObjectUtils.isEmpty(dto.getEmail())) {
-            huaUserRepository.findByEmail(dto.getEmail())
+        if (!ObjectUtils.isEmpty(dto.getBusinessEmail())) {
+            huaUserRepository.findByBusinessEmail(dto.getBusinessEmail())
                     .ifPresent(user -> {
                         throw new HuaConflictException("To email χρησιμοποιείται ήδη.");
                     });

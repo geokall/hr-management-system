@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         String username = HuaUtil.generateUsernameBy(email);
         huaUser.setUsername(username);
 
-        huaUser.setEmail(email);
+        huaUser.setBusinessEmail(email);
         huaUser.setDateCreated(LocalDateTime.now());
 
         huaRoleRepository.findByName(READER_ROLE)
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
         dto.setRole(role);
 
         dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
+        dto.setBusinessEmail(user.getBusinessEmail());
         dto.setSurname(user.getSurname());
         dto.setCreatedDate(user.getDateCreated());
         dto.setUsername(user.getUsername());
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
 
         user.setSurname(dto.getSurname());
         user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
+        user.setBusinessEmail(dto.getBusinessEmail());
         user.setUsername(dto.getUsername());
         user.setMobileNumber(dto.getMobileNumber());
         user.setVatNumber(dto.getVatNumber());
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void findExistingUserBy(String email) {
-        huaUserRepository.findByEmail(email)
+        huaUserRepository.findByBusinessEmail(email)
                 .ifPresent(user -> {
                     throw new HuaConflictException("Ο χρήστης υπάρχει ήδη");
                 });
