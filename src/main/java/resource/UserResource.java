@@ -40,7 +40,7 @@ public class UserResource {
     }
 
     @PUT
-    @Path("/update-info/{id}")
+    @Path("/update-personal-info/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response updateUserInfo(@PathParam("id") Long id, PersonalInfoDTO dto) {
         userService.updateBasicInformation(id, dto);
