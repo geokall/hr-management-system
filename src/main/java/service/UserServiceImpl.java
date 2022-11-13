@@ -1,7 +1,7 @@
 package service;
 
 import dto.BasicInformationDTO;
-import dto.UserDTO;
+import dto.PersonalInfoDTO;
 import entity.HuaRole;
 import entity.HuaUser;
 import exception.HuaConflictException;
@@ -38,17 +38,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findUserInfo(Long id) {
+    public PersonalInfoDTO findPersonalInfo(Long id) {
         HuaUser user = findUserBy(id);
 
         return toUserDTO(user);
     }
 
     @Override
-    public void updateUserInfo(Long id, UserDTO dto) {
+    public void updateBasicInformation(Long id, PersonalInfoDTO dto) {
         HuaUser user = findUserBy(id);
 
-        updateUserInfoBy(user);
+        updateBasicInformationBy(user);
 
         huaUserRepository.save(user);
     }
@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private UserDTO toUserDTO(HuaUser user) {
-        UserDTO dto = new UserDTO();
+    private PersonalInfoDTO toUserDTO(HuaUser user) {
+        PersonalInfoDTO dto = new PersonalInfoDTO();
 
         BasicInformationDTO basicInformationDTO = setBasicInformation(user);
 
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
         return dto;
     }
 
-    private void updateUserInfoBy(HuaUser user) {
+    private void updateBasicInformationBy(HuaUser user) {
         BasicInformationDTO dto = new BasicInformationDTO();
 
         user.setSurname(dto.getSurname());

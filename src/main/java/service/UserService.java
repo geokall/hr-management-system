@@ -1,12 +1,12 @@
 package service;
 
-import dto.UserDTO;
+import dto.PersonalInfoDTO;
 
 public interface UserService {
 
-    UserDTO findUserInfo(Long id);
+    PersonalInfoDTO findPersonalInfo(Long id);
 
-    void updateUserInfo(Long id, UserDTO dto);
+    void updateBasicInformation(Long id, PersonalInfoDTO dto);
 
     void inviteUser(String email);
 }
