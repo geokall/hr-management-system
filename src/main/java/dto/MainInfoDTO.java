@@ -29,6 +29,4 @@ public class MainInfoDTO {
     private ManagerDTO manager;
 
     private List<String> directReports;
-
-
 }
