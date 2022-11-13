@@ -118,7 +118,7 @@ public class HuaUser implements Serializable {
     private String twitterUrl;
 
     @Column(name = "facebook_url")
-    private String facebook;
+    private String facebookUrl;
     //social links---
 
     @OneToOne(fetch = FetchType.LAZY)

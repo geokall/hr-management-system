@@ -2,8 +2,10 @@ package service;
 
 import dto.BasicInformationDTO;
 import dto.PersonalInfoDTO;
-import entity.HuaRole;
 import entity.HuaUser;
+import enums.EmployeeStatusEnum;
+import enums.GenderEnum;
+import enums.MaritalStatusEnum;
 import exception.HuaConflictException;
 import exception.HuaNotFoundException;
 import io.quarkus.elytron.security.common.BcryptUtil;
@@ -94,15 +96,7 @@ public class UserServiceImpl implements UserService {
 
         dto.setId(user.getId());
 
-        String role = user.getRoles().stream()
-                .findFirst()
-                .map(HuaRole::getName)
-                .orElse(null);
-
-        dto.setRole(role);
-
         dto.setName(user.getName());
-        dto.setBusinessEmail(user.getBusinessEmail());
         dto.setSurname(user.getSurname());
         dto.setCreatedDate(user.getDateCreated());
         dto.setUsername(user.getUsername());
@@ -119,9 +113,11 @@ public class UserServiceImpl implements UserService {
             dto.setHireDate(hireDateFormatted);
         }
 
+        dto.setBusinessEmail(user.getBusinessEmail());
+        dto.setPersonalEmail(user.getPersonalEmail());
+
         dto.setGender(user.getGender() != null ? user.getGender().name() : null);
         dto.setEmployeeStatus(user.getEmployeeStatus() != null ? user.getEmployeeStatus().name() : null);
-        dto.setJobStatus(user.getJobStatus() != null ? user.getJobStatus().name() : null);
         dto.setMaritalStatus(user.getMaritalStatus() != null ? user.getMaritalStatus().name() : null);
 
         return dto;
@@ -130,12 +126,14 @@ public class UserServiceImpl implements UserService {
     private void updateBasicInformationBy(HuaUser user) {
         BasicInformationDTO dto = new BasicInformationDTO();
 
+        //basic
         user.setSurname(dto.getSurname());
         user.setName(dto.getName());
-        user.setBusinessEmail(dto.getBusinessEmail());
         user.setUsername(dto.getUsername());
-        user.setMobileNumber(dto.getMobileNumber());
         user.setVatNumber(dto.getVatNumber());
+        user.setGender(GenderEnum.valueOf(dto.getGender()));
+        user.setMaritalStatus(MaritalStatusEnum.valueOf(dto.getMaritalStatus()));
+        user.setEmployeeStatus(EmployeeStatusEnum.valueOf(dto.getEmployeeStatus()));
 
         String birthDate = dto.getBirthDate();
 
@@ -143,6 +141,29 @@ public class UserServiceImpl implements UserService {
             Date birthDateFormatted = HuaUtil.formatStringToDate(birthDate);
             user.setBirthDate(birthDateFormatted);
         }
+
+        //address
+        user.setStreet1(dto.getStreet1());
+        user.setStreet2(dto.getStreet2());
+        user.setCity(dto.getCity());
+        user.setProvince(dto.getProvince());
+        user.setPostalCode(dto.getPostalCode());
+        user.setCountry(dto.getCountry());
+
+        //contact
+        user.setMobileNumber(dto.getMobileNumber());
+        user.setWorkNumber(dto.getWorkNumber());
+        user.setHomeNumber(dto.getHomeNumber());
+        user.setBusinessEmail(dto.getBusinessEmail());
+        user.setPersonalEmail(dto.getPersonalEmail());
+
+        //social
+        user.setLinkedinUrl(dto.getLinkedinUrl());
+        user.setTwitterUrl(dto.getTwitterUrl());
+        user.setFacebookUrl(dto.getFacebookUrl());
+
+        //education
+
 
         user.setLastModificationDate(LocalDateTime.now());
     }

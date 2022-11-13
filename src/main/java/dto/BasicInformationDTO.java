@@ -9,8 +9,6 @@ public class BasicInformationDTO {
 
     private Long id;
 
-    private String role;
-
     private String name;
 
     private String surname;
@@ -19,6 +17,8 @@ public class BasicInformationDTO {
 
     private String personalEmail;
 
+    private Long employeeNumber;
+
     private String username;
 
     private String birthDate;
@@ -26,6 +26,10 @@ public class BasicInformationDTO {
     private String hireDate;
 
     private String mobileNumber;
+
+    private String workNumber;
+
+    private String homeNumber;
 
     private String vatNumber;
 
@@ -37,7 +41,23 @@ public class BasicInformationDTO {
 
     private String employeeStatus;
 
-    private String jobStatus;
-
     private String maritalStatus;
+
+    private String linkedinUrl;
+
+    private String twitterUrl;
+
+    private String facebookUrl;
+
+    private String street1;
+
+    private String street2;
+
+    private String city;
+
+    private String province;
+
+    private String postalCode;
+
+    private String country;
 }
