@@ -1,6 +1,7 @@
 package service;
 
 import dto.BasicInformationDTO;
+import dto.MainInfoDTO;
 import dto.PersonalInfoDTO;
 import entity.HuaUser;
 import enums.EmployeeStatusEnum;
@@ -44,6 +45,25 @@ public class UserServiceImpl implements UserService {
         HuaUser user = findUserBy(id);
 
         return toUserDTO(user);
+    }
+
+    @Override
+    public MainInfoDTO findMainInfo(Long id) {
+        HuaUser user = findUserBy(id);
+
+        MainInfoDTO dto = new MainInfoDTO();
+        dto.setWorkNumber(user.getWorkNumber());
+        dto.setMobileNumber(user.getMobileNumber());
+        dto.setBusinessEmail(user.getBusinessEmail());
+        dto.setHireDate(user.getHireDate());
+
+        dto.setEmployeeNumber(user.getEmployeeNumber());
+        dto.setJobStatus(user.getJobStatus().name());
+
+        dto.setDivision(user.getDivision().getName());
+        dto.setLocation(user.getLocation().getName());
+
+        return dto;
     }
 
     @Override
