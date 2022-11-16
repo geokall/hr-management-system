@@ -67,7 +67,6 @@ public class AuthResource {
 
         BasicInformationDTO basicInformationDTO = new BasicInformationDTO();
         basicInformationDTO.setName(name);
-        basicInformationDTO.setRole(oneRole);
 
         test.setBasicInformation(basicInformationDTO);
 
