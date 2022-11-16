@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         dto.setHireDate(user.getHireDate());
 
         dto.setEmployeeNumber(user.getEmployeeNumber());
-        dto.setJobStatus(user.getJobStatus() != null ? user.getJobStatus().name() : null);
+        dto.setJobStatus(user.getJobStatus() != null ? user.getJobStatus().getLabel() : null);
 
         dto.setDivision(user.getDivision() != null ? user.getDivision().getName() : null);
         dto.setLocation(user.getLocation() != null ? user.getLocation().getName() : null);
