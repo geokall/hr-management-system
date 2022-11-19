@@ -1,5 +1,9 @@
 package repository;
 
+import dto.ManagerDTO;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.transform.Transformers;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -18,10 +22,27 @@ public class CustomRepositoryImpl implements CustomRepository {
     public List<String> findUserRole(Long id) {
         //business will have only one role
         return entityManager.createNativeQuery("SELECT hr.name from management.HUA_USER hu " +
-                        "INNER JOIN management.USER_ROLE ur on hu.id = ur.user_id " +
-                        "INNER JOIN management.HUA_ROLE hr on ur.role_id = hr.id " +
+                        "INNER JOIN management.USER_ROLE ur ON hu.id = ur.user_id " +
+                        "INNER JOIN management.HUA_ROLE hr ON ur.role_id = hr.id " +
                         "WHERE hu.id = :id")
                 .setParameter("id", id)
                 .getResultList();
+    }
+
+    @Override
+    public ManagerDTO findUserReportingManger(Long userId) {
+        List<ManagerDTO> managers = entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
+                        "FROM management.hua_user hu " +
+                        "INNER JOIN management.user_managers um ON hu.id = um.manager_id " +
+                        "INNER JOIN management.hua_manager hm ON hu.id = hm.user_id " +
+                        "where um.user_id = :id")
+                .setParameter("id", userId)
+                .unwrap(NativeQuery.class)
+                .setResultTransformer(Transformers.aliasToBean(ManagerDTO.class))
+                .getResultList();
+
+        return managers.stream()
+                .findFirst()
+                .orElse(null);
     }
 }

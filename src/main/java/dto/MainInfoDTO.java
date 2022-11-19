@@ -26,7 +26,7 @@ public class MainInfoDTO {
 
     private String location;
 
-    private ManagerDTO manager;
+    private ManagerDTO directManager;
 
-    private List<String> directReports;
+    private List<DirectReportDTO> directReports;
 }

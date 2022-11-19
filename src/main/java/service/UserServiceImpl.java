@@ -2,6 +2,7 @@ package service;
 
 import dto.BasicInformationDTO;
 import dto.MainInfoDTO;
+import dto.ManagerDTO;
 import dto.PersonalInfoDTO;
 import entity.HuaUser;
 import enums.EmployeeStatusEnum;
@@ -62,6 +63,10 @@ public class UserServiceImpl implements UserService {
 
         dto.setDivision(user.getDivision() != null ? user.getDivision().getName() : null);
         dto.setLocation(user.getLocation() != null ? user.getLocation().getName() : null);
+
+        ManagerDTO directManager = huaRoleRepository.findUserReportingManger(id);
+
+        dto.setDirectManager(directManager);
 
         return dto;
     }
