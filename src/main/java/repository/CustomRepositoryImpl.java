@@ -1,5 +1,6 @@
 package repository;
 
+import dto.DirectReportDTO;
 import dto.ManagerDTO;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
@@ -31,7 +32,8 @@ public class CustomRepositoryImpl implements CustomRepository {
 
     @Override
     public ManagerDTO findUserReportingManger(Long userId) {
-        List<ManagerDTO> managers = entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
+        //pending job title
+        return (ManagerDTO) entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
                         "FROM management.hua_user hu " +
                         "INNER JOIN management.user_managers um ON hu.id = um.manager_id " +
                         "INNER JOIN management.hua_manager hm ON hu.id = hm.user_id " +
@@ -39,10 +41,19 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .setParameter("id", userId)
                 .unwrap(NativeQuery.class)
                 .setResultTransformer(Transformers.aliasToBean(ManagerDTO.class))
-                .getResultList();
+                .getSingleResult();
+    }
 
-        return managers.stream()
-                .findFirst()
-                .orElse(null);
+    @Override
+    public List<DirectReportDTO> findUserDirectReports(Long userId) {
+        return entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
+                        "FROM management.hua_user hu " +
+                        "INNER JOIN management.user_direct_reports um ON hu.id = um.direct_report_id " +
+                        "INNER JOIN management.hua_direct_report hm ON hu.id = hm.user_id " +
+                        "where um.user_id = :id")
+                .setParameter("id", userId)
+                .unwrap(NativeQuery.class)
+                .setResultTransformer(Transformers.aliasToBean(DirectReportDTO.class))
+                .getResultList();
     }
 }

@@ -1,9 +1,6 @@
 package service;
 
-import dto.BasicInformationDTO;
-import dto.MainInfoDTO;
-import dto.ManagerDTO;
-import dto.PersonalInfoDTO;
+import dto.*;
 import entity.HuaUser;
 import enums.EmployeeStatusEnum;
 import enums.GenderEnum;
@@ -22,6 +19,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 import static utils.StaticRole.READER_ROLE;
 
@@ -67,6 +65,10 @@ public class UserServiceImpl implements UserService {
         ManagerDTO directManager = huaRoleRepository.findUserReportingManger(id);
 
         dto.setDirectManager(directManager);
+
+        List<DirectReportDTO> directReports = huaRoleRepository.findUserDirectReports(id);
+
+        dto.setDirectReports(directReports);
 
         return dto;
     }
