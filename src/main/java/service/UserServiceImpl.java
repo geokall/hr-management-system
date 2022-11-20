@@ -51,6 +51,10 @@ public class UserServiceImpl implements UserService {
         HuaUser user = findUserBy(id);
 
         MainInfoDTO dto = new MainInfoDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setSurname(user.getSurname());
+
         dto.setWorkNumber(user.getWorkNumber());
         dto.setMobileNumber(user.getMobileNumber());
         dto.setBusinessEmail(user.getBusinessEmail());

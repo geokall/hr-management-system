@@ -8,6 +8,12 @@ import java.util.List;
 @Data
 public class MainInfoDTO {
 
+    private Long id;
+
+    private String name;
+
+    private String surname;
+
     private String workNumber;
 
     private String mobileNumber;
