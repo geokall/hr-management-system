@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PersonalInfoDTO findPersonalInfo(Long id) {
+    public InformationDTO findPersonalInfo(Long id) {
         HuaUser user = findUserBy(id);
 
         return toUserDTO(user);
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateBasicInformation(Long id, PersonalInfoDTO dto) {
+    public void updateBasicInformation(Long id, InformationDTO dto) {
         HuaUser user = findUserBy(id);
 
         updateBasicInformationBy(user);
@@ -112,18 +112,18 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private PersonalInfoDTO toUserDTO(HuaUser user) {
-        PersonalInfoDTO dto = new PersonalInfoDTO();
+    private InformationDTO toUserDTO(HuaUser user) {
+        InformationDTO dto = new InformationDTO();
 
-        BasicInformationDTO basicInformationDTO = setBasicInformation(user);
+        PersonalInformationDTO personalInformationDTO = setBasicInformation(user);
 
-        dto.setBasicInformation(basicInformationDTO);
+        dto.setPersonalInformation(personalInformationDTO);
 
         return dto;
     }
 
-    private BasicInformationDTO setBasicInformation(HuaUser user) {
-        BasicInformationDTO dto = new BasicInformationDTO();
+    private PersonalInformationDTO setBasicInformation(HuaUser user) {
+        PersonalInformationDTO dto = new PersonalInformationDTO();
 
         dto.setId(user.getId());
 
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void updateBasicInformationBy(HuaUser user) {
-        BasicInformationDTO dto = new BasicInformationDTO();
+        PersonalInformationDTO dto = new PersonalInformationDTO();
 
         //basic
         user.setSurname(dto.getSurname());

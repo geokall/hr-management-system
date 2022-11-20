@@ -1,7 +1,7 @@
 package resource;
 
+import dto.InformationDTO;
 import dto.MainInfoDTO;
-import dto.PersonalInfoDTO;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import service.UserService;
 
@@ -35,7 +35,7 @@ public class UserResource {
     @Path("/personal-info/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response findPersonalInfo(@PathParam("id") Long id) {
-        PersonalInfoDTO response = userService.findPersonalInfo(id);
+        InformationDTO response = userService.findPersonalInfo(id);
 
         return Response.ok(response).status(OK).build();
     }
@@ -52,7 +52,7 @@ public class UserResource {
     @PUT
     @Path("/update-personal-info/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
-    public Response updateUserInfo(@PathParam("id") Long id, PersonalInfoDTO dto) {
+    public Response updateUserInfo(@PathParam("id") Long id, InformationDTO dto) {
         userService.updateBasicInformation(id, dto);
 
         return Response.ok().status(OK).build();

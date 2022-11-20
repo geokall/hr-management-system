@@ -1,8 +1,8 @@
 package resource;
 
-import dto.BasicInformationDTO;
+import dto.InformationDTO;
 import dto.LoginDTO;
-import dto.PersonalInfoDTO;
+import dto.PersonalInformationDTO;
 import dto.RegisterDTO;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -58,17 +58,17 @@ public class AuthResource {
     @GET
     @Path("/reader")
     @RolesAllowed(ADMIN_ROLE)
-    public PersonalInfoDTO readerTest() {
+    public InformationDTO readerTest() {
         Set<String> role = jsonWebToken.getClaim(Claims.groups);
         String oneRole = role.stream().findFirst().orElse(null);
         String name = jsonWebToken.getName();
 
-        PersonalInfoDTO test = new PersonalInfoDTO();
+        InformationDTO test = new InformationDTO();
 
-        BasicInformationDTO basicInformationDTO = new BasicInformationDTO();
-        basicInformationDTO.setName(name);
+        PersonalInformationDTO personalInformationDTO = new PersonalInformationDTO();
+        personalInformationDTO.setName(name);
 
-        test.setBasicInformation(basicInformationDTO);
+        test.setPersonalInformation(personalInformationDTO);
 
         return test;
     }
