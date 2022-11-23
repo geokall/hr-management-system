@@ -10,22 +10,22 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "HUA_BONUS")
+@Table(name = "HUA_EMPLOYMENT_STATUS")
 @Getter
 @Setter
 @NoArgsConstructor
-public class HuaBonus implements Serializable {
+public class HuaEmploymentStatus implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "bonus_date")
-    private Date bonusDate;
+    @Column(name = "effective_date")
+    private Date effectiveDate;
 
-    @Column(name = "amount")
-    private Double amount;
+    @Column(name = "employment_status")
+    private String employmentStatus;
 
     @Column(name = "comment")
     private String comment;
@@ -38,8 +38,8 @@ public class HuaBonus implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        HuaBonus huaBonus = (HuaBonus) o;
-        return Objects.equals(id, huaBonus.id);
+        HuaEmploymentStatus that = (HuaEmploymentStatus) o;
+        return Objects.equals(id, that.id);
     }
 
     @Override
