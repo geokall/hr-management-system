@@ -121,6 +121,10 @@ public class HuaUser implements Serializable {
     private String facebookUrl;
     //social links---
 
+    @Column(name = "job_description")
+    @Lob
+    private String jobDescription;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "division_id", referencedColumnName = "id")
     private HuaDivision division;
