@@ -1,15 +1,17 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 public class BonusDTO {
 
     private Long id;
 
-    private LocalDate bonusDate;
+    @JsonFormat(pattern = "dd/mm/yy")
+    private Date bonusDate;
 
     private Double amount;
 
