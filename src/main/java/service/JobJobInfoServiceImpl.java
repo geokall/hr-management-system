@@ -65,7 +65,7 @@ public class JobJobInfoServiceImpl implements JobInfoService {
 
         user.setHireDate(formatStringToDate(dto.getHireDate()));
         user.setEthnicity(EthnicityEnum.valueOf(dto.getEthnicity()));
-        user.setJobCategory(JobCategoryEnum.getJobCategoryEnum(dto.getJobCategory()));
+        user.setJobCategory(JobCategoryEnum.valueOf(dto.getJobCategory()));
         user.setJobDescription(dto.getJobDescription());
 
         userRepository.save(user);

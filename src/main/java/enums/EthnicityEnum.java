@@ -2,7 +2,7 @@ package enums;
 
 public enum EthnicityEnum {
 
-    BLACK_AFRICAN_AMERICAN("Black or African American"),
+    BLACK_OR_AFRICAN_AMERICAN("Black or African American"),
     ASIAN("Asian"),
     WHITE("White");
 
