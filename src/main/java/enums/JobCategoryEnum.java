@@ -2,8 +2,8 @@ package enums;
 
 public enum JobCategoryEnum {
 
-    SERVICE_WORKS("Black or African American"),
-    OPERATIVES("Asian"),
+    SERVICE_WORKERS("Service Workers"),
+    OPERATIVES("Operatives"),
     EXECUTIVE_SENIOR_LEVEL_OFFICIALS_MANAGERS("Executive/Senior Level Officials and Managers");
 
     private final String label;

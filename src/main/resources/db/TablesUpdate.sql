@@ -161,3 +161,12 @@ alter table if exists management.HUA_JOB_INFORMATION add constraint FK1llx1ksagl
 --changeset update-user-ethnicity-job-category:12
 alter table if exists management.HUA_USER add column ethnicity varchar (40);
 alter table if exists management.HUA_USER add column job_category varchar (40);
+
+--changeset update-user-enums-more-chars:13
+alter table management.hua_user
+alter
+column job_category type varchar(70) using job_category::varchar(70);
+
+alter table management.hua_user
+alter
+column ethnicity type varchar(70) using ethnicity::varchar(70);
