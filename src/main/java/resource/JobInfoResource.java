@@ -59,7 +59,7 @@ public class JobInfoResource {
     }
 
     @GET
-    @Path("/fetch-job-information/{id}")
+    @Path("/fetch-information/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response fetchJobInformationInfo(@PathParam("id") Long id) {
         JobInfoDTO response = jobInfoService.fetchJobInformation(id);
@@ -68,7 +68,7 @@ public class JobInfoResource {
     }
 
     @PUT
-    @Path("/update-job-info/{id}")
+    @Path("/update-info/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response updateJobInfo(@PathParam("id") Long id, JobInformationDTO dto) {
         jobInfoService.updateJobInfo(id, dto);
