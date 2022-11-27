@@ -5,11 +5,14 @@ import dto.JobInfoDTO;
 import entity.HuaBonus;
 import entity.HuaUser;
 import exception.HuaNotFoundException;
+import org.springframework.util.ObjectUtils;
 import repository.HuaBonusRepository;
 import repository.HuaUserRepository;
+import utils.HuaUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,17 +30,31 @@ public class JobJobInfoServiceImpl implements JobInfoService {
     }
 
     @Override
-    public void updateBonus(Long id, BonusDTO dto) {
+    public void createBonus(Long id, BonusDTO dto) {
         HuaUser user = findUser(id);
 
         HuaBonus huaBonus = new HuaBonus();
         huaBonus.setUser(user);
 
-        huaBonus.setBonusDate(dto.getBonusDate());
-        huaBonus.setAmount(dto.getAmount());
-        huaBonus.setComment(dto.getComment());
+        saveBonusBy(dto, huaBonus);
 
         bonusRepository.save(huaBonus);
+    }
+
+    @Override
+    public void updateBonus(Long id, BonusDTO dto) {
+        bonusRepository.findById(id)
+                .ifPresentOrElse(huaBonus -> saveBonusBy(dto, huaBonus), () -> {
+                    throw new HuaNotFoundException("Bonus not found");
+                });
+    }
+
+    @Override
+    public void deleteBonus(Long id) {
+        bonusRepository.findById(id)
+                .ifPresentOrElse(bonus -> bonusRepository.deleteById(bonus.getId()), () -> {
+                    throw new HuaNotFoundException("Bonus not found");
+                });
     }
 
     @Override
@@ -59,7 +76,12 @@ public class JobJobInfoServiceImpl implements JobInfoService {
     private BonusDTO toBonusDTO(HuaBonus bonus) {
         BonusDTO bonusDTO = new BonusDTO();
         bonusDTO.setId(bonus.getId());
-        bonusDTO.setBonusDate(bonus.getBonusDate());
+
+        if (!ObjectUtils.isEmpty(bonus.getBonusDate())) {
+            String bonusDate = HuaUtil.formatDateToString(bonus.getBonusDate());
+            bonusDTO.setBonusDate(bonusDate);
+        }
+
         bonusDTO.setAmount(bonus.getAmount());
         bonusDTO.setComment(bonus.getComment());
 
@@ -69,5 +91,16 @@ public class JobJobInfoServiceImpl implements JobInfoService {
     private HuaUser findUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new HuaNotFoundException("User not found"));
+    }
+
+    private void saveBonusBy(BonusDTO dto, HuaBonus huaBonus) {
+        huaBonus.setComment(dto.getComment());
+
+        Date bonusDate = HuaUtil.formatStringToDate(dto.getBonusDate());
+
+        huaBonus.setBonusDate(bonusDate);
+        huaBonus.setAmount(dto.getAmount());
+
+        bonusRepository.save(huaBonus);
     }
 }

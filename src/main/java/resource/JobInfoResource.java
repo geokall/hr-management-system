@@ -30,11 +30,29 @@ public class JobInfoResource {
         this.jobInfoService = jobInfoService;
     }
 
+    @POST
+    @Path("/create-bonus/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response createBonus(@PathParam("id") Long id, BonusDTO dto) {
+        jobInfoService.createBonus(id, dto);
+
+        return Response.ok().status(OK).build();
+    }
+
     @PUT
     @Path("/update-bonus/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response updateBonus(@PathParam("id") Long id, BonusDTO dto) {
         jobInfoService.updateBonus(id, dto);
+
+        return Response.ok().status(OK).build();
+    }
+
+    @DELETE
+    @Path("/delete-bonus/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response deleteBonus(@PathParam("id") Long id) {
+        jobInfoService.deleteBonus(id);
 
         return Response.ok().status(OK).build();
     }
