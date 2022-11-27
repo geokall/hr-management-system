@@ -2,6 +2,7 @@ package service;
 
 import dto.BonusDTO;
 import dto.JobInfoDTO;
+import dto.JobInformationDTO;
 
 public interface JobInfoService {
 
@@ -10,6 +11,8 @@ public interface JobInfoService {
     void updateBonus(Long id, BonusDTO dto);
 
     void deleteBonus(Long id);
+
+    void updateJobInfo(Long id, JobInformationDTO dto);
 
     JobInfoDTO fetchJobInfo(Long id);
 }

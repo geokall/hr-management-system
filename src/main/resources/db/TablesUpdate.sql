@@ -157,3 +157,7 @@ create table management.HUA_JOB_INFORMATION
 alter table if exists management.HUA_USER add column job_description oid;
 alter table if exists management.HUA_JOB_INFORMATION add constraint FKp9infk0k282eeqapv3qubrwn1 foreign key (manager_id) references management.HUA_MANAGER (user_id);
 alter table if exists management.HUA_JOB_INFORMATION add constraint FK1llx1ksaglcb4n4p5tx7nnj5 foreign key (user_id) references management.HUA_USER;
+
+--changeset update-user-ethnicity-job-category:12
+alter table if exists management.HUA_USER add column ethnicity varchar (40);
+alter table if exists management.HUA_USER add column job_category varchar (40);

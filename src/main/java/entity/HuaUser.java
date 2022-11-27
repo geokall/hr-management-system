@@ -1,9 +1,6 @@
 package entity;
 
-import enums.EmployeeStatusEnum;
-import enums.GenderEnum;
-import enums.JobStatusEnum;
-import enums.MaritalStatusEnum;
+import enums.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -124,6 +121,14 @@ public class HuaUser implements Serializable {
     @Column(name = "job_description")
     @Lob
     private String jobDescription;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ethnicity")
+    private EthnicityEnum ethnicity;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "job_category")
+    private JobCategoryEnum jobCategory;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "division_id", referencedColumnName = "id")

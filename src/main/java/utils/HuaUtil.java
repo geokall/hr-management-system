@@ -1,6 +1,7 @@
 package utils;
 
 import exception.HuaNotFoundException;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,22 +32,30 @@ public class HuaUtil {
     }
 
     public static String formatDateToString(Date date) {
-        Format formatter = new SimpleDateFormat(DAY_MONTH_YEAR_PATTERN);
+        if (ObjectUtils.isNotEmpty(date)) {
+            Format formatter = new SimpleDateFormat(DAY_MONTH_YEAR_PATTERN);
 
-        return formatter.format(date);
+            return formatter.format(date);
+        }
+
+        return null;
     }
 
     public static Date formatStringToDate(String date) {
-        SimpleDateFormat formatter = new SimpleDateFormat(DAY_MONTH_YEAR_PATTERN);
-        Date yearMonthDay = null;
+        if (ObjectUtils.isNotEmpty(date)) {
+            SimpleDateFormat formatter = new SimpleDateFormat(DAY_MONTH_YEAR_PATTERN);
+            Date yearMonthDay = null;
 
-        try {
-            yearMonthDay = formatter.parse(date);
-        } catch (ParseException e) {
-            LOGGER.info(e.getMessage());
+            try {
+                yearMonthDay = formatter.parse(date);
+            } catch (ParseException e) {
+                LOGGER.info(e.getMessage());
+            }
+
+            return yearMonthDay;
         }
 
-        return yearMonthDay;
+        return null;
     }
 
     public static String generateRandomPasswordBy() {
@@ -55,7 +64,7 @@ public class HuaUtil {
         return HUA_PREFIX.concat(HYPHEN).concat(randomString);
     }
 
-    public static HuaNotFoundException throwNotFoundException(String errorMessage) {
+    public static HuaNotFoundException throwNotFoundExceptionBy(String errorMessage) {
         throw new HuaNotFoundException(errorMessage);
     }
 

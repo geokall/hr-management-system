@@ -10,7 +10,6 @@ import exception.HuaNotFoundException;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
-import org.springframework.util.ObjectUtils;
 import repository.HuaRoleRepository;
 import repository.HuaUserRepository;
 import utils.HuaUtil;
@@ -21,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import static utils.HuaUtil.formatDateToString;
+import static utils.HuaUtil.formatStringToDate;
 import static utils.StaticRole.READER_ROLE;
 
 @ApplicationScoped
@@ -134,15 +135,11 @@ public class UserServiceImpl implements UserService {
         dto.setMobileNumber(user.getMobileNumber());
         dto.setVatNumber(user.getVatNumber());
 
-        if (user.getBirthDate() != null) {
-            String birthDateFormatted = HuaUtil.formatDateToString(user.getBirthDate());
-            dto.setBirthDate(birthDateFormatted);
-        }
+        String birthDateFormatted = formatDateToString(user.getBirthDate());
+        dto.setBirthDate(birthDateFormatted);
 
-        if (user.getHireDate() != null) {
-            String hireDateFormatted = HuaUtil.formatDateToString(user.getHireDate());
-            dto.setHireDate(hireDateFormatted);
-        }
+        String hireDateFormatted = formatDateToString(user.getHireDate());
+        dto.setHireDate(hireDateFormatted);
 
         dto.setBusinessEmail(user.getBusinessEmail());
         dto.setPersonalEmail(user.getPersonalEmail());
@@ -168,10 +165,8 @@ public class UserServiceImpl implements UserService {
 
         String birthDate = dto.getBirthDate();
 
-        if (!ObjectUtils.isEmpty(birthDate)) {
-            Date birthDateFormatted = HuaUtil.formatStringToDate(birthDate);
-            user.setBirthDate(birthDateFormatted);
-        }
+        Date birthDateFormatted = formatStringToDate(birthDate);
+        user.setBirthDate(birthDateFormatted);
 
         //address
         user.setStreet1(dto.getStreet1());

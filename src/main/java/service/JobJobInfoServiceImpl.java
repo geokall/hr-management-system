@@ -2,9 +2,11 @@ package service;
 
 import dto.BonusDTO;
 import dto.JobInfoDTO;
+import dto.JobInformationDTO;
 import entity.HuaBonus;
 import entity.HuaUser;
-import org.springframework.util.ObjectUtils;
+import enums.EthnicityEnum;
+import enums.JobCategoryEnum;
 import repository.HuaBonusRepository;
 import repository.HuaUserRepository;
 
@@ -47,14 +49,26 @@ public class JobJobInfoServiceImpl implements JobInfoService {
     public void updateBonus(Long id, BonusDTO dto) {
         bonusRepository.findById(id)
                 .ifPresentOrElse(huaBonus -> saveBonusBy(dto, huaBonus),
-                        () -> throwNotFoundException(BONUS_NOT_FOUND));
+                        () -> throwNotFoundExceptionBy(BONUS_NOT_FOUND));
     }
 
     @Override
     public void deleteBonus(Long id) {
         bonusRepository.findById(id)
                 .ifPresentOrElse(bonus -> bonusRepository.deleteById(bonus.getId()),
-                        () -> throwNotFoundException(BONUS_NOT_FOUND));
+                        () -> throwNotFoundExceptionBy(BONUS_NOT_FOUND));
+    }
+
+    @Override
+    public void updateJobInfo(Long id, JobInformationDTO dto) {
+        HuaUser user = findUser(id);
+
+        user.setHireDate(formatStringToDate(dto.getHireDate()));
+        user.setEthnicity(EthnicityEnum.valueOf(dto.getEthnicity()));
+        user.setJobCategory(JobCategoryEnum.getJobCategoryEnum(dto.getJobCategory()));
+        user.setJobDescription(dto.getJobDescription());
+
+        userRepository.save(user);
     }
 
     @Override
@@ -62,6 +76,9 @@ public class JobJobInfoServiceImpl implements JobInfoService {
         HuaUser user = findUser(id);
 
         JobInfoDTO jobInfoDTO = new JobInfoDTO();
+
+        jobInfoDTO.setEthnicity(user.getEthnicity() != null ? user.getEthnicity().name() : null);
+        jobInfoDTO.setJobCategory(user.getJobCategory() != null ? user.getJobCategory().name() : null);
 
         List<BonusDTO> bonuses = user.getBonuses().stream()
                 .map(this::toBonusDTO)
@@ -77,10 +94,9 @@ public class JobJobInfoServiceImpl implements JobInfoService {
         BonusDTO bonusDTO = new BonusDTO();
         bonusDTO.setId(bonus.getId());
 
-        if (!ObjectUtils.isEmpty(bonus.getBonusDate())) {
-            String bonusDate = formatDateToString(bonus.getBonusDate());
-            bonusDTO.setBonusDate(bonusDate);
-        }
+        String bonusDate = formatDateToString(bonus.getBonusDate());
+        bonusDTO.setBonusDate(bonusDate);
+
 
         bonusDTO.setAmount(bonus.getAmount());
         bonusDTO.setComment(bonus.getComment());
@@ -90,7 +106,7 @@ public class JobJobInfoServiceImpl implements JobInfoService {
 
     private HuaUser findUser(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> throwNotFoundException(USER_NOT_FOUND));
+                .orElseThrow(() -> throwNotFoundExceptionBy(USER_NOT_FOUND));
     }
 
     private void saveBonusBy(BonusDTO dto, HuaBonus huaBonus) {
