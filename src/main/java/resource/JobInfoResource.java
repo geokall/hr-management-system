@@ -59,10 +59,10 @@ public class JobInfoResource {
     }
 
     @GET
-    @Path("/fetch/{id}")
+    @Path("/fetch-job-information/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
-    public Response fetchInfo(@PathParam("id") Long id) {
-        JobInfoDTO response = jobInfoService.fetchJobInfo(id);
+    public Response fetchJobInformationInfo(@PathParam("id") Long id) {
+        JobInfoDTO response = jobInfoService.fetchJobInformation(id);
 
         return Response.ok(response).status(OK).build();
     }

@@ -14,5 +14,5 @@ public interface JobInfoService {
 
     void updateJobInfo(Long id, JobInformationDTO dto);
 
-    JobInfoDTO fetchJobInfo(Long id);
+    JobInfoDTO fetchJobInformation(Long id);
 }

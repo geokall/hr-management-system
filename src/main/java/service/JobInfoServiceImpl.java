@@ -72,7 +72,7 @@ public class JobInfoServiceImpl implements JobInfoService {
     }
 
     @Override
-    public JobInfoDTO fetchJobInfo(Long id) {
+    public JobInfoDTO fetchJobInformation(Long id) {
         HuaUser user = findUser(id);
 
         JobInfoDTO jobInfoDTO = new JobInfoDTO();
