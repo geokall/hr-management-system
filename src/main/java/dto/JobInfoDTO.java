@@ -11,5 +11,7 @@ public class JobInfoDTO {
 
     private String jobCategory;
 
+    private String hireDate;
+
     private List<BonusDTO> bonuses;
 }

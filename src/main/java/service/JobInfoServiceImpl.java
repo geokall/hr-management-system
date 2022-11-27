@@ -21,14 +21,14 @@ import static exception.HuaCommonError.USER_NOT_FOUND;
 import static utils.HuaUtil.*;
 
 @ApplicationScoped
-public class JobJobInfoServiceImpl implements JobInfoService {
+public class JobInfoServiceImpl implements JobInfoService {
 
     private final HuaUserRepository userRepository;
     private final HuaBonusRepository bonusRepository;
 
     @Inject
-    public JobJobInfoServiceImpl(HuaUserRepository userRepository,
-                                 HuaBonusRepository bonusRepository) {
+    public JobInfoServiceImpl(HuaUserRepository userRepository,
+                              HuaBonusRepository bonusRepository) {
         this.userRepository = userRepository;
         this.bonusRepository = bonusRepository;
     }
@@ -79,6 +79,8 @@ public class JobJobInfoServiceImpl implements JobInfoService {
 
         jobInfoDTO.setEthnicity(user.getEthnicity() != null ? user.getEthnicity().name() : null);
         jobInfoDTO.setJobCategory(user.getJobCategory() != null ? user.getJobCategory().name() : null);
+
+        jobInfoDTO.setHireDate(formatDateToString(user.getHireDate()));
 
         List<BonusDTO> bonuses = user.getBonuses().stream()
                 .map(this::toBonusDTO)
