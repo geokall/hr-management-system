@@ -82,6 +82,8 @@ public class JobInfoServiceImpl implements JobInfoService {
 
         jobInfoDTO.setHireDate(formatDateToString(user.getHireDate()));
 
+        jobInfoDTO.setJobDescription(user.getJobDescription());
+
         List<BonusDTO> bonuses = user.getBonuses().stream()
                 .map(this::toBonusDTO)
                 .collect(Collectors.toList());

@@ -170,3 +170,7 @@ column job_category type varchar(70) using job_category::varchar(70);
 alter table management.hua_user
 alter
 column ethnicity type varchar(70) using ethnicity::varchar(70);
+
+alter table management.hua_user
+alter
+column job_description type text using job_description::text;

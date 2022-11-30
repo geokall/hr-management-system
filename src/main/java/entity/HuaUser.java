@@ -118,8 +118,7 @@ public class HuaUser implements Serializable {
     private String facebookUrl;
     //social links---
 
-    @Column(name = "job_description")
-    @Lob
+    @Column(name = "job_description", columnDefinition = "TEXT")
     private String jobDescription;
 
     @Enumerated(EnumType.STRING)
