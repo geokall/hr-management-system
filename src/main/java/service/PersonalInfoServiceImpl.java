@@ -1,6 +1,5 @@
 package service;
 
-import dto.InformationDTO;
 import dto.PersonalInformationDTO;
 import entity.HuaUser;
 import enums.EmployeeStatusEnum;
@@ -28,37 +27,28 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     }
 
     @Override
-    public InformationDTO findPersonalInfo(Long id) {
+    public PersonalInformationDTO findPersonalInfo(Long id) {
         HuaUser user = findUserBy(id);
 
-        return toUserDTO(user);
+        return toPersonalInformationDTO(user);
     }
 
     @Override
-    public void updateBasicInformation(Long id, InformationDTO dto) {
+    public void updatePersonalInfo(Long id, PersonalInformationDTO dto) {
         HuaUser user = findUserBy(id);
 
-        updateBasicInformationBy(user);
+        updatePersonalInfoBy(user, dto);
 
         huaUserRepository.save(user);
     }
+
 
     private HuaUser findUserBy(Long id) {
         return huaUserRepository.findById(id)
                 .orElseThrow(() -> new HuaNotFoundException("Ο χρήστης δεν βρέθηκε."));
     }
 
-    private InformationDTO toUserDTO(HuaUser user) {
-        InformationDTO dto = new InformationDTO();
-
-        PersonalInformationDTO personalInformationDTO = setBasicInformation(user);
-
-        dto.setPersonalInformation(personalInformationDTO);
-
-        return dto;
-    }
-
-    private PersonalInformationDTO setBasicInformation(HuaUser user) {
+    private PersonalInformationDTO toPersonalInformationDTO(HuaUser user) {
         PersonalInformationDTO dto = new PersonalInformationDTO();
 
         dto.setId(user.getId());
@@ -67,7 +57,6 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
         dto.setSurname(user.getSurname());
         dto.setCreatedDate(user.getDateCreated());
         dto.setUsername(user.getUsername());
-        dto.setMobileNumber(user.getMobileNumber());
         dto.setVatNumber(user.getVatNumber());
 
         String birthDateFormatted = formatDateToString(user.getBirthDate());
@@ -83,20 +72,39 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
         dto.setEmployeeStatus(user.getEmployeeStatus() != null ? user.getEmployeeStatus().name() : null);
         dto.setMaritalStatus(user.getMaritalStatus() != null ? user.getMaritalStatus().name() : null);
 
+        dto.setStreet1(user.getStreet1());
+        dto.setStreet2(user.getStreet2());
+        dto.setCity(user.getCity());
+        dto.setProvince(user.getProvince());
+        dto.setPostalCode(user.getPostalCode());
+        dto.setCountry(user.getCountry());
+
+        dto.setWorkNumber(user.getWorkNumber());
+        dto.setMobileNumber(user.getMobileNumber());
+        dto.setHomeNumber(user.getHomeNumber());
+
+        dto.setBusinessEmail(user.getBusinessEmail());
+        dto.setPersonalEmail(user.getPersonalEmail());
+
+        dto.setLinkedinUrl(user.getLinkedinUrl());
+        dto.setTwitterUrl(user.getTwitterUrl());
+        dto.setFacebookUrl(user.getFacebookUrl());
+
         return dto;
     }
 
-    private void updateBasicInformationBy(HuaUser user) {
-        PersonalInformationDTO dto = new PersonalInformationDTO();
-
+    private void updatePersonalInfoBy(HuaUser user, PersonalInformationDTO dto) {
         //basic
         user.setSurname(dto.getSurname());
         user.setName(dto.getName());
         user.setUsername(dto.getUsername());
         user.setVatNumber(dto.getVatNumber());
-        user.setGender(GenderEnum.valueOf(dto.getGender()));
-        user.setMaritalStatus(MaritalStatusEnum.valueOf(dto.getMaritalStatus()));
-        user.setEmployeeStatus(EmployeeStatusEnum.valueOf(dto.getEmployeeStatus()));
+        user.setGender(dto.getGender() != null ?
+                GenderEnum.valueOf(dto.getGender()) : null);
+        user.setMaritalStatus(dto.getMaritalStatus() != null ?
+                MaritalStatusEnum.valueOf(dto.getMaritalStatus()) : null);
+        user.setEmployeeStatus(dto.getEmployeeStatus() != null ?
+                EmployeeStatusEnum.valueOf(dto.getEmployeeStatus()) : null);
 
         String birthDate = dto.getBirthDate();
 

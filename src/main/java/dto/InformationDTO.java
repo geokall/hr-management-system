@@ -6,6 +6,4 @@ import lombok.Data;
 public class InformationDTO {
 
     private PersonalInformationDTO personalInformation;
-
-    private JobInformationDTO jobInformation;
 }

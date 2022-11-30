@@ -1,7 +1,6 @@
 package service;
 
 import dto.BonusDTO;
-import dto.JobInfoDTO;
 import dto.JobInformationDTO;
 import entity.HuaBonus;
 import entity.HuaUser;
@@ -72,10 +71,10 @@ public class JobInfoServiceImpl implements JobInfoService {
     }
 
     @Override
-    public JobInfoDTO fetchJobInformation(Long id) {
+    public JobInformationDTO fetchJobInformation(Long id) {
         HuaUser user = findUser(id);
 
-        JobInfoDTO jobInfoDTO = new JobInfoDTO();
+        JobInformationDTO jobInfoDTO = new JobInformationDTO();
 
         jobInfoDTO.setEthnicity(user.getEthnicity() != null ? user.getEthnicity().name() : null);
         jobInfoDTO.setJobCategory(user.getJobCategory() != null ? user.getJobCategory().name() : null);

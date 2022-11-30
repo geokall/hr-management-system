@@ -1,7 +1,6 @@
 package resource;
 
 import dto.BonusDTO;
-import dto.JobInfoDTO;
 import dto.JobInformationDTO;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import service.JobInfoService;
@@ -62,7 +61,7 @@ public class JobInfoResource {
     @Path("/fetch-information/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response fetchJobInformationInfo(@PathParam("id") Long id) {
-        JobInfoDTO response = jobInfoService.fetchJobInformation(id);
+        JobInformationDTO response = jobInfoService.fetchJobInformation(id);
 
         return Response.ok(response).status(OK).build();
     }

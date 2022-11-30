@@ -1,11 +1,11 @@
 package service;
 
-import dto.InformationDTO;
+import dto.PersonalInformationDTO;
 
 public interface PersonalInfoService {
 
-    InformationDTO findPersonalInfo(Long id);
+    PersonalInformationDTO findPersonalInfo(Long id);
 
-    void updateBasicInformation(Long id, InformationDTO dto);
+    void updatePersonalInfo(Long id, PersonalInformationDTO dto);
 
 }
