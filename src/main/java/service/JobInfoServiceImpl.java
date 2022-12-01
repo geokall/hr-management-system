@@ -100,7 +100,6 @@ public class JobInfoServiceImpl implements JobInfoService {
         String bonusDate = formatDateToString(bonus.getBonusDate());
         bonusDTO.setBonusDate(bonusDate);
 
-
         bonusDTO.setAmount(bonus.getAmount());
         bonusDTO.setComment(bonus.getComment());
 

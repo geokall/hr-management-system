@@ -196,7 +196,6 @@
     </build>
 
     <profiles>
-
         <profile>
             <id>native</id>
             <activation>
@@ -207,6 +206,24 @@
             <properties>
                 <skipITs>false</skipITs>
                 <quarkus.package.type>native</quarkus.package.type>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>production</id>
+            <properties>
+                <activatedProperties>production</activatedProperties>
             </properties>
         </profile>
 
