@@ -1,6 +1,5 @@
 package utils;
 
-import exception.HuaNotFoundException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -62,10 +61,6 @@ public class HuaUtil {
         String randomString = RandomStringUtils.randomAlphabetic(10);
 
         return HUA_PREFIX.concat(HYPHEN).concat(randomString);
-    }
-
-    public static HuaNotFoundException throwNotFoundExceptionBy(String errorMessage) {
-        throw new HuaNotFoundException(errorMessage);
     }
 
 }

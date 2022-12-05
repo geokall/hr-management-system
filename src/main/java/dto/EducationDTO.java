@@ -2,10 +2,10 @@ package dto;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class EducationDTO {
+
+    private Long id;
 
     private String college;
 
@@ -15,7 +15,7 @@ public class EducationDTO {
 
     private double gpa;
 
-    private Date studyFrom;
+    private String studyFrom;
 
-    private Date studyTo;
+    private String studyTo;
 }

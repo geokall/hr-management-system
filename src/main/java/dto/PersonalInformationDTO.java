@@ -60,4 +60,6 @@ public class PersonalInformationDTO {
     private String postalCode;
 
     private String country;
+
+    private EducationDTO education;
 }

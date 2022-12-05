@@ -18,6 +18,8 @@ import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static exception.HuaCommonError.USER_ALREADY_EXIST;
+import static exception.HuaCommonError.USER_NOT_FOUND;
 import static utils.StaticRole.READER_ROLE;
 
 @ApplicationScoped
@@ -95,13 +97,13 @@ public class UserServiceImpl implements UserService {
 
     private HuaUser findUserBy(Long id) {
         return huaUserRepository.findById(id)
-                .orElseThrow(() -> new HuaNotFoundException("Ο χρήστης δεν βρέθηκε."));
+                .orElseThrow(() -> new HuaNotFoundException(USER_NOT_FOUND));
     }
 
     private void findExistingUserBy(String email) {
         huaUserRepository.findByBusinessEmail(email)
                 .ifPresent(user -> {
-                    throw new HuaConflictException("Ο χρήστης υπάρχει ήδη");
+                    throw new HuaConflictException(USER_ALREADY_EXIST);
                 });
     }
 

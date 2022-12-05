@@ -1,12 +1,16 @@
 package service;
 
 import dto.BonusDTO;
+import dto.EducationDTO;
 import dto.JobInformationDTO;
 import entity.HuaBonus;
+import entity.HuaEducation;
 import entity.HuaUser;
 import enums.EthnicityEnum;
 import enums.JobCategoryEnum;
+import exception.HuaNotFoundException;
 import repository.HuaBonusRepository;
+import repository.HuaEducationRepository;
 import repository.HuaUserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -15,21 +19,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static exception.HuaCommonError.BONUS_NOT_FOUND;
-import static exception.HuaCommonError.USER_NOT_FOUND;
-import static utils.HuaUtil.*;
+import static exception.HuaCommonError.*;
+import static utils.HuaUtil.formatDateToString;
+import static utils.HuaUtil.formatStringToDate;
 
 @ApplicationScoped
 public class JobInfoServiceImpl implements JobInfoService {
 
     private final HuaUserRepository userRepository;
     private final HuaBonusRepository bonusRepository;
+    private final HuaEducationRepository educationRepository;
 
     @Inject
     public JobInfoServiceImpl(HuaUserRepository userRepository,
-                              HuaBonusRepository bonusRepository) {
+                              HuaBonusRepository bonusRepository,
+                              HuaEducationRepository educationRepository) {
         this.userRepository = userRepository;
         this.bonusRepository = bonusRepository;
+        this.educationRepository = educationRepository;
     }
 
     @Override
@@ -48,14 +55,18 @@ public class JobInfoServiceImpl implements JobInfoService {
     public void updateBonus(Long id, BonusDTO dto) {
         bonusRepository.findById(id)
                 .ifPresentOrElse(huaBonus -> saveBonusBy(dto, huaBonus),
-                        () -> throwNotFoundExceptionBy(BONUS_NOT_FOUND));
+                        () -> {
+                            throw new HuaNotFoundException(BONUS_NOT_FOUND);
+                        });
     }
 
     @Override
     public void deleteBonus(Long id) {
         bonusRepository.findById(id)
                 .ifPresentOrElse(bonus -> bonusRepository.deleteById(bonus.getId()),
-                        () -> throwNotFoundExceptionBy(BONUS_NOT_FOUND));
+                        () -> {
+                            throw new HuaNotFoundException(BONUS_NOT_FOUND);
+                        });
     }
 
     @Override
@@ -92,6 +103,36 @@ public class JobInfoServiceImpl implements JobInfoService {
         return jobInfoDTO;
     }
 
+    @Override
+    public void createEducation(Long id, EducationDTO dto) {
+        HuaUser user = findUser(id);
+
+        HuaEducation education = new HuaEducation();
+        education.setUser(user);
+
+        saveEducationBy(dto, education);
+
+        educationRepository.save(education);
+    }
+
+    @Override
+    public void updateEducation(Long id, EducationDTO dto) {
+        educationRepository.findById(id)
+                .ifPresentOrElse(education -> saveEducationBy(dto, education),
+                        () -> {
+                            throw new HuaNotFoundException(EDUCATION_NOT_FOUND);
+                        });
+    }
+
+    @Override
+    public void deleteEducation(Long id) {
+        educationRepository.findById(id)
+                .ifPresentOrElse(education -> educationRepository.deleteById(education.getId()),
+                        () -> {
+                            throw new HuaNotFoundException(BONUS_NOT_FOUND);
+                        });
+    }
+
 
     private BonusDTO toBonusDTO(HuaBonus bonus) {
         BonusDTO bonusDTO = new BonusDTO();
@@ -108,7 +149,9 @@ public class JobInfoServiceImpl implements JobInfoService {
 
     private HuaUser findUser(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> throwNotFoundExceptionBy(USER_NOT_FOUND));
+                .orElseThrow(() -> {
+                    throw new HuaNotFoundException(USER_NOT_FOUND);
+                });
     }
 
     private void saveBonusBy(BonusDTO dto, HuaBonus huaBonus) {
@@ -120,6 +163,19 @@ public class JobInfoServiceImpl implements JobInfoService {
         huaBonus.setAmount(dto.getAmount());
 
         bonusRepository.save(huaBonus);
+    }
+
+    private void saveEducationBy(EducationDTO dto, HuaEducation education) {
+        education.setCollege(dto.getCollege());
+        education.setGpa(dto.getGpa());
+        education.setDegree(dto.getDegree());
+        education.setSpecialization(dto.getSpecialization());
+
+        Date studyFrom = formatStringToDate(dto.getStudyFrom());
+        Date studyTo = formatStringToDate(dto.getStudyTo());
+
+        education.setStudyFrom(studyFrom);
+        education.setStudyTo(studyTo);
     }
 
 }
