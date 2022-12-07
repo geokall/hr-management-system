@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.OK;
 import static utils.StaticRole.ADMIN_ROLE;
@@ -62,6 +63,15 @@ public class JobInfoResource {
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response fetchJobInformationInfo(@PathParam("id") Long id) {
         JobInformationDTO response = jobInfoService.fetchJobInformation(id);
+
+        return Response.ok(response).status(OK).build();
+    }
+
+    @GET
+    @Path("/fetch-bonus/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response fetchBonus(@PathParam("id") Long id) {
+        List<BonusDTO> response = jobInfoService.fetchBonus(id);
 
         return Response.ok(response).status(OK).build();
     }

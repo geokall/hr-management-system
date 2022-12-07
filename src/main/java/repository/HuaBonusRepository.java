@@ -4,9 +4,9 @@ import entity.HuaBonus;
 import entity.HuaUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface HuaBonusRepository extends JpaRepository<HuaBonus, Long> {
 
-    Optional<HuaBonus> findByUser(HuaUser user);
+    List<HuaBonus> findByUser(HuaUser user);
 }

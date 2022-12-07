@@ -98,6 +98,15 @@ public class JobInfoServiceImpl implements JobInfoService {
         return jobInfoDTO;
     }
 
+    @Override
+    public List<BonusDTO> fetchBonus(Long id) {
+        HuaUser user = findUser(id);
+
+        return bonusRepository.findByUser(user).stream()
+                .map(this::toBonusDTO)
+                .collect(Collectors.toList());
+    }
+
 
     private BonusDTO toBonusDTO(HuaBonus bonus) {
         BonusDTO bonusDTO = new BonusDTO();
