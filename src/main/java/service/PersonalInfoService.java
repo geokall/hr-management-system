@@ -1,5 +1,6 @@
 package service;
 
+import dto.EducationDTO;
 import dto.PersonalInformationDTO;
 
 public interface PersonalInfoService {
@@ -8,4 +9,9 @@ public interface PersonalInfoService {
 
     void updatePersonalInfo(Long id, PersonalInformationDTO dto);
 
+    void createEducation(Long id, EducationDTO dto);
+
+    void updateEducation(Long id, EducationDTO dto);
+
+    void deleteEducation(Long id);
 }

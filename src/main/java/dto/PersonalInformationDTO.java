@@ -3,6 +3,7 @@ package dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class PersonalInformationDTO {
@@ -61,5 +62,5 @@ public class PersonalInformationDTO {
 
     private String country;
 
-    private EducationDTO education;
+    private List<EducationDTO> educations;
 }

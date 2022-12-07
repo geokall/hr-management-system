@@ -1,7 +1,6 @@
 package resource;
 
 import dto.BonusDTO;
-import dto.EducationDTO;
 import dto.JobInformationDTO;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import service.JobInfoService;
@@ -54,33 +53,6 @@ public class JobInfoResource {
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response deleteBonus(@PathParam("id") Long id) {
         jobInfoService.deleteBonus(id);
-
-        return Response.ok().status(OK).build();
-    }
-
-    @POST
-    @Path("/create-education/{id}")
-    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
-    public Response createEducation(@PathParam("id") Long id, EducationDTO dto) {
-        jobInfoService.createEducation(id, dto);
-
-        return Response.ok().status(OK).build();
-    }
-
-    @PUT
-    @Path("/update-education/{id}")
-    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
-    public Response updateEducation(@PathParam("id") Long id, EducationDTO dto) {
-        jobInfoService.updateEducation(id, dto);
-
-        return Response.ok().status(OK).build();
-    }
-
-    @DELETE
-    @Path("/delete-education/{id}")
-    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
-    public Response deleteEducation(@PathParam("id") Long id) {
-        jobInfoService.deleteEducation(id);
 
         return Response.ok().status(OK).build();
     }

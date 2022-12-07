@@ -1,29 +1,38 @@
 package service;
 
+import dto.EducationDTO;
 import dto.PersonalInformationDTO;
+import entity.HuaEducation;
 import entity.HuaUser;
 import enums.EmployeeStatusEnum;
 import enums.GenderEnum;
 import enums.MaritalStatusEnum;
 import exception.HuaNotFoundException;
+import repository.HuaEducationRepository;
 import repository.HuaUserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static exception.HuaCommonError.*;
 import static utils.HuaUtil.formatDateToString;
 import static utils.HuaUtil.formatStringToDate;
 
 @ApplicationScoped
 public class PersonalInfoServiceImpl implements PersonalInfoService {
 
-    private final HuaUserRepository huaUserRepository;
+    private final HuaUserRepository userRepository;
+    private final HuaEducationRepository educationRepository;
 
     @Inject
-    public PersonalInfoServiceImpl(HuaUserRepository huaUserRepository) {
-        this.huaUserRepository = huaUserRepository;
+    public PersonalInfoServiceImpl(HuaUserRepository userRepository,
+                                   HuaEducationRepository educationRepository) {
+        this.userRepository = userRepository;
+        this.educationRepository = educationRepository;
     }
 
     @Override
@@ -39,13 +48,43 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
 
         updatePersonalInfoBy(user, dto);
 
-        huaUserRepository.save(user);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void createEducation(Long id, EducationDTO dto) {
+        HuaUser user = findUserBy(id);
+
+        HuaEducation education = new HuaEducation();
+        education.setUser(user);
+
+        saveEducationBy(dto, education);
+
+        educationRepository.save(education);
+    }
+
+    @Override
+    public void updateEducation(Long id, EducationDTO dto) {
+        educationRepository.findById(id)
+                .ifPresentOrElse(education -> saveEducationBy(dto, education),
+                        () -> {
+                            throw new HuaNotFoundException(EDUCATION_NOT_FOUND);
+                        });
+    }
+
+    @Override
+    public void deleteEducation(Long id) {
+        educationRepository.findById(id)
+                .ifPresentOrElse(education -> educationRepository.deleteById(education.getId()),
+                        () -> {
+                            throw new HuaNotFoundException(BONUS_NOT_FOUND);
+                        });
     }
 
 
     private HuaUser findUserBy(Long id) {
-        return huaUserRepository.findById(id)
-                .orElseThrow(() -> new HuaNotFoundException("Ο χρήστης δεν βρέθηκε."));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new HuaNotFoundException(USER_NOT_FOUND));
     }
 
     private PersonalInformationDTO toPersonalInformationDTO(HuaUser user) {
@@ -90,7 +129,30 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
         dto.setTwitterUrl(user.getTwitterUrl());
         dto.setFacebookUrl(user.getFacebookUrl());
 
+        List<EducationDTO> listOfEducation = user.getEducations().stream()
+                .map(this::toEducationDTO)
+                .collect(Collectors.toList());
+
+        dto.setEducations(listOfEducation);
+
         return dto;
+    }
+
+    private EducationDTO toEducationDTO(HuaEducation education) {
+        EducationDTO educationDTO = new EducationDTO();
+        educationDTO.setId(education.getId());
+        educationDTO.setGpa(education.getGpa());
+        educationDTO.setCollege(education.getCollege());
+        educationDTO.setDegree(education.getDegree());
+        educationDTO.setSpecialization(education.getSpecialization());
+
+        String studyFromFormatted = formatDateToString(education.getStudyFrom());
+        String studyToFormatted = formatDateToString(education.getStudyTo());
+
+        educationDTO.setStudyFrom(studyFromFormatted);
+        educationDTO.setStudyTo(studyToFormatted);
+
+        return educationDTO;
     }
 
     private void updatePersonalInfoBy(HuaUser user, PersonalInformationDTO dto) {
@@ -131,9 +193,19 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
         user.setTwitterUrl(dto.getTwitterUrl());
         user.setFacebookUrl(dto.getFacebookUrl());
 
-        //education
-
-
         user.setLastModificationDate(LocalDateTime.now());
+    }
+
+    private void saveEducationBy(EducationDTO dto, HuaEducation education) {
+        education.setCollege(dto.getCollege());
+        education.setGpa(dto.getGpa());
+        education.setDegree(dto.getDegree());
+        education.setSpecialization(dto.getSpecialization());
+
+        Date studyFrom = formatStringToDate(dto.getStudyFrom());
+        Date studyTo = formatStringToDate(dto.getStudyTo());
+
+        education.setStudyFrom(studyFrom);
+        education.setStudyTo(studyTo);
     }
 }
