@@ -44,6 +44,15 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     }
 
     @Override
+    public List<EducationDTO> findEducations(Long id) {
+        HuaUser user = findUserBy(id);
+
+        return educationRepository.findByUser(user).stream()
+                .map(this::toEducationDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void updatePersonalInfo(Long id, PersonalInformationDTO dto) {
         HuaUser user = findUserBy(id);
 

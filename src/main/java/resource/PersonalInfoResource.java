@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 import static javax.ws.rs.core.Response.Status.OK;
 import static utils.StaticRole.ADMIN_ROLE;
@@ -35,6 +36,15 @@ public class PersonalInfoResource {
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response findPersonalInfo(@PathParam("id") Long id) {
         PersonalInformationDTO response = personalInfoService.findPersonalInfo(id);
+
+        return Response.ok(response).status(OK).build();
+    }
+
+    @GET
+    @Path("/fetch-education/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response findEducation(@PathParam("id") Long id) {
+        List<EducationDTO> response = personalInfoService.findEducations(id);
 
         return Response.ok(response).status(OK).build();
     }
