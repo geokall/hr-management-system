@@ -1,5 +1,6 @@
 package entity;
 
+import enums.DegreeEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,8 +24,9 @@ public class HuaEducation implements Serializable {
     @Column(name = "college")
     private String college;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "degree")
-    private String degree;
+    private DegreeEnum degree;
 
     @Column(name = "specialization")
     private String specialization;

@@ -4,6 +4,7 @@ import dto.EducationDTO;
 import dto.PersonalInformationDTO;
 import entity.HuaEducation;
 import entity.HuaUser;
+import enums.DegreeEnum;
 import enums.EmployeeStatusEnum;
 import enums.GenderEnum;
 import enums.MaritalStatusEnum;
@@ -59,8 +60,6 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
         education.setUser(user);
 
         saveEducationBy(dto, education);
-
-        educationRepository.save(education);
     }
 
     @Override
@@ -143,7 +142,10 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
         educationDTO.setId(education.getId());
         educationDTO.setGpa(education.getGpa());
         educationDTO.setCollege(education.getCollege());
-        educationDTO.setDegree(education.getDegree());
+
+        educationDTO.setDegree(education.getDegree() != null ?
+                education.getDegree().name() : null);
+
         educationDTO.setSpecialization(education.getSpecialization());
 
         String studyFromFormatted = formatDateToString(education.getStudyFrom());
@@ -199,7 +201,10 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     private void saveEducationBy(EducationDTO dto, HuaEducation education) {
         education.setCollege(dto.getCollege());
         education.setGpa(dto.getGpa());
-        education.setDegree(dto.getDegree());
+
+        education.setDegree(dto.getDegree() != null ?
+                DegreeEnum.valueOf(dto.getDegree()) : null);
+
         education.setSpecialization(dto.getSpecialization());
 
         Date studyFrom = formatStringToDate(dto.getStudyFrom());
@@ -207,5 +212,7 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
 
         education.setStudyFrom(studyFrom);
         education.setStudyTo(studyTo);
+
+        educationRepository.save(education);
     }
 }
