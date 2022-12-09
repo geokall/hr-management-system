@@ -22,9 +22,9 @@ public class CustomRepositoryImpl implements CustomRepository {
     @Override
     public List<String> findUserRole(Long id) {
         //business will have only one role
-        return entityManager.createNativeQuery("SELECT hr.name from management.HUA_USER hu " +
-                        "INNER JOIN management.USER_ROLE ur ON hu.id = ur.user_id " +
-                        "INNER JOIN management.HUA_ROLE hr ON ur.role_id = hr.id " +
+        return entityManager.createNativeQuery("SELECT hr.name from {h-schema}HUA_USER hu " +
+                        "INNER JOIN {h-schema}USER_ROLE ur ON hu.id = ur.user_id " +
+                        "INNER JOIN {h-schema}HUA_ROLE hr ON ur.role_id = hr.id " +
                         "WHERE hu.id = :id")
                 .setParameter("id", id)
                 .getResultList();
@@ -34,9 +34,9 @@ public class CustomRepositoryImpl implements CustomRepository {
     public ManagerDTO findUserReportingManger(Long userId) {
         //pending job title
         return (ManagerDTO) entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
-                        "FROM management.hua_user hu " +
-                        "INNER JOIN management.user_managers um ON hu.id = um.manager_id " +
-                        "INNER JOIN management.hua_manager hm ON hu.id = hm.user_id " +
+                        "FROM {h-schema}hua_user hu " +
+                        "INNER JOIN {h-schema}user_managers um ON hu.id = um.manager_id " +
+                        "INNER JOIN {h-schema}hua_manager hm ON hu.id = hm.user_id " +
                         "where um.user_id = :id")
                 .setParameter("id", userId)
                 .unwrap(NativeQuery.class)
@@ -47,9 +47,9 @@ public class CustomRepositoryImpl implements CustomRepository {
     @Override
     public List<DirectReportDTO> findUserDirectReports(Long userId) {
         return entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
-                        "FROM management.hua_user hu " +
-                        "INNER JOIN management.user_direct_reports um ON hu.id = um.direct_report_id " +
-                        "INNER JOIN management.hua_direct_report hm ON hu.id = hm.user_id " +
+                        "FROM {h-schema}hua_user hu " +
+                        "INNER JOIN {h-schema}user_direct_reports um ON hu.id = um.direct_report_id " +
+                        "INNER JOIN {h-schema}hua_direct_report hm ON hu.id = hm.user_id " +
                         "where um.user_id = :id")
                 .setParameter("id", userId)
                 .unwrap(NativeQuery.class)
