@@ -25,6 +25,9 @@ public class HuaDivision implements Serializable {
     @OneToOne(mappedBy = "division")
     private HuaUser user;
 
+    @OneToOne(mappedBy = "division")
+    private HuaWorkInformation workInformation;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

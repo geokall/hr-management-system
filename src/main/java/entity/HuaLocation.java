@@ -25,6 +25,9 @@ public class HuaLocation implements Serializable {
     @OneToOne(mappedBy = "location")
     private HuaUser user;
 
+    @OneToOne(mappedBy = "location")
+    private HuaWorkInformation workInformation;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

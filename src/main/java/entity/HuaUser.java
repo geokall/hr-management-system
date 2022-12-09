@@ -137,6 +137,12 @@ public class HuaUser implements Serializable {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private HuaLocation location;
 
+    @OneToOne(mappedBy = "user")
+    private HuaWorkInformation userWorkInformation;
+
+    @OneToOne(mappedBy = "manager")
+    private HuaWorkInformation managerWorkInformation;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HuaEducation> educations = new ArrayList<>();
 
