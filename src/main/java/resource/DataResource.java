@@ -6,7 +6,10 @@ import service.DataService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -31,18 +34,18 @@ public class DataResource {
     }
 
     @GET
-    @Path("/fetch-locations/{id}")
+    @Path("/fetch-locations")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
-    public Response fetchJobInformationInfo(@PathParam("id") Long id) {
+    public Response fetchJobInformationInfo() {
         List<IdNameDTO> response = dataService.fetchLocations();
 
         return Response.ok(response).status(OK).build();
     }
 
     @GET
-    @Path("/fetch-divisions/{id}")
+    @Path("/fetch-divisions")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
-    public Response fetchDivisions(@PathParam("id") Long id) {
+    public Response fetchDivisions() {
         List<IdNameDTO> response = dataService.fetchDivisions();
 
         return Response.ok(response).status(OK).build();
