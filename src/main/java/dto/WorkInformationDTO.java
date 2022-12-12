@@ -9,11 +9,11 @@ public class WorkInformationDTO {
 
     private String jobTitle;
 
-    private LocationDTO location;
+    private IdNameDTO location;
 
-    private DivisionDTO division;
+    private IdNameDTO division;
 
-    private ManagerDTO manager;
+    private IdNameDTO manager;
 
-    private ManagerDTO user;
+    private IdNameDTO user;
 }

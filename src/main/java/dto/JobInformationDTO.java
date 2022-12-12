@@ -18,4 +18,6 @@ public class JobInformationDTO {
     private String jobDescription;
 
     private List<BonusDTO> bonuses;
+
+    private List<WorkInformationDTO> workInformations;
 }
