@@ -58,7 +58,12 @@ public class UserServiceImpl implements UserService {
         dto.setDivision(user.getDivision() != null ? user.getDivision().getName() : null);
         dto.setLocation(user.getLocation() != null ? user.getLocation().getName() : null);
 
-        ManagerDTO directManager = huaRoleRepository.findUserReportingManger(id);
+        //supporting only 1 atm
+        List<ManagerDTO> directManagers = huaRoleRepository.findUserReportingManger(id);
+
+        ManagerDTO directManager = directManagers.stream()
+                .findFirst()
+                .orElse(null);
 
         dto.setDirectManager(directManager);
 

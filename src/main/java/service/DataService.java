@@ -9,4 +9,6 @@ public interface DataService {
     List<IdNameDTO> fetchLocations();
 
     List<IdNameDTO> fetchDivisions();
+
+    List<IdNameDTO> fetchUsers();
 }

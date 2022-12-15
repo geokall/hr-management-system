@@ -2,6 +2,7 @@ package service;
 
 import dto.BonusDTO;
 import dto.JobInformationDTO;
+import dto.WorkInformationDTO;
 
 import java.util.List;
 
@@ -18,4 +19,9 @@ public interface JobInfoService {
     JobInformationDTO fetchJobInformation(Long id);
 
     List<BonusDTO> fetchBonus(Long id);
+
+    List<WorkInformationDTO> fetchWorkInformation(Long id);
+
+    void createWorkInformation(Long id, WorkInformationDTO dto);
+
 }

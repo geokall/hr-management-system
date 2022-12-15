@@ -3,6 +3,7 @@ package service;
 import dto.IdNameDTO;
 import repository.HuaDivisionRepository;
 import repository.HuaLocationRepository;
+import repository.HuaUserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -14,12 +15,15 @@ public class DataServiceImpl implements DataService {
 
     private final HuaLocationRepository locationRepository;
     private final HuaDivisionRepository divisionRepository;
+    private final HuaUserRepository userRepository;
 
     @Inject
     public DataServiceImpl(HuaLocationRepository locationRepository,
-                           HuaDivisionRepository divisionRepository) {
+                           HuaDivisionRepository divisionRepository,
+                           HuaUserRepository userRepository) {
         this.locationRepository = locationRepository;
         this.divisionRepository = divisionRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -32,6 +36,13 @@ public class DataServiceImpl implements DataService {
     @Override
     public List<IdNameDTO> fetchDivisions() {
         return divisionRepository.findAll().stream()
+                .map(entity -> new IdNameDTO(entity.getId(), entity.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<IdNameDTO> fetchUsers() {
+        return userRepository.findAll().stream()
                 .map(entity -> new IdNameDTO(entity.getId(), entity.getName()))
                 .collect(Collectors.toList());
     }

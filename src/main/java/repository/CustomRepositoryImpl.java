@@ -31,9 +31,9 @@ public class CustomRepositoryImpl implements CustomRepository {
     }
 
     @Override
-    public ManagerDTO findUserReportingManger(Long userId) {
+    public List<ManagerDTO> findUserReportingManger(Long userId) {
         //pending job title
-        return (ManagerDTO) entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
+        return entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
                         "FROM {h-schema}hua_user hu " +
                         "INNER JOIN {h-schema}user_managers um ON hu.id = um.manager_id " +
                         "INNER JOIN {h-schema}hua_manager hm ON hu.id = hm.user_id " +
@@ -41,7 +41,7 @@ public class CustomRepositoryImpl implements CustomRepository {
                 .setParameter("id", userId)
                 .unwrap(NativeQuery.class)
                 .setResultTransformer(Transformers.aliasToBean(ManagerDTO.class))
-                .getSingleResult();
+                .getResultList();
     }
 
     @Override

@@ -50,4 +50,13 @@ public class DataResource {
 
         return Response.ok(response).status(OK).build();
     }
+
+    @GET
+    @Path("/fetch-users")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response fetchUsers() {
+        List<IdNameDTO> response = dataService.fetchUsers();
+
+        return Response.ok(response).status(OK).build();
+    }
 }

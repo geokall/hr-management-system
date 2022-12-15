@@ -9,7 +9,7 @@ public interface CustomRepository {
 
     List<String> findUserRole(Long id);
 
-    ManagerDTO findUserReportingManger(Long userId);
+    List<ManagerDTO> findUserReportingManger(Long userId);
 
     List<DirectReportDTO> findUserDirectReports(Long userId);
 }

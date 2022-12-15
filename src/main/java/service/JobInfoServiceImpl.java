@@ -1,19 +1,23 @@
 package service;
 
 import dto.BonusDTO;
+import dto.IdNameDTO;
 import dto.JobInformationDTO;
+import dto.WorkInformationDTO;
 import entity.HuaBonus;
+import entity.HuaLocation;
 import entity.HuaUser;
+import entity.HuaWorkInformation;
 import enums.EthnicityEnum;
 import enums.JobCategoryEnum;
 import exception.HuaNotFoundException;
-import repository.HuaBonusRepository;
-import repository.HuaUserRepository;
+import repository.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static exception.HuaCommonError.BONUS_NOT_FOUND;
@@ -26,12 +30,24 @@ public class JobInfoServiceImpl implements JobInfoService {
 
     private final HuaUserRepository userRepository;
     private final HuaBonusRepository bonusRepository;
+    private final HuaLocationRepository locationRepository;
+    private final HuaDivisionRepository divisionRepository;
+    private final HuaWorkInformationRepository workInformationRepository;
+    private final HuaManagerRepository managerRepository;
 
     @Inject
     public JobInfoServiceImpl(HuaUserRepository userRepository,
-                              HuaBonusRepository bonusRepository) {
+                              HuaBonusRepository bonusRepository,
+                              HuaLocationRepository locationRepository,
+                              HuaDivisionRepository divisionRepository,
+                              HuaWorkInformationRepository workInformationRepository,
+                              HuaManagerRepository managerRepository) {
         this.userRepository = userRepository;
         this.bonusRepository = bonusRepository;
+        this.locationRepository = locationRepository;
+        this.divisionRepository = divisionRepository;
+        this.workInformationRepository = workInformationRepository;
+        this.managerRepository = managerRepository;
     }
 
     @Override
@@ -105,6 +121,51 @@ public class JobInfoServiceImpl implements JobInfoService {
         return bonusRepository.findByUser(user).stream()
                 .map(this::toBonusDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<WorkInformationDTO> fetchWorkInformation(Long id) {
+        return workInformationRepository.findByUserId(id).stream()
+                .map(x -> {
+                    WorkInformationDTO dto = new WorkInformationDTO();
+                    dto.setId(x.getId());
+                    dto.setJobTitle(x.getJobTitle());
+                    dto.setEffectiveDate(formatDateToString(x.getEffectiveDate()));
+
+                    HuaLocation location = x.getLocation();
+
+                    return dto;
+                }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void createWorkInformation(Long id, WorkInformationDTO dto) {
+        HuaUser user = findUser(id);
+
+        HuaWorkInformation workInformation = new HuaWorkInformation();
+        workInformation.setUser(user);
+
+        Date effectiveDate = formatStringToDate(dto.getEffectiveDate());
+        workInformation.setEffectiveDate(effectiveDate);
+
+        workInformation.setJobTitle(dto.getJobTitle());
+
+        Optional.ofNullable(dto.getLocation())
+                .map(IdNameDTO::getId)
+                .flatMap(locationRepository::findById)
+                .ifPresent(workInformation::setLocation);
+
+        Optional.ofNullable(dto.getDivision())
+                .map(IdNameDTO::getId)
+                .flatMap(divisionRepository::findById)
+                .ifPresent(workInformation::setDivision);
+
+        Optional.ofNullable(dto.getManager())
+                .map(IdNameDTO::getId)
+                .flatMap(userRepository::findById)
+                .ifPresent(workInformation::setManager);
+
+        workInformationRepository.save(workInformation);
     }
 
 

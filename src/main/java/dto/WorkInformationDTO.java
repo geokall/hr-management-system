@@ -7,6 +7,8 @@ public class WorkInformationDTO {
 
     private Long id;
 
+    private String effectiveDate;
+
     private String jobTitle;
 
     private IdNameDTO location;
@@ -14,6 +16,4 @@ public class WorkInformationDTO {
     private IdNameDTO division;
 
     private IdNameDTO manager;
-
-    private IdNameDTO user;
 }
