@@ -90,7 +90,7 @@ public class JobInfoResource {
     @Path("/fetch-work-information/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response fetchWorkInformation(@PathParam("id") Long id) {
-        List<BonusDTO> response = jobInfoService.fetchBonus(id);
+        List<WorkInformationDTO> response = jobInfoService.fetchWorkInformation(id);
 
         return Response.ok(response).status(OK).build();
     }

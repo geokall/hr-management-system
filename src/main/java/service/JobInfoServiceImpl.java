@@ -5,7 +5,6 @@ import dto.IdNameDTO;
 import dto.JobInformationDTO;
 import dto.WorkInformationDTO;
 import entity.HuaBonus;
-import entity.HuaLocation;
 import entity.HuaUser;
 import entity.HuaWorkInformation;
 import enums.EthnicityEnum;
@@ -111,6 +110,12 @@ public class JobInfoServiceImpl implements JobInfoService {
 
         jobInfoDTO.setBonuses(bonuses);
 
+        List<WorkInformationDTO> listOfWorkInformations = workInformationRepository.findByUserId(user.getId()).stream()
+                .map(this::toWorkInformationDTO)
+                .collect(Collectors.toList());
+
+        jobInfoDTO.setWorkInformations(listOfWorkInformations);
+
         return jobInfoDTO;
     }
 
@@ -126,16 +131,8 @@ public class JobInfoServiceImpl implements JobInfoService {
     @Override
     public List<WorkInformationDTO> fetchWorkInformation(Long id) {
         return workInformationRepository.findByUserId(id).stream()
-                .map(x -> {
-                    WorkInformationDTO dto = new WorkInformationDTO();
-                    dto.setId(x.getId());
-                    dto.setJobTitle(x.getJobTitle());
-                    dto.setEffectiveDate(formatDateToString(x.getEffectiveDate()));
-
-                    HuaLocation location = x.getLocation();
-
-                    return dto;
-                }).collect(Collectors.toList());
+                .map(this::toWorkInformationDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -198,6 +195,33 @@ public class JobInfoServiceImpl implements JobInfoService {
         huaBonus.setAmount(dto.getAmount());
 
         bonusRepository.save(huaBonus);
+    }
+
+    private WorkInformationDTO toWorkInformationDTO(HuaWorkInformation workInformation) {
+        WorkInformationDTO dto = new WorkInformationDTO();
+        dto.setId(workInformation.getId());
+        dto.setJobTitle(workInformation.getJobTitle());
+        dto.setEffectiveDate(formatDateToString(workInformation.getEffectiveDate()));
+
+        IdNameDTO locationDTO = Optional.ofNullable(workInformation.getLocation())
+                .map(location -> new IdNameDTO(location.getId(), location.getName()))
+                .orElse(null);
+
+        dto.setLocation(locationDTO);
+
+        IdNameDTO divisionDTO = Optional.ofNullable(workInformation.getDivision())
+                .map(division -> new IdNameDTO(division.getId(), division.getName()))
+                .orElse(null);
+
+        dto.setDivision(divisionDTO);
+
+        IdNameDTO managerDTO = Optional.ofNullable(workInformation.getManager())
+                .map(manager -> new IdNameDTO(manager.getId(), manager.getName()))
+                .orElse(null);
+
+        dto.setManager(managerDTO);
+
+        return dto;
     }
 
 }
