@@ -103,4 +103,22 @@ public class JobInfoResource {
 
         return Response.ok().status(OK).build();
     }
+
+    @PUT
+    @Path("/update-work-information/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response updateWorkInformation(@PathParam("id") Long id, WorkInformationDTO dto) {
+        jobInfoService.updateWorkInformation(id, dto);
+
+        return Response.ok().status(OK).build();
+    }
+
+    @DELETE
+    @Path("/delete-work-information/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response deleteWorkInformation(@PathParam("id") Long id) {
+        jobInfoService.deleteWorkInformation(id);
+
+        return Response.ok().status(OK).build();
+    }
 }

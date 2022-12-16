@@ -19,8 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static exception.HuaCommonError.BONUS_NOT_FOUND;
-import static exception.HuaCommonError.USER_NOT_FOUND;
+import static exception.HuaCommonError.*;
 import static utils.HuaUtil.formatDateToString;
 import static utils.HuaUtil.formatStringToDate;
 
@@ -57,8 +56,6 @@ public class JobInfoServiceImpl implements JobInfoService {
         huaBonus.setUser(user);
 
         saveBonusBy(dto, huaBonus);
-
-        bonusRepository.save(huaBonus);
     }
 
     @Override
@@ -142,27 +139,26 @@ public class JobInfoServiceImpl implements JobInfoService {
         HuaWorkInformation workInformation = new HuaWorkInformation();
         workInformation.setUser(user);
 
-        Date effectiveDate = formatStringToDate(dto.getEffectiveDate());
-        workInformation.setEffectiveDate(effectiveDate);
+        saveWorkInformationBy(dto, workInformation);
+    }
 
-        workInformation.setJobTitle(dto.getJobTitle());
+    @Override
+    public void updateWorkInformation(Long id, WorkInformationDTO dto) {
+        workInformationRepository.findById(id)
+                .ifPresentOrElse(workInformation -> saveWorkInformationBy(dto, workInformation),
+                        () -> {
+                            throw new HuaNotFoundException(WORK_INFORMATION_NOT_FOUND);
+                        });
+    }
 
-        Optional.ofNullable(dto.getLocation())
-                .map(IdNameDTO::getId)
-                .flatMap(locationRepository::findById)
-                .ifPresent(workInformation::setLocation);
-
-        Optional.ofNullable(dto.getDivision())
-                .map(IdNameDTO::getId)
-                .flatMap(divisionRepository::findById)
-                .ifPresent(workInformation::setDivision);
-
-        Optional.ofNullable(dto.getManager())
-                .map(IdNameDTO::getId)
-                .flatMap(userRepository::findById)
-                .ifPresent(workInformation::setManager);
-
-        workInformationRepository.save(workInformation);
+    @Override
+    public void deleteWorkInformation(Long id) {
+        workInformationRepository.findById(id)
+                .ifPresentOrElse(workInformation ->
+                                workInformationRepository.deleteById(workInformation.getId()),
+                        () -> {
+                            throw new HuaNotFoundException(WORK_INFORMATION_NOT_FOUND);
+                        });
     }
 
 
@@ -222,6 +218,30 @@ public class JobInfoServiceImpl implements JobInfoService {
         dto.setManager(managerDTO);
 
         return dto;
+    }
+
+    private void saveWorkInformationBy(WorkInformationDTO dto, HuaWorkInformation workInformation) {
+        Date effectiveDate = formatStringToDate(dto.getEffectiveDate());
+        workInformation.setEffectiveDate(effectiveDate);
+
+        workInformation.setJobTitle(dto.getJobTitle());
+
+        Optional.ofNullable(dto.getLocation())
+                .map(IdNameDTO::getId)
+                .flatMap(locationRepository::findById)
+                .ifPresent(workInformation::setLocation);
+
+        Optional.ofNullable(dto.getDivision())
+                .map(IdNameDTO::getId)
+                .flatMap(divisionRepository::findById)
+                .ifPresent(workInformation::setDivision);
+
+        Optional.ofNullable(dto.getManager())
+                .map(IdNameDTO::getId)
+                .flatMap(userRepository::findById)
+                .ifPresent(workInformation::setManager);
+
+        workInformationRepository.save(workInformation);
     }
 
 }

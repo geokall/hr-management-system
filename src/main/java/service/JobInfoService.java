@@ -24,4 +24,9 @@ public interface JobInfoService {
 
     void createWorkInformation(Long id, WorkInformationDTO dto);
 
+    void updateWorkInformation(Long id, WorkInformationDTO dto);
+
+    void deleteWorkInformation(Long id);
+
+
 }
