@@ -140,8 +140,8 @@ public class HuaUser implements Serializable {
     @OneToOne(mappedBy = "user")
     private HuaWorkInformation userWorkInformation;
 
-    @OneToOne(mappedBy = "manager")
-    private HuaWorkInformation managerWorkInformation;
+    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HuaWorkInformation> managerWorkInformations = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HuaEducation> educations = new ArrayList<>();

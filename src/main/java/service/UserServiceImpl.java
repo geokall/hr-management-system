@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static exception.HuaCommonError.USER_ALREADY_EXIST;
 import static exception.HuaCommonError.USER_NOT_FOUND;
@@ -28,19 +29,19 @@ import static utils.StaticRole.READER_ROLE;
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
 
+    private final Mailer mailer;
     private final HuaUserRepository huaUserRepository;
     private final HuaRoleRepository huaRoleRepository;
-    private final Mailer mailer;
     private final HuaWorkInformationRepository workInformationRepository;
 
     @Inject
-    public UserServiceImpl(HuaUserRepository huaUserRepository,
+    public UserServiceImpl(Mailer mailer,
+                           HuaUserRepository huaUserRepository,
                            HuaRoleRepository huaRoleRepository,
-                           Mailer mailer,
                            HuaWorkInformationRepository workInformationRepository) {
+        this.mailer = mailer;
         this.huaUserRepository = huaUserRepository;
         this.huaRoleRepository = huaRoleRepository;
-        this.mailer = mailer;
         this.workInformationRepository = workInformationRepository;
     }
 
@@ -74,7 +75,9 @@ public class UserServiceImpl implements UserService {
 
         dto.setDirectManager(directManager);
 
-        List<DirectReportDTO> directReports = huaRoleRepository.findUserDirectReports(id);
+        List<DirectReportDTO> directReports = workInformationRepository.findByManagerId(id).stream()
+                .map(this::toDirectReportDTO)
+                .collect(Collectors.toList());
 
         dto.setDirectReports(directReports);
 
@@ -144,5 +147,18 @@ public class UserServiceImpl implements UserService {
                 });
 
         return managerDTO;
+    }
+
+    private DirectReportDTO toDirectReportDTO(HuaWorkInformation workInformation) {
+        DirectReportDTO directReportDTO = new DirectReportDTO();
+        directReportDTO.setId(workInformation.getId());
+
+        Optional.ofNullable(workInformation.getUser())
+                .ifPresent(user -> {
+                    directReportDTO.setName(user.getName());
+                    directReportDTO.setSurname(user.getSurname());
+                });
+
+        return directReportDTO;
     }
 }

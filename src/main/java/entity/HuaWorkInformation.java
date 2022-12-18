@@ -35,7 +35,7 @@ public class HuaWorkInformation implements Serializable {
     @JoinColumn(name = "division_id", referencedColumnName = "id")
     private HuaDivision division;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
     private HuaUser manager;
 
