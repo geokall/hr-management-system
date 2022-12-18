@@ -8,4 +8,6 @@ import java.util.List;
 public interface HuaWorkInformationRepository extends JpaRepository<HuaWorkInformation, Long> {
 
     List<HuaWorkInformation> findByUserId(Long userId);
+
+    List<HuaWorkInformation> findByManagerId(Long managerId);
 }

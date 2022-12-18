@@ -4,6 +4,7 @@ import dto.DirectReportDTO;
 import dto.MainInfoDTO;
 import dto.ManagerDTO;
 import entity.HuaUser;
+import entity.HuaWorkInformation;
 import exception.HuaConflictException;
 import exception.HuaNotFoundException;
 import io.quarkus.elytron.security.common.BcryptUtil;
@@ -11,12 +12,14 @@ import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
 import repository.HuaRoleRepository;
 import repository.HuaUserRepository;
+import repository.HuaWorkInformationRepository;
 import utils.HuaUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static exception.HuaCommonError.USER_ALREADY_EXIST;
 import static exception.HuaCommonError.USER_NOT_FOUND;
@@ -28,14 +31,17 @@ public class UserServiceImpl implements UserService {
     private final HuaUserRepository huaUserRepository;
     private final HuaRoleRepository huaRoleRepository;
     private final Mailer mailer;
+    private final HuaWorkInformationRepository workInformationRepository;
 
     @Inject
     public UserServiceImpl(HuaUserRepository huaUserRepository,
                            HuaRoleRepository huaRoleRepository,
-                           Mailer mailer) {
+                           Mailer mailer,
+                           HuaWorkInformationRepository workInformationRepository) {
         this.huaUserRepository = huaUserRepository;
         this.huaRoleRepository = huaRoleRepository;
         this.mailer = mailer;
+        this.workInformationRepository = workInformationRepository;
     }
 
     @Override
@@ -59,10 +65,11 @@ public class UserServiceImpl implements UserService {
         dto.setLocation(user.getLocation() != null ? user.getLocation().getName() : null);
 
         //supporting only 1 atm
-        List<ManagerDTO> directManagers = huaRoleRepository.findUserReportingManger(id);
+        List<HuaWorkInformation> directManagers = workInformationRepository.findByUserId(id);
 
         ManagerDTO directManager = directManagers.stream()
                 .findFirst()
+                .map(this::toDirectManagerDTO)
                 .orElse(null);
 
         dto.setDirectManager(directManager);
@@ -120,5 +127,22 @@ public class UserServiceImpl implements UserService {
                                 "Password: " + tempPassword
                 )
         );
+    }
+
+    private ManagerDTO toDirectManagerDTO(HuaWorkInformation workInformation) {
+        ManagerDTO managerDTO = new ManagerDTO();
+        managerDTO.setId(workInformation.getId());
+
+        Optional.ofNullable(workInformation.getManager())
+                .ifPresent(manager -> {
+                    managerDTO.setName(manager.getName());
+                    managerDTO.setSurname(manager.getSurname());
+
+                    workInformationRepository.findByUserId(manager.getId()).stream()
+                            .findFirst()
+                            .ifPresent(managerInfo -> managerDTO.setTitleJob(managerInfo.getJobTitle()));
+                });
+
+        return managerDTO;
     }
 }
