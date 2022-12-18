@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "HUA_USER")
 @Getter
 @Setter
@@ -159,33 +158,9 @@ public class HuaUser implements Serializable {
     )
     private Set<HuaRole> roles = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_managers",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "manager_id")
-    )
-    private Set<HuaManager> managers = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "user_direct_reports",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "direct_report_id")
-    )
-    private Set<HuaDirectReport> directReports = new HashSet<>();
-
     public void addRole(HuaRole role) {
         roles.add(role);
         role.getUsers().add(this);
-    }
-
-    public void addManager(HuaManager manager) {
-        managers.add(manager);
-        manager.getUsers().add(this);
-    }
-
-    public void addDirectReport(HuaDirectReport directReport) {
-        directReports.add(directReport);
-        directReport.getUsers().add(this);
     }
 
     public void removeRole(HuaRole role) {

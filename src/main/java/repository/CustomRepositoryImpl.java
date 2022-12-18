@@ -1,10 +1,5 @@
 package repository;
 
-import dto.DirectReportDTO;
-import dto.ManagerDTO;
-import org.hibernate.query.NativeQuery;
-import org.hibernate.transform.Transformers;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -17,7 +12,7 @@ public class CustomRepositoryImpl implements CustomRepository {
     //Offending method is 'findByRoles_Id' of repository 'repository.HuaRoleRepository'.
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Override
     public List<String> findUserRole(Long id) {
@@ -27,33 +22,6 @@ public class CustomRepositoryImpl implements CustomRepository {
                         "INNER JOIN {h-schema}HUA_ROLE hr ON ur.role_id = hr.id " +
                         "WHERE hu.id = :id")
                 .setParameter("id", id)
-                .getResultList();
-    }
-
-    @Override
-    public List<ManagerDTO> findUserReportingManger(Long userId) {
-        //pending job title
-        return entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
-                        "FROM {h-schema}hua_user hu " +
-                        "INNER JOIN {h-schema}user_managers um ON hu.id = um.manager_id " +
-                        "INNER JOIN {h-schema}hua_manager hm ON hu.id = hm.user_id " +
-                        "where um.user_id = :id")
-                .setParameter("id", userId)
-                .unwrap(NativeQuery.class)
-                .setResultTransformer(Transformers.aliasToBean(ManagerDTO.class))
-                .getResultList();
-    }
-
-    @Override
-    public List<DirectReportDTO> findUserDirectReports(Long userId) {
-        return entityManager.createNativeQuery("SELECT hu.name, hu.surname " +
-                        "FROM {h-schema}hua_user hu " +
-                        "INNER JOIN {h-schema}user_direct_reports um ON hu.id = um.direct_report_id " +
-                        "INNER JOIN {h-schema}hua_direct_report hm ON hu.id = hm.user_id " +
-                        "where um.user_id = :id")
-                .setParameter("id", userId)
-                .unwrap(NativeQuery.class)
-                .setResultTransformer(Transformers.aliasToBean(DirectReportDTO.class))
                 .getResultList();
     }
 }

@@ -192,3 +192,13 @@ alter table if exists management.HUA_WORK_INFORMATION add constraint FKbnr08lo0x
 alter table if exists management.HUA_WORK_INFORMATION add constraint FKqao3xa6t7ed6u309oo7xslnhe foreign key (manager_id) references management.HUA_USER;
 alter table if exists management.HUA_WORK_INFORMATION add constraint FKp3wxj2wsg15vq8nj5vgk47607 foreign key (user_id) references management.HUA_USER;
 
+--changeset remove-unused-tables:15
+drop table if exists management.hua_direct_report cascade;
+
+drop table if exists management.user_managers cascade;;
+
+drop table if exists management.hua_manager cascade;
+
+drop table if exists management.user_direct_reports cascade;
+
+drop table if exists management.hua_job_information cascade;

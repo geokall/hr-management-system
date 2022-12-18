@@ -31,21 +31,18 @@ public class JobInfoServiceImpl implements JobInfoService {
     private final HuaLocationRepository locationRepository;
     private final HuaDivisionRepository divisionRepository;
     private final HuaWorkInformationRepository workInformationRepository;
-    private final HuaManagerRepository managerRepository;
 
     @Inject
     public JobInfoServiceImpl(HuaUserRepository userRepository,
                               HuaBonusRepository bonusRepository,
                               HuaLocationRepository locationRepository,
                               HuaDivisionRepository divisionRepository,
-                              HuaWorkInformationRepository workInformationRepository,
-                              HuaManagerRepository managerRepository) {
+                              HuaWorkInformationRepository workInformationRepository) {
         this.userRepository = userRepository;
         this.bonusRepository = bonusRepository;
         this.locationRepository = locationRepository;
         this.divisionRepository = divisionRepository;
         this.workInformationRepository = workInformationRepository;
-        this.managerRepository = managerRepository;
     }
 
     @Override
