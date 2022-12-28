@@ -112,6 +112,12 @@ public class JobInfoServiceImpl implements JobInfoService {
 
         jobInfoDTO.setWorkInformations(listOfWorkInformations);
 
+        List<CompensationDTO> compensations = compensationRepository.findByUserId(user.getId()).stream()
+                .map(this::toCompensationDTO)
+                .collect(Collectors.toList());
+
+        jobInfoDTO.setCompensations(compensations);
+
         return jobInfoDTO;
     }
 
@@ -279,6 +285,17 @@ public class JobInfoServiceImpl implements JobInfoService {
         compensation.setPayType(PayTypeEnum.valueOf(dto.getPayType()));
         compensation.setPayRate(dto.getPayRate());
         compensation.setComment(dto.getComment());
+    }
+
+    private CompensationDTO toCompensationDTO(HuaCompensation huaCompensation) {
+        CompensationDTO compensation = new CompensationDTO();
+        compensation.setId(huaCompensation.getId());
+        compensation.setEffectiveDate(formatDateToString(huaCompensation.getEffectiveDate()));
+        compensation.setPayType(huaCompensation.getPayType() != null ? huaCompensation.getPayType().name() : null);
+        compensation.setPayRate(huaCompensation.getPayRate());
+        compensation.setComment(huaCompensation.getComment());
+
+        return compensation;
     }
 
 }

@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface HuaCompensationRepository extends JpaRepository<HuaCompensation, Long> {
 
-    List<HuaCompensationRepository> findByUserId(Long userId);
+    List<HuaCompensation> findByUserId(Long userId);
 
 }

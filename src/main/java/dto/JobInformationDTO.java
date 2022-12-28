@@ -20,4 +20,6 @@ public class JobInformationDTO {
     private List<BonusDTO> bonuses;
 
     private List<WorkInformationDTO> workInformations;
+
+    private List<CompensationDTO> compensations;
 }
