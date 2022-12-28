@@ -66,10 +66,7 @@ public class UserServiceImpl implements UserService {
         dto.setLocation(user.getLocation() != null ? user.getLocation().getName() : null);
 
         //supporting only 1 atm
-        List<HuaWorkInformation> directManagers = workInformationRepository.findByUserId(id);
-
-        ManagerDTO directManager = directManagers.stream()
-                .findFirst()
+        ManagerDTO directManager = workInformationRepository.findTopByUserIdOrderByEffectiveDateDesc(id)
                 .map(this::toDirectManagerDTO)
                 .orElse(null);
 

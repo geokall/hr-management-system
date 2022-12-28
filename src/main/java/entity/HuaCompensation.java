@@ -1,5 +1,6 @@
 package entity;
 
+import enums.PayTypeEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,11 +11,11 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "HUA_WORK_INFORMATION")
+@Table(name = "HUA_COMPENSATION")
 @Getter
 @Setter
 @NoArgsConstructor
-public class HuaWorkInformation implements Serializable {
+public class HuaCompensation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,20 +25,15 @@ public class HuaWorkInformation implements Serializable {
     @Column(name = "effective_date")
     private Date effectiveDate;
 
-    @Column(name = "job_title")
-    private String jobTitle;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pay_type")
+    private PayTypeEnum degree;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private HuaLocation location;
+    @Column(name = "pay_rate")
+    private Double payRate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "division_id", referencedColumnName = "id")
-    private HuaDivision division;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "manager_id", referencedColumnName = "id")
-    private HuaUser manager;
+    @Column(name = "comment")
+    private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -47,7 +43,7 @@ public class HuaWorkInformation implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        HuaWorkInformation that = (HuaWorkInformation) o;
+        HuaCompensation that = (HuaCompensation) o;
         return Objects.equals(id, that.id);
     }
 

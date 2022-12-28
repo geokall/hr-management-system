@@ -128,16 +128,16 @@ public class HuaUser implements Serializable {
     @Column(name = "job_category")
     private JobCategoryEnum jobCategory;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "division_id", referencedColumnName = "id")
     private HuaDivision division;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private HuaLocation location;
 
-    @OneToOne(mappedBy = "user")
-    private HuaWorkInformation userWorkInformation;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HuaWorkInformation> userWorkInformations = new ArrayList<>();
 
     @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HuaWorkInformation> managerWorkInformations = new ArrayList<>();
@@ -150,6 +150,9 @@ public class HuaUser implements Serializable {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HuaEmploymentStatus> employmentStatuses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HuaCompensation> compensations = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "user_role",

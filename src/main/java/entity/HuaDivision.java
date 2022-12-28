@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,11 +24,11 @@ public class HuaDivision implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(mappedBy = "division")
-    private HuaUser user;
+    @OneToMany(mappedBy = "division", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HuaUser> users = new ArrayList<>();
 
-    @OneToOne(mappedBy = "division")
-    private HuaWorkInformation workInformation;
+    @OneToMany(mappedBy = "division", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HuaWorkInformation> workInformations = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
