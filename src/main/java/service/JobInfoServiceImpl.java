@@ -289,9 +289,11 @@ public class JobInfoServiceImpl implements JobInfoService {
         Date effectiveDate = formatStringToDate(dto.getEffectiveDate());
 
         compensation.setEffectiveDate(effectiveDate);
-        compensation.setPayType(PayTypeEnum.valueOf(dto.getPayType()));
+        compensation.setPayType(dto.getPayType() != null ? PayTypeEnum.valueOf(dto.getPayType()) : null);
         compensation.setPayRate(dto.getPayRate());
         compensation.setComment(dto.getComment());
+
+        compensationRepository.save(compensation);
     }
 
     private CompensationDTO toCompensationDTO(HuaCompensation huaCompensation) {
