@@ -1,6 +1,7 @@
 package resource;
 
 import dto.BonusDTO;
+import dto.CompensationDTO;
 import dto.JobInformationDTO;
 import dto.WorkInformationDTO;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -118,6 +119,33 @@ public class JobInfoResource {
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response deleteWorkInformation(@PathParam("id") Long id) {
         jobInfoService.deleteWorkInformation(id);
+
+        return Response.ok().status(OK).build();
+    }
+
+    @POST
+    @Path("/create-compensation/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response createCompensation(@PathParam("id") Long id, CompensationDTO dto) {
+        jobInfoService.createCompensation(id, dto);
+
+        return Response.ok().status(OK).build();
+    }
+
+    @PUT
+    @Path("/update-compensation/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response updateCompensation(@PathParam("id") Long id, CompensationDTO dto) {
+        jobInfoService.updateCompensation(id, dto);
+
+        return Response.ok().status(OK).build();
+    }
+
+    @DELETE
+    @Path("/delete-compensation/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response deleteCompensation(@PathParam("id") Long id) {
+        jobInfoService.deleteCompensation(id);
 
         return Response.ok().status(OK).build();
     }

@@ -1,6 +1,7 @@
 package service;
 
 import dto.BonusDTO;
+import dto.CompensationDTO;
 import dto.JobInformationDTO;
 import dto.WorkInformationDTO;
 
@@ -28,5 +29,10 @@ public interface JobInfoService {
 
     void deleteWorkInformation(Long id);
 
+    void createCompensation(Long id, CompensationDTO dto);
+
+    void updateCompensation(Long id, CompensationDTO dto);
+
+    void deleteCompensation(Long id);
 
 }

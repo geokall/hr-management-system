@@ -1,14 +1,13 @@
 package service;
 
-import dto.BonusDTO;
-import dto.IdNameDTO;
-import dto.JobInformationDTO;
-import dto.WorkInformationDTO;
+import dto.*;
 import entity.HuaBonus;
+import entity.HuaCompensation;
 import entity.HuaUser;
 import entity.HuaWorkInformation;
 import enums.EthnicityEnum;
 import enums.JobCategoryEnum;
+import enums.PayTypeEnum;
 import exception.HuaNotFoundException;
 import repository.*;
 
@@ -31,18 +30,21 @@ public class JobInfoServiceImpl implements JobInfoService {
     private final HuaLocationRepository locationRepository;
     private final HuaDivisionRepository divisionRepository;
     private final HuaWorkInformationRepository workInformationRepository;
+    private final HuaCompensationRepository compensationRepository;
 
     @Inject
     public JobInfoServiceImpl(HuaUserRepository userRepository,
                               HuaBonusRepository bonusRepository,
                               HuaLocationRepository locationRepository,
                               HuaDivisionRepository divisionRepository,
-                              HuaWorkInformationRepository workInformationRepository) {
+                              HuaWorkInformationRepository workInformationRepository,
+                              HuaCompensationRepository compensationRepository) {
         this.userRepository = userRepository;
         this.bonusRepository = bonusRepository;
         this.locationRepository = locationRepository;
         this.divisionRepository = divisionRepository;
         this.workInformationRepository = workInformationRepository;
+        this.compensationRepository = compensationRepository;
     }
 
     @Override
@@ -158,6 +160,35 @@ public class JobInfoServiceImpl implements JobInfoService {
                         });
     }
 
+    @Override
+    public void createCompensation(Long id, CompensationDTO dto) {
+        HuaUser user = findUser(id);
+
+        HuaCompensation compensation = new HuaCompensation();
+        compensation.setUser(user);
+
+        saveCompensationBy(dto, compensation);
+    }
+
+    @Override
+    public void updateCompensation(Long id, CompensationDTO dto) {
+        compensationRepository.findById(id)
+                .ifPresentOrElse(compensation -> saveCompensationBy(dto, compensation),
+                        () -> {
+                            throw new HuaNotFoundException(COMPENSATION_NOT_FOUND);
+                        });
+    }
+
+    @Override
+    public void deleteCompensation(Long id) {
+        compensationRepository.findById(id)
+                .ifPresentOrElse(compensation ->
+                                compensationRepository.deleteById(compensation.getId()),
+                        () -> {
+                            throw new HuaNotFoundException(COMPENSATION_NOT_FOUND);
+                        });
+    }
+
 
     private BonusDTO toBonusDTO(HuaBonus bonus) {
         BonusDTO bonusDTO = new BonusDTO();
@@ -239,6 +270,15 @@ public class JobInfoServiceImpl implements JobInfoService {
                 .ifPresent(workInformation::setManager);
 
         workInformationRepository.save(workInformation);
+    }
+
+    private void saveCompensationBy(CompensationDTO dto, HuaCompensation compensation) {
+        Date effectiveDate = formatStringToDate(dto.getEffectiveDate());
+
+        compensation.setEffectiveDate(effectiveDate);
+        compensation.setPayType(PayTypeEnum.valueOf(dto.getPayType()));
+        compensation.setPayRate(dto.getPayRate());
+        compensation.setComment(dto.getComment());
     }
 
 }

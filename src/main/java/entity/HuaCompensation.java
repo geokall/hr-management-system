@@ -27,7 +27,7 @@ public class HuaCompensation implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "pay_type")
-    private PayTypeEnum degree;
+    private PayTypeEnum payType;
 
     @Column(name = "pay_rate")
     private Double payRate;
