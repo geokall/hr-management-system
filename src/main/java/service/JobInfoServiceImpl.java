@@ -299,8 +299,12 @@ public class JobInfoServiceImpl implements JobInfoService {
     private CompensationDTO toCompensationDTO(HuaCompensation huaCompensation) {
         CompensationDTO compensation = new CompensationDTO();
         compensation.setId(huaCompensation.getId());
+
         compensation.setEffectiveDate(formatDateToString(huaCompensation.getEffectiveDate()));
-        compensation.setPayType(huaCompensation.getPayType() != null ? huaCompensation.getPayType().name() : null);
+
+        compensation.setPayType(huaCompensation.getPayType() != null ?
+                huaCompensation.getPayType().name() : null);
+
         compensation.setPayRate(huaCompensation.getPayRate());
         compensation.setComment(huaCompensation.getComment());
 
