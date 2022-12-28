@@ -131,9 +131,16 @@ public class JobInfoServiceImpl implements JobInfoService {
     }
 
     @Override
-    public List<WorkInformationDTO> fetchWorkInformation(Long id) {
+    public List<WorkInformationDTO> fetchWorkInformations(Long id) {
         return workInformationRepository.findByUserId(id).stream()
                 .map(this::toWorkInformationDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CompensationDTO> fetchCompensations(Long id) {
+        return compensationRepository.findByUserId(id).stream()
+                .map(this::toCompensationDTO)
                 .collect(Collectors.toList());
     }
 

@@ -91,7 +91,7 @@ public class JobInfoResource {
     @Path("/fetch-work-information/{id}")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response fetchWorkInformation(@PathParam("id") Long id) {
-        List<WorkInformationDTO> response = jobInfoService.fetchWorkInformation(id);
+        List<WorkInformationDTO> response = jobInfoService.fetchWorkInformations(id);
 
         return Response.ok(response).status(OK).build();
     }
@@ -121,6 +121,15 @@ public class JobInfoResource {
         jobInfoService.deleteWorkInformation(id);
 
         return Response.ok().status(OK).build();
+    }
+
+    @GET
+    @Path("/fetch-compensations/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response fetchCompensations(@PathParam("id") Long id) {
+        List<CompensationDTO> response = jobInfoService.fetchCompensations(id);
+
+        return Response.ok(response).status(OK).build();
     }
 
     @POST
