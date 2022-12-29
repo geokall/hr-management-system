@@ -25,9 +25,6 @@ public class HuaDivision implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "division", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HuaUser> users = new ArrayList<>();
-
-    @OneToMany(mappedBy = "division", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HuaWorkInformation> workInformations = new ArrayList<>();
 
     @Override

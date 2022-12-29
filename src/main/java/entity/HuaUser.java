@@ -128,14 +128,6 @@ public class HuaUser implements Serializable {
     @Column(name = "job_category")
     private JobCategoryEnum jobCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "division_id", referencedColumnName = "id")
-    private HuaDivision division;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id", referencedColumnName = "id")
-    private HuaLocation location;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HuaWorkInformation> userWorkInformations = new ArrayList<>();
 

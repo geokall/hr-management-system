@@ -63,12 +63,11 @@ public class UserServiceImpl implements UserService {
         dto.setEmployeeNumber(user.getEmployeeNumber());
         dto.setJobStatus(user.getJobStatus() != null ? user.getJobStatus().getLabel() : null);
 
-        dto.setDivision(user.getDivision() != null ? user.getDivision().getName() : null);
-        dto.setLocation(user.getLocation() != null ? user.getLocation().getName() : null);
-
+        //order by must not be null
+        //fetching all by user id, and then sets the latest update by effective date
         ManagerDTO directManager = workInformationRepository.findByUserId(id).stream()
                 .map(workInformation -> workInformationRepository.findFirstByUserIdOrderByEffectiveDateDesc(id)
-                        .map(this::toDirectManagerDTO)
+                        .map(huaWorkInformation -> toDirectManagerDTO(huaWorkInformation, dto))
                         .orElse(new ManagerDTO()))
                 .findFirst()
                 .orElse(null);
@@ -143,7 +142,7 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private ManagerDTO toDirectManagerDTO(HuaWorkInformation workInformation) {
+    private ManagerDTO toDirectManagerDTO(HuaWorkInformation workInformation, MainInfoDTO dto) {
         ManagerDTO managerDTO = new ManagerDTO();
         managerDTO.setId(workInformation.getId());
 
@@ -156,6 +155,9 @@ public class UserServiceImpl implements UserService {
                             .findFirst()
                             .ifPresent(managerInfo -> managerDTO.setTitleJob(managerInfo.getJobTitle()));
                 });
+
+        dto.setDivision(workInformation.getDivision() != null ? workInformation.getDivision().getName() : null);
+        dto.setLocation(workInformation.getLocation() != null ? workInformation.getLocation().getName() : null);
 
         return managerDTO;
     }

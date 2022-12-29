@@ -25,9 +25,6 @@ public class HuaLocation implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HuaUser> users = new ArrayList<>();
-
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HuaWorkInformation> workInformations = new ArrayList<>();
 
     @Override

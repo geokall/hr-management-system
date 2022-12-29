@@ -221,3 +221,21 @@ alter table if exists management.hua_work_information
 alter
 column effective_date set not null;
 
+--changeset remove-division-location-on-user:18
+alter table management.hua_user
+drop
+constraint if exists fkt24r5ps8o4e5jnevnq9tvm4cc;
+
+alter table management.hua_user
+drop
+column if exists division_id;
+
+alter table management.hua_user
+drop
+constraint if exists fkt24r5ps8o4e5jnevnq9tvm4qq;
+
+alter table management.hua_user
+drop
+column if exists location_id;
+
+
