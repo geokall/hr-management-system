@@ -3,6 +3,7 @@ package service;
 import dto.DirectReportDTO;
 import dto.MainInfoDTO;
 import dto.ManagerDTO;
+import dto.PasswordDTO;
 import entity.HuaUser;
 import entity.HuaWorkInformation;
 import exception.HuaConflictException;
@@ -106,6 +107,17 @@ public class UserServiceImpl implements UserService {
         huaUserRepository.save(huaUser);
 
         sendInvitation(email, huaUser, tempPassword);
+    }
+
+    @Override
+    public void changeUserPassword(Long id, PasswordDTO dto) {
+        HuaUser user = findUserBy(id);
+
+        //TODO add functionality
+        String hashedPassword = BcryptUtil.bcryptHash(dto.getPassword());
+        user.setPassword(hashedPassword);
+
+        huaUserRepository.save(user);
     }
 
 

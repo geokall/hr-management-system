@@ -1,6 +1,7 @@
 package resource;
 
 import dto.MainInfoDTO;
+import dto.PasswordDTO;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import service.UserService;
 
@@ -44,6 +45,15 @@ public class UserResource {
     @RolesAllowed(ADMIN_ROLE)
     public Response inviteUser(@PathParam("email") @Email String email) {
         userService.inviteUser(email);
+
+        return Response.ok().status(OK).build();
+    }
+
+    @PUT
+    @Path("/change-password/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response inviteUser(@PathParam("id") Long id, PasswordDTO dto) {
+        userService.changeUserPassword(id, dto);
 
         return Response.ok().status(OK).build();
     }
