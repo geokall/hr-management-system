@@ -41,8 +41,8 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public List<IdNameDTO> fetchUsers() {
-        return userRepository.findAll().stream()
+    public List<IdNameDTO> fetchUsers(String loginName) {
+        return userRepository.findAllByUsernameIsNot(loginName).stream()
                 .map(entity -> new IdNameDTO(entity.getId(), entity.getName()))
                 .collect(Collectors.toList());
     }

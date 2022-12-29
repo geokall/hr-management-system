@@ -55,7 +55,9 @@ public class DataResource {
     @Path("/fetch-users")
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response fetchUsers() {
-        List<IdNameDTO> response = dataService.fetchUsers();
+        String loginName = jsonWebToken.getName();
+
+        List<IdNameDTO> response = dataService.fetchUsers(loginName);
 
         return Response.ok(response).status(OK).build();
     }

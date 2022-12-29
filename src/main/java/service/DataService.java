@@ -10,5 +10,5 @@ public interface DataService {
 
     List<IdNameDTO> fetchDivisions();
 
-    List<IdNameDTO> fetchUsers();
+    List<IdNameDTO> fetchUsers(String loginName);
 }
