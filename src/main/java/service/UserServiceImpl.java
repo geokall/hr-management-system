@@ -65,9 +65,11 @@ public class UserServiceImpl implements UserService {
         dto.setDivision(user.getDivision() != null ? user.getDivision().getName() : null);
         dto.setLocation(user.getLocation() != null ? user.getLocation().getName() : null);
 
-        //supporting only 1 atm
-        ManagerDTO directManager = workInformationRepository.findTopByUserIdOrderByEffectiveDateDesc(id)
-                .map(this::toDirectManagerDTO)
+        ManagerDTO directManager = workInformationRepository.findByUserId(id).stream()
+                .map(workInformation -> workInformationRepository.findFirstByUserIdOrderByEffectiveDateDesc(id)
+                        .map(this::toDirectManagerDTO)
+                        .orElse(new ManagerDTO()))
+                .findFirst()
                 .orElse(null);
 
         dto.setDirectManager(directManager);

@@ -215,3 +215,9 @@ create table management.HUA_COMPENSATION
     primary key (id)
 );
 alter table if exists management.HUA_COMPENSATION add constraint FKksdyesovmn4jgjm323yuaflq9 foreign key (user_id) references management.HUA_USER;
+
+--changeset add-not-null-effective-date-work-info:17
+alter table if exists management.hua_work_information
+alter
+column effective_date set not null;
+
