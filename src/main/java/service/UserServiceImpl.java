@@ -18,13 +18,16 @@ import utils.HuaUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static exception.HuaCommonError.USER_ALREADY_EXIST;
 import static exception.HuaCommonError.USER_NOT_FOUND;
+import static utils.HuaUtil.toLocalDateBy;
 import static utils.StaticRole.READER_ROLE;
 
 @ApplicationScoped
@@ -59,6 +62,15 @@ public class UserServiceImpl implements UserService {
         dto.setMobileNumber(user.getMobileNumber());
         dto.setBusinessEmail(user.getBusinessEmail());
         dto.setHireDate(user.getHireDate());
+
+        LocalDate hireDate = toLocalDateBy(dto.getHireDate());
+
+        if (hireDate != null) {
+            Period between = Period.between(hireDate, LocalDate.now());
+            dto.setCountYears(between.getYears());
+            dto.setCountMonths(between.getMonths());
+            dto.setCountDays(between.getDays());
+        }
 
         dto.setEmployeeNumber(user.getEmployeeNumber());
         dto.setJobStatus(user.getJobStatus() != null ? user.getJobStatus().getLabel() : null);

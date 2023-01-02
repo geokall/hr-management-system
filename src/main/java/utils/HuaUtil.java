@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class HuaUtil {
@@ -19,6 +20,8 @@ public class HuaUtil {
     public static final String AT_SIGN = "@";
     public static final String HUA_PREFIX = "hua";
     public static final String HYPHEN = "-";
+
+    public static final String YEAR_MONTH_DAY_PATTERN = "yyyy-MM-dd";
 
     public static String generateEmailBy(String username) {
         return username.concat(HUA_EMAIL);
@@ -61,6 +64,15 @@ public class HuaUtil {
         String randomString = RandomStringUtils.randomAlphabetic(10);
 
         return HUA_PREFIX.concat(HYPHEN).concat(randomString);
+    }
+
+    public static LocalDate toLocalDateBy(Date date) {
+        if (ObjectUtils.isNotEmpty(date)) {
+            return LocalDate.parse(new SimpleDateFormat(YEAR_MONTH_DAY_PATTERN)
+                    .format(date));
+        }
+
+        return null;
     }
 
 }

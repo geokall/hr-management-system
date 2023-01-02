@@ -2,6 +2,7 @@ package dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,13 @@ public class MainInfoDTO {
 
     private Date hireDate;
 
-    private String countDays;
+    private LocalDate countDate;
+
+    private int countYears;
+
+    private int countMonths;
+
+    private int countDays;
 
     private Long employeeNumber;
 
