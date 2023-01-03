@@ -122,6 +122,13 @@ public class JobInfoServiceImpl implements JobInfoService {
     }
 
     @Override
+    public IdNameDTO fetchLastEffectiveWorkInfo(Long id) {
+        return workInformationRepository.findFirstByUserIdOrderByEffectiveDateDesc(id)
+                .map(this::toIdNameDTO)
+                .orElse(null);
+    }
+
+    @Override
     public List<BonusDTO> fetchBonus(Long id) {
         HuaUser user = findUser(id);
 
@@ -309,6 +316,13 @@ public class JobInfoServiceImpl implements JobInfoService {
         compensation.setComment(huaCompensation.getComment());
 
         return compensation;
+    }
+
+    private IdNameDTO toIdNameDTO(HuaWorkInformation workInformation) {
+        IdNameDTO dto = new IdNameDTO();
+        dto.setName(workInformation.getJobTitle());
+
+        return dto;
     }
 
 }

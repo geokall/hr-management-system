@@ -1,9 +1,6 @@
 package resource;
 
-import dto.BonusDTO;
-import dto.CompensationDTO;
-import dto.JobInformationDTO;
-import dto.WorkInformationDTO;
+import dto.*;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import service.JobInfoService;
 
@@ -65,6 +62,15 @@ public class JobInfoResource {
     @RolesAllowed({ADMIN_ROLE, READER_ROLE})
     public Response fetchJobInformationInfo(@PathParam("id") Long id) {
         JobInformationDTO response = jobInfoService.fetchJobInformation(id);
+
+        return Response.ok(response).status(OK).build();
+    }
+
+    @GET
+    @Path("/fetch-last-effective-work-info/{id}")
+    @RolesAllowed({ADMIN_ROLE, READER_ROLE})
+    public Response fetchLastEffectiveWorkInfo(@PathParam("id") Long id) {
+        IdNameDTO response = jobInfoService.fetchLastEffectiveWorkInfo(id);
 
         return Response.ok(response).status(OK).build();
     }
