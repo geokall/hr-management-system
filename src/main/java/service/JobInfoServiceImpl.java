@@ -7,6 +7,7 @@ import entity.HuaUser;
 import entity.HuaWorkInformation;
 import enums.EthnicityEnum;
 import enums.JobCategoryEnum;
+import enums.JobStatusEnum;
 import enums.PayTypeEnum;
 import exception.HuaNotFoundException;
 import repository.*;
@@ -245,6 +246,10 @@ public class JobInfoServiceImpl implements JobInfoService {
         WorkInformationDTO dto = new WorkInformationDTO();
         dto.setId(workInformation.getId());
         dto.setJobTitle(workInformation.getJobTitle());
+
+        dto.setJobStatus(workInformation.getJobStatus() != null ?
+                workInformation.getJobStatus().name() : null);
+
         dto.setEffectiveDate(formatDateToString(workInformation.getEffectiveDate()));
 
         IdNameDTO locationDTO = Optional.ofNullable(workInformation.getLocation())
@@ -273,6 +278,9 @@ public class JobInfoServiceImpl implements JobInfoService {
         workInformation.setEffectiveDate(effectiveDate);
 
         workInformation.setJobTitle(dto.getJobTitle());
+
+        workInformation.setJobStatus(dto.getJobStatus() != null ?
+                JobStatusEnum.valueOf(dto.getJobStatus()) : null);
 
         Optional.ofNullable(dto.getLocation())
                 .map(IdNameDTO::getId)

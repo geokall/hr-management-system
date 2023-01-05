@@ -48,10 +48,6 @@ public class HuaUser implements Serializable {
     private MaritalStatusEnum maritalStatus;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "job_status")
-    private JobStatusEnum jobStatus;
-
-    @Enumerated(EnumType.STRING)
     @Column(name = "employee_status")
     private EmployeeStatusEnum employeeStatus;
 

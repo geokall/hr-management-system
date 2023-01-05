@@ -73,7 +73,6 @@ public class UserServiceImpl implements UserService {
         }
 
         dto.setEmployeeNumber(user.getEmployeeNumber());
-        dto.setJobStatus(user.getJobStatus() != null ? user.getJobStatus().getLabel() : null);
 
         //order by must not be null
         //fetching all by user id, and then sets the latest update by effective date

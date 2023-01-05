@@ -1,5 +1,6 @@
 package entity;
 
+import enums.JobStatusEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,10 @@ public class HuaWorkInformation implements Serializable {
 
     @Column(name = "job_title")
     private String jobTitle;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "job_status")
+    private JobStatusEnum jobStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", referencedColumnName = "id")

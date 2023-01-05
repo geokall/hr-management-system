@@ -238,4 +238,11 @@ alter table management.hua_user
 drop
 column if exists location_id;
 
+--changeset remove-user-job-status-alter-work-info:19
+alter table management.hua_user
+drop
+column if exists job_status;
+
+alter table management.hua_work_information
+    add job_status varchar(255);
 

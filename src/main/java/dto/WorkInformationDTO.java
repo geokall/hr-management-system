@@ -11,6 +11,8 @@ public class WorkInformationDTO {
 
     private String jobTitle;
 
+    private String jobStatus;
+
     private IdNameDTO location;
 
     private IdNameDTO division;
