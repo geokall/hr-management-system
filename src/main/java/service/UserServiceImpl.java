@@ -115,6 +115,10 @@ public class UserServiceImpl implements UserService {
         huaRoleRepository.findByName(READER_ROLE)
                 .ifPresent(huaUser::addRole);
 
+        HuaUser saved = huaUserRepository.save(huaUser);
+
+        huaUser.setEmployeeNumber(saved.getId());
+
         huaUserRepository.save(huaUser);
 
         sendInvitation(email, huaUser, tempPassword);
