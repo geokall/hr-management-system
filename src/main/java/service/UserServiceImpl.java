@@ -175,6 +175,8 @@ public class UserServiceImpl implements UserService {
         dto.setLocation(workInformation.getLocation() != null ? workInformation.getLocation().getName() : null);
 
         dto.setJobTitle(workInformation.getJobTitle());
+        dto.setJobStatus(workInformation.getJobStatus() != null ? workInformation.getJobStatus().name() : null);
+
         return managerDTO;
     }
 
