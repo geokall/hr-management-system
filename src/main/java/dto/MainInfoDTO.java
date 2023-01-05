@@ -15,6 +15,8 @@ public class MainInfoDTO {
 
     private String surname;
 
+    private String jobTitle;
+
     private String workNumber;
 
     private String mobileNumber;

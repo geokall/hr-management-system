@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
                         .map(huaWorkInformation -> toDirectManagerDTO(huaWorkInformation, dto))
                         .orElse(new ManagerDTO()))
                 .findFirst()
-                .orElse(null);
+                .orElse(new ManagerDTO());
 
         dto.setDirectManager(directManager);
 
@@ -171,6 +171,7 @@ public class UserServiceImpl implements UserService {
         dto.setDivision(workInformation.getDivision() != null ? workInformation.getDivision().getName() : null);
         dto.setLocation(workInformation.getLocation() != null ? workInformation.getLocation().getName() : null);
 
+        dto.setJobTitle(workInformation.getJobTitle());
         return managerDTO;
     }
 
