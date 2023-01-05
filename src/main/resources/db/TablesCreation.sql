@@ -49,7 +49,8 @@ values ('ADMIN'),
 CREATE EXTENSION if not exists pgcrypto;
 
 --changeset create-admin-user:5
-INSERT INTO management.HUA_USER(name, birth_date, created_date, email, last_modification_date, password, surname,
+INSERT INTO management.HUA_USER(name, birth_date, created_date, business_email, last_modification_date, password,
+                                surname,
                                 username)
 VALUES ('admin', '1990-05-03', '2022-01-01 08:25:12.000000', 'temp@temp.com', null, crypt('admin', gen_salt('bf')),
         'testSurname', 'geokall');
