@@ -7,6 +7,8 @@ public class DirectReportDTO {
 
     private Long id;
 
+    private Long directReportUserId;
+
     private String name;
 
     private String surname;

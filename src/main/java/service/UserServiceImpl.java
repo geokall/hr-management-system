@@ -163,6 +163,7 @@ public class UserServiceImpl implements UserService {
 
         Optional.ofNullable(workInformation.getManager())
                 .ifPresent(manager -> {
+                    managerDTO.setManagerId(manager.getId());
                     managerDTO.setName(manager.getName());
                     managerDTO.setSurname(manager.getSurname());
 
@@ -186,6 +187,7 @@ public class UserServiceImpl implements UserService {
 
         Optional.ofNullable(workInformation.getUser())
                 .ifPresent(user -> {
+                    directReportDTO.setDirectReportUserId(user.getId());
                     directReportDTO.setName(user.getName());
                     directReportDTO.setSurname(user.getSurname());
                 });
