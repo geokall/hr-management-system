@@ -1,6 +1,7 @@
 package resource;
 
 import dto.IdNameDTO;
+import dto.IdNameProjectionDTO;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import service.DataService;
 
@@ -57,7 +58,7 @@ public class DataResource {
     public Response fetchUsers() {
         String loginName = jsonWebToken.getName();
 
-        List<IdNameDTO> response = dataService.fetchUsers(loginName);
+        List<IdNameProjectionDTO> response = dataService.fetchUsers(loginName);
 
         return Response.ok(response).status(OK).build();
     }

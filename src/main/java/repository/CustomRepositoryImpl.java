@@ -1,5 +1,8 @@
 package repository;
 
+import dto.IdNameProjectionDTO;
+import org.hibernate.transform.Transformers;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -22,6 +25,18 @@ public class CustomRepositoryImpl implements CustomRepository {
                         "INNER JOIN {h-schema}HUA_ROLE hr ON ur.role_id = hr.id " +
                         "WHERE hu.id = :id")
                 .setParameter("id", id)
+                .getResultList();
+    }
+
+    @Override
+    public List<IdNameProjectionDTO> findAvailableManagersToReport(Long id) {
+        return entityManager.createNativeQuery("SELECT u.id as id, concat(u.name, ' ', u.surname) as name FROM {h-schema}hua_user u " +
+                        "WHERE u.id NOT IN (SELECT w.user_id FROM {h-schema}hua_work_information w " +
+                        "WHERE w.manager_id = :loggedInUserId) " +
+                        "AND u.id <> :loggedInUserId")
+                .setParameter("loggedInUserId", id)
+                .unwrap(org.hibernate.query.NativeQuery.class)
+                .setResultTransformer(Transformers.aliasToBean(IdNameProjectionDTO.class))
                 .getResultList();
     }
 }

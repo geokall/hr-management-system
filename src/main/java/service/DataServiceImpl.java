@@ -1,6 +1,9 @@
 package service;
 
 import dto.IdNameDTO;
+import dto.IdNameProjectionDTO;
+import entity.HuaUser;
+import exception.HuaNotFoundException;
 import repository.HuaDivisionRepository;
 import repository.HuaLocationRepository;
 import repository.HuaUserRepository;
@@ -9,6 +12,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static exception.HuaCommonError.USER_NOT_FOUND;
 
 @ApplicationScoped
 public class DataServiceImpl implements DataService {
@@ -41,10 +46,11 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public List<IdNameDTO> fetchUsers(String loginName) {
-        return userRepository.findAllByUsernameIsNot(loginName).stream()
-                .map(entity -> new IdNameDTO(entity.getId(), entity.getName()))
-                .collect(Collectors.toList());
+    public List<IdNameProjectionDTO> fetchUsers(String loginName) {
+        HuaUser huaUser = userRepository.findByUsername(loginName)
+                .orElseThrow(() -> new HuaNotFoundException(USER_NOT_FOUND));
+
+        return userRepository.findAvailableManagersToReport(huaUser.getId());
     }
 
 }
