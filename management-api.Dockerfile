@@ -6,4 +6,4 @@ RUN mvn -f /home/app/pom.xml clean package
 FROM openjdk:11-jre-slim
 COPY --from=build /home/app/target/management-api.jar /usr/local/lib/management-api.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/usr/local/lib/management-api.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=production", "-jar", "/usr/local/lib/management-api.jar"]

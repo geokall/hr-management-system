@@ -20,26 +20,11 @@ spec:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: api-cm
-          env:
-            - name: SPRING_DATASOURCE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: hua-secret
-                  key: db_user
-            - name: SPRING_DATASOURCE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: hua-secret
-                  key: db_password
+                name: hua-config
           volumeMounts:
-            - name: sqlvolume
-              mountPath: "/sql"
-              readOnly: true
+            - name: data
+              mountPath: /data
       volumes:
-        - name: sqlvolume
-          secret:
-            secretName: hua-secret-sql
-            items:
-              - key: init.sql
-                path: initdb.sql
+        - name: data
+          persistentVolumeClaim:
+            claimName: managementapidata
