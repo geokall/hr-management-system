@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: managementapidata
+  name: apiData
 spec:
   accessModes: [ ReadWriteOnce ]
   # storageClassName: microk8s-hostpath

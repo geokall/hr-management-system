@@ -118,10 +118,10 @@ auth:
   postgresPassword: "pgpassword"
   ## @param auth.username Name for a custom user to create
   ##
-  username: "hua-diploma"
+  username: "diplomauser"
   ## @param auth.password Password for the custom user to create
   ##
-  password: "diploma-ftw"
+  password: "diplomapass"
   ## @param auth.database Name for a custom database to create
   ##
   database: "hua"
