@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: api
+  template:
+    metadata:
+      labels:
+        component: api
+    spec:
+      containers:
+        - name: api
+          image: 'geokall/management-api:diploma'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: api-cm
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: hua-secret
+                  key: db_user
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hua-secret
+                  key: db_password
+          volumeMounts:
+            - name: sqlvolume
+              mountPath: "/sql"
+              readOnly: true
+      volumes:
+        - name: sqlvolume
+          secret:
+            secretName: hua-secret-sql
+            items:
+              - key: init.sql
+                path: initdb.sql
