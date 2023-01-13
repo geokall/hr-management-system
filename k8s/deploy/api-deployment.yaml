@@ -14,17 +14,10 @@ spec:
     spec:
       containers:
         - name: api
-          image: 'geokall/management-api:diploma'
+          image: 'geokall/management:lala4'
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
                 name: hua-config
-          volumeMounts:
-            - name: data
-              mountPath: /data
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: apiData
