@@ -124,7 +124,7 @@
     </dependencies>
 
     <build>
-        <finalName>management-api</finalName>
+<!--        <finalName>management-api</finalName>-->
         <plugins>
 
             <plugin>

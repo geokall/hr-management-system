@@ -4,7 +4,6 @@ metadata:
   name: api-ingress
 spec:
   rules:
-    - host: "geokall-fastapi.ddns.net"
       http:
         paths:
           - path: /
