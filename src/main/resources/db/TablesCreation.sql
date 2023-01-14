@@ -29,7 +29,7 @@ create table management.USER_ROLE
     primary key (user_id, role_id)
 );
 alter table if exists management.HUA_USER
-    add constraint UK_foifti1tkmfx6civn1hhpy9mw unique (business_email);
+    add constraint UK_foifti1tkmfx6civn1hhpy9mw unique (email);
 alter table if exists management.HUA_USER
     add constraint UK_6sj80w5kgd7s32pyekacvm0bs unique (username);
 alter table if exists management.USER_ROLE
