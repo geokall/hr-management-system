@@ -4,7 +4,7 @@ metadata:
   name: api-ingress
 spec:
   rules:
-      http:
+    - http:
         paths:
           - path: /
             pathType: ImplementationSpecific
