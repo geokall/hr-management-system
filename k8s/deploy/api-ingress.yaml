@@ -4,7 +4,8 @@ metadata:
   name: api-ingress
 spec:
   rules:
-    - http:
+    - host: "hua-management.ddns.net"
+      http:
         paths:
           - path: /
             pathType: ImplementationSpecific
