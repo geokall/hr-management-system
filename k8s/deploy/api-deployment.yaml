@@ -21,3 +21,21 @@ spec:
           envFrom:
             - configMapRef:
                 name: hua-config
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: hua-management-secret
+                  key: dbuser
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hua-management-secret
+                  key: dbpass
+          volumeMounts:
+            - name: data
+              mountPath: /data
+    volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: apidata
