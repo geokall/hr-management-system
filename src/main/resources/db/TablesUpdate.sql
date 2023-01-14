@@ -113,11 +113,6 @@ alter table if exists management.HUA_USER drop constraint if exists UK_m712w6mk6
 alter table if exists management.HUA_USER add constraint UK_m712w6mk621bjebxx0qo8a946 unique (personal_email);
 alter table if exists management.HUA_EDUCATION add constraint FKcl08qq2ugplmblf0kvdcm4967 foreign key (user_id) references management.HUA_USER;
 
---changeset update-user-numbers:9
-alter table if exists management.HUA_USER add column mobile_number varchar (20);
-alter table if exists management.HUA_USER add column work_number varchar (20);
-alter table if exists management.HUA_USER add column home_number varchar (20);
-
 --changeset update-user-bonus-status-business-email:10
 create table management.HUA_BONUS
 (
