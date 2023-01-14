@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: 'geokall/management:lala4'
+          image: 'geokall/management:latest'
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
