@@ -13,13 +13,20 @@ spec:
     - host: "hua-management.ddns.net"
       http:
         paths:
-          - path: /
+          - path: /api
             pathType: ImplementationSpecific
             backend:
               service:
                 name: api-clip
                 port:
                   number: 8080
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ui-clip
+                port:
+                  number: 80
   tls:
     - hosts:
         - hua-management.ddns.net
