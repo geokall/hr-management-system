@@ -242,6 +242,7 @@ alter table management.hua_work_information
     add job_status varchar(255);
 
 --changeset update-admin-employee-number:20
-insert into management.hua_user (employee_number)
-values (1)
+update management.hua_user
+set employee_number = 1
+where id = 1;
 
