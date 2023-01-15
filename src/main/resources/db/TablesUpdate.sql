@@ -241,3 +241,7 @@ column if exists job_status;
 alter table management.hua_work_information
     add job_status varchar(255);
 
+--changeset update-admin-employee-number:20
+insert into management.hua_user (employee_number)
+values (1)
+
