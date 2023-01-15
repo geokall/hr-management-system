@@ -33,9 +33,13 @@ spec:
                   name: hua-management-secret
                   key: dbpassword
           volumeMounts:
-            - name: data
-              mountPath: /data
+            - name: sqlvolume
+              mountPath: "/sql"
+              readOnly: true
       volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: apidata
+        - name: sqlvolume
+          secret:
+            secretName: hua-sql-file-secret
+            items:
+              - key: init.sql
+                path: initdb.sql #path means we rename it in our container

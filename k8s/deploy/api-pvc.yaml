@@ -1,3 +1,4 @@
+# Won't be used since helm postgres create its own pvc
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
