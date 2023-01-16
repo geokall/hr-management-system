@@ -20,6 +20,7 @@ public class HuaUtil {
     public static final String AT_SIGN = "@";
     public static final String HUA_PREFIX = "hua";
     public static final String HYPHEN = "-";
+    public static final String SPACE = " ";
 
     public static final String YEAR_MONTH_DAY_PATTERN = "yyyy-MM-dd";
 

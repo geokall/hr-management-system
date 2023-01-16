@@ -20,8 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static exception.HuaCommonError.*;
-import static utils.HuaUtil.formatDateToString;
-import static utils.HuaUtil.formatStringToDate;
+import static utils.HuaUtil.*;
 
 @ApplicationScoped
 public class JobInfoServiceImpl implements JobInfoService {
@@ -269,7 +268,9 @@ public class JobInfoServiceImpl implements JobInfoService {
         dto.setDivision(divisionDTO);
 
         IdNameDTO managerDTO = Optional.ofNullable(workInformation.getManager())
-                .map(manager -> new IdNameDTO(manager.getId(), manager.getName()))
+                .map(manager -> new IdNameDTO(manager.getId(), manager.getName()
+                        .concat(SPACE)
+                        .concat(manager.getSurname())))
                 .orElse(null);
 
         dto.setManager(managerDTO);
