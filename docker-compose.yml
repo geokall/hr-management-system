@@ -19,7 +19,7 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/src/main/resources/db/init.sql
       - management-db:/var/lib/postgresql/data
 
 volumes:
