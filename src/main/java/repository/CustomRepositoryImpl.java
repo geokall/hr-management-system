@@ -33,6 +33,7 @@ public class CustomRepositoryImpl implements CustomRepository {
         return entityManager.createNativeQuery("SELECT u.id as id, concat(u.name, ' ', u.surname) as name FROM {h-schema}hua_user u " +
                         "WHERE u.id NOT IN (SELECT w.user_id FROM {h-schema}hua_work_information w " +
                         "WHERE w.manager_id = :loggedInUserId) " +
+                        "AND u.name is not null " +
                         "AND u.id <> :loggedInUserId")
                 .setParameter("loggedInUserId", id)
                 .unwrap(org.hibernate.query.NativeQuery.class)
