@@ -246,3 +246,17 @@ update management.hua_user
 set employee_number = 1
 where id = 1;
 
+--changeset update-location-division:21
+INSERT INTO management.HUA_LOCATION
+VALUES (1, 'Nested Company 1'),
+       (2, 'Nested Company 2'),
+       (3, 'Nested Company 3');
+
+INSERT INTO management.HUA_DIVISION
+VALUES (1, 'Finance & Legal'),
+       (2, 'Administration'),
+       (3, 'Business Development'),
+       (4, 'Software Engineering'),
+       (5, 'Project Management');
+
+
