@@ -1,0 +1,1 @@
+Minio is deployed in Kubernetes cluster and not in MicroK8S
