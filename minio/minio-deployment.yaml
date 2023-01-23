@@ -18,7 +18,7 @@ spec:
             claimName: miniodata
       containers:
         - name: minio
-          image: quay.io/minio/minio:latest
+          image: minio/minio:RELEASE.2023-01-20T02-05-44Z
           imagePullPolicy: IfNotPresent
           env:
             - name: MINIO_ACCESS_KEY
@@ -39,8 +39,8 @@ spec:
             periodSeconds: 20
           resources:
             requests:
-              memory: "50Mi"
-              cpu: "50m"
+              memory: "100Mi"
+              cpu: "100m"
             limits:
               memory: "100Mi"
               cpu: "100m"
