@@ -23,14 +23,17 @@ public class AuthServiceImpl implements AuthService {
     private final JwtClaimService jwtClaimService;
     private final HuaUserRepository huaUserRepository;
     private final HuaRoleRepository huaRoleRepository;
+    private final MinioService minioService;
 
     @Inject
     public AuthServiceImpl(JwtClaimService jwtClaimService,
                            HuaUserRepository huaUserRepository,
-                           HuaRoleRepository huaRoleRepository) {
+                           HuaRoleRepository huaRoleRepository,
+                           MinioService minioService) {
         this.jwtClaimService = jwtClaimService;
         this.huaUserRepository = huaUserRepository;
         this.huaRoleRepository = huaRoleRepository;
+        this.minioService = minioService;
     }
 
     @Override
@@ -42,6 +45,8 @@ public class AuthServiceImpl implements AuthService {
         String userRole = fetchUserRoleBy(huaUser);
 
         String jwt = jwtClaimService.generateUserToken(huaUser.getUsername(), userRole);
+
+        minioService.test();
 
         return JwtResponseDTO.builder()
                 .id(huaUser.getId())

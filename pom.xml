@@ -131,6 +131,12 @@
             <artifactId>quarkus-container-image-jib</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.quarkiverse.minio</groupId>
+            <artifactId>quarkus-minio</artifactId>
+            <version>2.10.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
