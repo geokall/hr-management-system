@@ -46,8 +46,6 @@ public class AuthServiceImpl implements AuthService {
 
         String jwt = jwtClaimService.generateUserToken(huaUser.getUsername(), userRole);
 
-        minioService.test();
-
         return JwtResponseDTO.builder()
                 .id(huaUser.getId())
                 .email(huaUser.getBusinessEmail())
