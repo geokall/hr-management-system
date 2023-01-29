@@ -144,18 +144,12 @@ public class UserServiceImpl implements UserService {
     public void changeUserPassword(Long id, PasswordDTO dto) {
         HuaUser user = findUserBy(id);
 
-        String plainTextCurrentPassword = dto.getCurrentPassword();
-
-        if (!BcryptUtil.matches(plainTextCurrentPassword, user.getPassword())) {
-            throw new HuaConflictException(USER_CURRENT_PASSWORD_NOT_EQUALS);
-        }
-
-        if (!dto.getNewPassword().equals(dto.getSameNewPassword())) {
-            throw new HuaConflictException(USER_NEW_PASSWORD_NOT_EQUALS);
-        }
+        validatePassword(dto, user.getPassword());
 
         String hashedPassword = BcryptUtil.bcryptHash(dto.getNewPassword());
         user.setPassword(hashedPassword);
+
+        user.setLastModificationDate(LocalDateTime.now());
 
         huaUserRepository.save(user);
     }
@@ -253,5 +247,17 @@ public class UserServiceImpl implements UserService {
                 });
 
         return directReportDTO;
+    }
+
+    private void validatePassword(PasswordDTO dto, String password) {
+        String plainTextCurrentPassword = dto.getCurrentPassword();
+
+        if (!BcryptUtil.matches(plainTextCurrentPassword, password)) {
+            throw new HuaConflictException(USER_CURRENT_PASSWORD_NOT_EQUALS);
+        }
+
+        if (!dto.getNewPassword().equals(dto.getSameNewPassword())) {
+            throw new HuaConflictException(USER_NEW_PASSWORD_NOT_EQUALS);
+        }
     }
 }
