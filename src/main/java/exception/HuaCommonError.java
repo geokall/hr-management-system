@@ -9,4 +9,7 @@ public class HuaCommonError {
     public static final String COMPENSATION_NOT_FOUND = "Compensation not found.";
 
     public static final String USER_ALREADY_EXIST = "User already exist.";
+
+    public static final String USER_CURRENT_PASSWORD_NOT_EQUALS = "Current password is wrong.";
+    public static final String USER_NEW_PASSWORD_NOT_EQUALS = "New password does not match with confirmation password.";
 }

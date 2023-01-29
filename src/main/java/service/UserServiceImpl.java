@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static exception.HuaCommonError.USER_ALREADY_EXIST;
-import static exception.HuaCommonError.USER_NOT_FOUND;
+import static exception.HuaCommonError.*;
 import static utils.HuaUtil.*;
 import static utils.StaticRole.READER_ROLE;
 
@@ -145,8 +144,17 @@ public class UserServiceImpl implements UserService {
     public void changeUserPassword(Long id, PasswordDTO dto) {
         HuaUser user = findUserBy(id);
 
-        //TODO add functionality
-        String hashedPassword = BcryptUtil.bcryptHash(dto.getPassword());
+        String plainTextCurrentPassword = dto.getCurrentPassword();
+
+        if (!BcryptUtil.matches(plainTextCurrentPassword, user.getPassword())) {
+            throw new HuaConflictException(USER_CURRENT_PASSWORD_NOT_EQUALS);
+        }
+
+        if (!dto.getNewPassword().equals(dto.getSameNewPassword())) {
+            throw new HuaConflictException(USER_NEW_PASSWORD_NOT_EQUALS);
+        }
+
+        String hashedPassword = BcryptUtil.bcryptHash(dto.getNewPassword());
         user.setPassword(hashedPassword);
 
         huaUserRepository.save(user);
