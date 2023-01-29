@@ -1,9 +1,6 @@
 package service;
 
-import dto.DirectReportDTO;
-import dto.MainInfoDTO;
-import dto.ManagerDTO;
-import dto.PasswordDTO;
+import dto.*;
 import entity.HuaUser;
 import entity.HuaWorkInformation;
 import exception.HuaConflictException;
@@ -37,16 +34,19 @@ public class UserServiceImpl implements UserService {
     private final HuaUserRepository huaUserRepository;
     private final HuaRoleRepository huaRoleRepository;
     private final HuaWorkInformationRepository workInformationRepository;
+    private final MinioService minioService;
 
     @Inject
     public UserServiceImpl(Mailer mailer,
                            HuaUserRepository huaUserRepository,
                            HuaRoleRepository huaRoleRepository,
-                           HuaWorkInformationRepository workInformationRepository) {
+                           HuaWorkInformationRepository workInformationRepository,
+                           MinioService minioService) {
         this.mailer = mailer;
         this.huaUserRepository = huaUserRepository;
         this.huaRoleRepository = huaRoleRepository;
         this.workInformationRepository = workInformationRepository;
+        this.minioService = minioService;
     }
 
     @Override
@@ -90,6 +90,9 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
 
         dto.setDirectReports(directReports);
+
+        BooleanOnlyDTO isBucketExist = minioService.isBucketExistBy(user.getUsername());
+        dto.setIsBucketExist(isBucketExist.isExist());
 
         return dto;
     }

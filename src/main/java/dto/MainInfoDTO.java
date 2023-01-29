@@ -44,4 +44,6 @@ public class MainInfoDTO {
     private ManagerDTO directManager;
 
     private List<DirectReportDTO> directReports;
+
+    private Boolean isBucketExist;
 }
