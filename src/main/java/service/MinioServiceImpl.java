@@ -1,5 +1,6 @@
 package service;
 
+import dto.BooleanOnlyDTO;
 import dto.FileDTO;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
@@ -30,15 +31,17 @@ public class MinioServiceImpl implements MinioService {
 
     @SneakyThrows
     @Override
-    public void test() {
-//        BucketExistsArgs qq = new BucketExistsArgs.Builder().bucket("test").build();
-//        MakeBucketArgs test = new MakeBucketArgs.Builder().bucket("test").build();
-//        boolean b = minioClient.bucketExists(qq);
+    public BooleanOnlyDTO isBucketExistBy(String bucketName) {
+        BucketExistsArgs bucketBuilder = BucketExistsArgs.builder()
+                .bucket(bucketName)
+                .build();
 
-        boolean test = minioClient.bucketExists(BucketExistsArgs.builder()
-                .bucket("test").build());
-        LOGGER.info("lalakis: {}", test);
+        boolean isExist = minioClient.bucketExists(bucketBuilder);
 
+        BooleanOnlyDTO dto = new BooleanOnlyDTO();
+        dto.setExist(isExist);
+
+        return dto;
     }
 
     @SneakyThrows
