@@ -9,5 +9,7 @@ public interface UserService {
 
     void inviteUser(String email);
 
+    void inviteManager(String username, Long managerId);
+
     void changeUserPassword(Long id, PasswordDTO dto);
 }

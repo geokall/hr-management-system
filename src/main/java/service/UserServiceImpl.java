@@ -8,6 +8,7 @@ import exception.HuaNotFoundException;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.mailer.Mail;
 import io.quarkus.mailer.Mailer;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import repository.HuaRoleRepository;
 import repository.HuaUserRepository;
 import repository.HuaWorkInformationRepository;
@@ -24,11 +25,14 @@ import java.util.stream.Collectors;
 
 import static exception.HuaCommonError.USER_ALREADY_EXIST;
 import static exception.HuaCommonError.USER_NOT_FOUND;
-import static utils.HuaUtil.toLocalDateBy;
+import static utils.HuaUtil.*;
 import static utils.StaticRole.READER_ROLE;
 
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
+
+    @ConfigProperty(name = "quarkus.notification.bucket.link")
+    String quarkusBucketLink;
 
     private final Mailer mailer;
     private final HuaUserRepository huaUserRepository;
@@ -127,6 +131,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void inviteManager(String username, Long managerId) {
+        HuaUser manager = findUserBy(managerId);
+
+        HuaUser loggedInUser = findUserByUsername(username);
+
+        String businessEmail = manager.getBusinessEmail();
+
+        notifyManagerBy(businessEmail, loggedInUser);
+    }
+
+    @Override
     public void changeUserPassword(Long id, PasswordDTO dto) {
         HuaUser user = findUserBy(id);
 
@@ -150,12 +165,46 @@ public class UserServiceImpl implements UserService {
                 });
     }
 
+    private HuaUser findUserByUsername(String username) {
+        return huaUserRepository.findByUsername(username)
+                .orElseThrow(() -> new HuaNotFoundException(USER_NOT_FOUND));
+    }
+
     private void sendInvitation(String email, HuaUser huaUser, String tempPassword) {
-        mailer.send(Mail.withText(email,
+        String username = huaUser.getUsername();
+
+        String boldUsername = OPEN_BOLD.concat(username).concat(CLOSE_BOLD);
+        String boldPassword = OPEN_BOLD.concat(tempPassword).concat(CLOSE_BOLD);
+
+        mailer.send(Mail.withHtml(email,
                         "Invitation for HUA Management System",
-                        "Username: " + huaUser.getUsername() +
-                                "\n" +
-                                "Password: " + tempPassword
+                        "Your credentials to sign in:" +
+                                BREAK_LINE +
+                                BREAK_LINE +
+                                "Username: " + boldUsername +
+                                BREAK_LINE +
+                                "Temporary password: " + boldPassword +
+                                BREAK_LINE +
+                                BREAK_LINE +
+                                "You can change your credentials in the app."
+                )
+        );
+    }
+
+    private void notifyManagerBy(String managerEmail, HuaUser loggedInUser) {
+        String username = loggedInUser.getUsername();
+
+        String boldUsername = OPEN_BOLD.concat(username).concat(CLOSE_BOLD);
+
+        mailer.send(Mail.withHtml(managerEmail,
+                        "Minio bucket notification",
+                        "User with username: " +
+                                boldUsername +
+                                " Just updated minio bucket." +
+                                BREAK_LINE +
+                                "To check updated bucket, please visit minio link: " +
+                                quarkusBucketLink +
+                                username
                 )
         );
     }

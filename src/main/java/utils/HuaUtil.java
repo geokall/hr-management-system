@@ -21,6 +21,9 @@ public class HuaUtil {
     public static final String HUA_PREFIX = "hua";
     public static final String HYPHEN = "-";
     public static final String SPACE = " ";
+    public static final String BREAK_LINE = "<br>";
+    public static final String OPEN_BOLD = "<b>";
+    public static final String CLOSE_BOLD = "</b>";
 
     public static final String YEAR_MONTH_DAY_PATTERN = "yyyy-MM-dd";
 
