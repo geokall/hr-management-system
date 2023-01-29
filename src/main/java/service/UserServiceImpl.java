@@ -30,7 +30,7 @@ import static utils.StaticRole.READER_ROLE;
 @ApplicationScoped
 public class UserServiceImpl implements UserService {
 
-    @ConfigProperty(name = "quarkus.notification.bucket.link")
+    @ConfigProperty(name = "notification.bucket.link")
     String quarkusBucketLink;
 
     private final Mailer mailer;
@@ -131,13 +131,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void inviteManager(String username, Long managerId) {
-        HuaUser manager = findUserBy(managerId);
+        if (managerId != null) {
+            HuaUser manager = findUserBy(managerId);
 
-        HuaUser loggedInUser = findUserByUsername(username);
+            HuaUser loggedInUser = findUserByUsername(username);
 
-        String businessEmail = manager.getBusinessEmail();
+            String businessEmail = manager.getBusinessEmail();
 
-        notifyManagerBy(businessEmail, loggedInUser);
+            notifyManagerBy(businessEmail, loggedInUser);
+        }
     }
 
     @Override
