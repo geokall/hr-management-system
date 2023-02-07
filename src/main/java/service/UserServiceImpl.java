@@ -205,7 +205,7 @@ public class UserServiceImpl implements UserService {
                         "You can change your credentials in the app." +
                         BREAK_LINE +
                         BREAK_LINE +
-                        "Please use below link to redirect to application:" +
+                        "Please use below link:" +
                         BREAK_LINE +
                         OPEN_LINK.concat(invitationUrl).concat(">") +
                         "HUA HR Management System" +
