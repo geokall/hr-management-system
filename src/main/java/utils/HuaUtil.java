@@ -24,6 +24,8 @@ public class HuaUtil {
     public static final String BREAK_LINE = "<br>";
     public static final String OPEN_BOLD = "<b>";
     public static final String CLOSE_BOLD = "</b>";
+    public static final String OPEN_LINK = "<a href=";
+    public static final String CLOSE_LINK = "</a>";
 
     public static final String YEAR_MONTH_DAY_PATTERN = "yyyy-MM-dd";
 

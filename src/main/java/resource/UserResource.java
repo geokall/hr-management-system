@@ -9,8 +9,10 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.constraints.Email;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import static javax.ws.rs.core.Response.Status.OK;
 import static utils.StaticRole.ADMIN_ROLE;
@@ -43,8 +45,9 @@ public class UserResource {
     @PUT
     @Path("/invite/{email}")
     @RolesAllowed(ADMIN_ROLE)
-    public Response inviteUser(@PathParam("email") @Email String email) {
-        userService.inviteUser(email);
+    public Response inviteUser(@PathParam("email") @Email String email,
+                               @Context UriInfo uriInfo) {
+        userService.inviteUser(email, uriInfo);
 
         return Response.ok().status(OK).build();
     }

@@ -16,6 +16,8 @@ import utils.HuaUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -32,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @ConfigProperty(name = "notification.bucket.link")
     String quarkusBucketLink;
+
+    @ConfigProperty(name = "invitation.hua.link")
+    String managementSystemLink;
 
     private final Mailer mailer;
     private final HuaUserRepository huaUserRepository;
@@ -101,7 +106,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void inviteUser(String email) {
+    public void inviteUser(String email, UriInfo uriInfo) {
         findExistingUserBy(email);
 
         HuaUser huaUser = new HuaUser();
@@ -126,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
         huaUserRepository.save(huaUser);
 
-        sendInvitation(email, huaUser, tempPassword);
+        sendInvitation(email, huaUser, tempPassword, uriInfo);
     }
 
     @Override
@@ -174,23 +179,37 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new HuaNotFoundException(USER_NOT_FOUND));
     }
 
-    private void sendInvitation(String email, HuaUser huaUser, String tempPassword) {
+    private void sendInvitation(String email, HuaUser huaUser, String tempPassword, UriInfo uriInfo) {
         String username = huaUser.getUsername();
 
         String boldUsername = OPEN_BOLD.concat(username).concat(CLOSE_BOLD);
         String boldPassword = OPEN_BOLD.concat(tempPassword).concat(CLOSE_BOLD);
 
+        URI requestUri = uriInfo.getRequestUri();
+        String host = requestUri.getHost();
+
+        String invitationUrl;
+
+        invitationUrl = retrieveInvitationUrl(host);
+
         mailer.send(Mail.withHtml(email,
-                        "Invitation for HUA Management System",
-                        "Your credentials to sign in:" +
-                                BREAK_LINE +
-                                BREAK_LINE +
-                                "Username: " + boldUsername +
-                                BREAK_LINE +
-                                "Temporary password: " + boldPassword +
-                                BREAK_LINE +
-                                BREAK_LINE +
-                                "You can change your credentials in the app."
+                "Invitation for HUA Management System",
+                "Your credentials to sign in:" +
+                        BREAK_LINE +
+                        BREAK_LINE +
+                        "Username: " + boldUsername +
+                        BREAK_LINE +
+                        "Temporary password: " + boldPassword +
+                        BREAK_LINE +
+                        BREAK_LINE +
+                        "You can change your credentials in the app." +
+                        BREAK_LINE +
+                        BREAK_LINE +
+                        "Please use below link to redirect to application:" +
+                        BREAK_LINE +
+                        OPEN_LINK.concat(invitationUrl).concat(">") +
+                        "HUA HR Management System" +
+                        CLOSE_LINK
                 )
         );
     }
@@ -261,5 +280,19 @@ public class UserServiceImpl implements UserService {
         if (!dto.getNewPassword().equals(dto.getSameNewPassword())) {
             throw new HuaConflictException(USER_NEW_PASSWORD_NOT_EQUALS);
         }
+    }
+
+    private String retrieveInvitationUrl(String host) {
+        String invitationUrl;
+        if (host.contains("localhost")) {
+            invitationUrl = "http://".concat(host)
+                    .concat(":")
+                    .concat("4200")
+                    .concat("/login");
+        } else {
+            invitationUrl = managementSystemLink;
+        }
+
+        return invitationUrl;
     }
 }
