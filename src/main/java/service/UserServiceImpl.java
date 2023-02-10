@@ -193,23 +193,23 @@ public class UserServiceImpl implements UserService {
         invitationUrl = retrieveInvitationUrl(host);
 
         mailer.send(Mail.withHtml(email,
-                        "Invitation for HUA Management System",
-                        "Your credentials to sign in:" +
-                                BREAK_LINE +
-                                BREAK_LINE +
-                                "Username: " + boldUsername +
-                                BREAK_LINE +
-                                "Temporary password: " + boldPassword +
-                                BREAK_LINE +
-                                BREAK_LINE +
-                                "You can change your credentials in the app." +
-                                BREAK_LINE +
-                                BREAK_LINE +
-                                "Please use below link:" +
-                                BREAK_LINE +
-                                OPEN_LINK.concat(invitationUrl).concat(">") +
-                                "HUA HR Management System" +
-                                CLOSE_LINK
+                "You have been invited to use HUA management system",
+                "Your temporary credentials to sign in:" +
+                        BREAK_LINE +
+                        BREAK_LINE +
+                        "Username: " + boldUsername +
+                        BREAK_LINE +
+                        "Password: " + boldPassword +
+                        BREAK_LINE +
+                        BREAK_LINE +
+                        "You can change your credentials in the app." +
+                        BREAK_LINE +
+                        BREAK_LINE +
+                        "Please use the link below:" +
+                        BREAK_LINE +
+                        OPEN_LINK.concat(invitationUrl).concat(">") +
+                        "HR management system" +
+                        CLOSE_LINK
                 )
         );
     }
@@ -220,13 +220,13 @@ public class UserServiceImpl implements UserService {
         String boldUsername = OPEN_BOLD.concat(username).concat(CLOSE_BOLD);
 
         mailer.send(Mail.withHtml(managerEmail,
-                        "Minio bucket update notification",
+                        "Minio bucket update",
                         "Username: " +
                                 boldUsername +
                                 " updated its Minio bucket." +
                                 BREAK_LINE +
                                 BREAK_LINE +
-                                "To check the updated bucket, please visit below link: " +
+                                "To check the updated bucket, please visit the link below: " +
                                 BREAK_LINE +
                                 quarkusBucketLink +
                                 username
