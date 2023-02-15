@@ -12,6 +12,8 @@ public interface HuaWorkInformationRepository extends JpaRepository<HuaWorkInfor
 
     List<HuaWorkInformation> findByManagerId(Long managerId);
 
+    List<HuaWorkInformation> findFirstByManagerIdOrderByEffectiveDate(Long managerId);
+
     Optional<HuaWorkInformation> findFirstByUserIdOrderByEffectiveDateDesc(Long userId);
 
 }

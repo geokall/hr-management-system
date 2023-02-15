@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
 
         dto.setDirectManager(directManager);
 
-        List<DirectReportDTO> directReports = workInformationRepository.findByManagerId(id).stream()
+        List<DirectReportDTO> directReports = workInformationRepository.findFirstByManagerIdOrderByEffectiveDate(id).stream()
                 .map(this::toDirectReportDTO)
                 .collect(Collectors.toList());
 
