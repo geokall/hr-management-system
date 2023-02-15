@@ -21,8 +21,8 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static exception.HuaCommonError.*;
@@ -93,9 +93,9 @@ public class UserServiceImpl implements UserService {
 
         dto.setDirectManager(directManager);
 
-        List<DirectReportDTO> directReports = workInformationRepository.findFirstByManagerIdOrderByEffectiveDate(id).stream()
+        Set<DirectReportDTO> directReports = workInformationRepository.findByManagerId(id).stream()
                 .map(this::toDirectReportDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
         dto.setDirectReports(directReports);
 

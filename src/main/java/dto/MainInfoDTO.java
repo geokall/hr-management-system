@@ -4,7 +4,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class MainInfoDTO {
@@ -43,7 +43,7 @@ public class MainInfoDTO {
 
     private ManagerDTO directManager;
 
-    private List<DirectReportDTO> directReports;
+    private Set<DirectReportDTO> directReports;
 
     private Boolean isBucketExist;
 }
