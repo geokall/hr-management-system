@@ -22,6 +22,10 @@ This is the backend implementation of the HRMS. It's implemented in Java, using 
 2. docker build -f src/main/docker/Dockerfile.legacy-jar -t geokall/management:{tag} .
 3. docker push geokall/management:{tag}
 
+## Build steps using Quarkus Kubernetes extension
+
+1. mvn clean package -Dquarkus.container-image.build=true
+
 ## Optional
 
 The application can be deployed locally with a database instance using `docker-compose`
